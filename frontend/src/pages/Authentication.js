@@ -1,4 +1,4 @@
-import { redirect } from "react-router-dom";
+import { redirect, json } from "react-router-dom";
 
 import AuthForm from "../components/AuthForm";
 
@@ -24,23 +24,35 @@ export async function action({ request }) {
   const authData = {
     email: data.get("email"),
     password: data.get("password"),
-    userName: data.get("userName"),
+    username: data.get("userName"),
   };
 
-  const response = await fetch("http://localhost:8080/" + mode, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(authData),
-  });
+  const response = await fetch(
+    "https://windmill-be-iqxx.onrender.com/auth/" + mode,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(authData),
+    }
+  );
 
   // authform에서 useActionData 훅으로 오류를 폼 안에서 생성.
   if (response.status === 422 || response.status === 401) {
     return response;
   }
 
-  // Response객체는 심각한 오류객체로 errorpage에서 따로 표시할 것이다.
+  if (response.status === 404) {
+    throw json(
+      { message: "OOOOOOOOOOOOOOOOOOOO" },
+      {
+        status: 400,
+        statusText: "Could not register",
+      }
+    );
+  }
+
   if (!response.ok) {
     throw new Response(null, {
       status: 500,
@@ -49,7 +61,7 @@ export async function action({ request }) {
   }
 
   const resData = await response.json();
-  const token = resData.token;
+  const token = resData.data.access_token;
 
   localStorage.setItem("token", token);
 
