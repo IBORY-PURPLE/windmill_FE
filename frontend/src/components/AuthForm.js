@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useEffect } from "react";
 import {
   Form,
   Link,
@@ -22,7 +22,17 @@ function AuthForm() {
   // searchParams는 객체 ?키=값,키=값 이렇게
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
+  // 3. 받은 message가 signup-success라면 isSignup메세지 출력하고 아니라면 폼 데이터를 그대로 출력하고싶어.
+  const message = searchParams.get("message");
   const isSubmitting = navigation.state === "submitting";
+
+  useEffect(() => {
+    if (message === "signup-success") {
+      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+      window.location.href = "/auth?mode=login";
+    }
+  }, [message]);
+
   return (
     <>
       <Form method="post" className={classes.form}>

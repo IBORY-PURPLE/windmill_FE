@@ -31,6 +31,7 @@ export async function action({ request }) {
     "https://windmill-be-iqxx.onrender.com/auth/" + mode,
     {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -63,7 +64,12 @@ export async function action({ request }) {
   const resData = await response.json();
   const token = resData.data.access_token;
 
-  localStorage.setItem("token", token);
-
-  return redirect("/");
+  // 2.mode가 login일때만 localStorage에 token을 저장해서 로그인하고
+  // 2. signup일 경우에는 백엔드에 토큰생성 전송은 하되 로그인을 해야지만 토큰이 localStorage저장되어서 / url로 넘어가는 동작을 구현하고싶어.
+  if (mode === "login") {
+    localStorage.setItem("token", token);
+    return redirect("/");
+  } else {
+    return redirect("/auth?mode=login&message=signup-success");
+  }
 }
