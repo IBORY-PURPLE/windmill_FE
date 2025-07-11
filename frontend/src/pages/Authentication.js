@@ -9,6 +9,7 @@ function AuthenticationPage() {
 export default AuthenticationPage;
 
 export async function action({ request }) {
+  console.log(request.url);
   const searchParams = new URL(request.url).searchParams;
   const mode = searchParams.get("mode") || "login";
 
