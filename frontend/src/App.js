@@ -18,6 +18,8 @@ import Authentication, { action as authAction } from "./pages/Authentication";
 import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
 
 import { tokenLoader } from "./util/auth";
+import PersonalPage from "./pages/PersonalPage";
+import PersonalRoot from "./pages/PersonalRoot";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,16 @@ const router = createBrowserRouter([
             path: "new",
             element: <NewEventPage />,
             action: manipulateEventAction,
+          },
+        ],
+      },
+      {
+        path: "personal",
+        element: <PersonalRoot></PersonalRoot>,
+        children: [
+          {
+            index: true,
+            element: <PersonalPage></PersonalPage>,
           },
         ],
       },

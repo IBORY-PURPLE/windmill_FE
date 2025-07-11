@@ -56,6 +56,19 @@ function MainNavigation() {
           )}
           {token && (
             <li>
+              <NavLink
+                to="/personal"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+                end
+              >
+                PersonalPage
+              </NavLink>
+            </li>
+          )}
+          {token && (
+            <li>
               <Form action="/logout" method="POST">
                 <button>Logout</button>
               </Form>
