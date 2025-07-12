@@ -21,6 +21,10 @@ import { tokenLoader } from "./util/auth";
 import PersonalPage from "./pages/PersonalPage";
 import PersonalRoot from "./pages/PersonalRoot";
 
+import AllStockPage from "./pages/AllStock";
+import StockDetailPage from "./pages/StockDetail";
+import MyStock from "./pages/MyStock";
+import InterestStock from "./pages/InterestStock";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -70,6 +74,36 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <PersonalPage></PersonalPage>,
+          },
+          {
+            path: "stock",
+            children: [
+              { index: true, element: <AllStockPage /> },
+              {
+                path: ":stockId",
+                element: <StockDetailPage context="all" />,
+              },
+            ],
+          },
+          {
+            path: "mystock",
+            children: [
+              { index: true, element: <MyStock /> },
+              {
+                path: ":stockId",
+                element: <StockDetailPage context="mystock" />,
+              },
+            ],
+          },
+          {
+            path: "intereststock",
+            children: [
+              { index: true, element: <InterestStock /> },
+              {
+                path: ":stockId",
+                element: <StockDetailPage context="interest" />,
+              },
+            ],
           },
         ],
       },
