@@ -19,7 +19,7 @@ import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
 
 import { tokenLoader } from "./util/auth";
 import PersonalPage from "./pages/PersonalPage";
-import PersonalRoot from "./pages/PersonalRoot";
+import PersonalRoot, { loader as allStockLoader } from "./pages/PersonalRoot";
 
 import AllStockPage from "./pages/AllStock";
 import StockDetailPage from "./pages/StockDetail";
@@ -70,6 +70,8 @@ const router = createBrowserRouter([
       {
         path: "personal",
         element: <PersonalRoot></PersonalRoot>,
+        // id: "allstock",
+        // loader: allStockLoader,
         children: [
           {
             index: true,
