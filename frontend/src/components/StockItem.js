@@ -6,9 +6,9 @@ function StockItem({ stock }) {
       <h3>
         {stock.name} ({stock.ticker})
       </h3>
-      <p>Current Price: ${stock.price.toFixed(2)}</p>
-      {stock.isMine && <p> My Stock</p>}
-      {stock.isInterested && <p>Interested</p>}
+      {/* <p>Current Price: ${stock.price.toFixed(2)}</p> */}
+      {/* {stock.isMine && <p> My Stock</p>}
+      {stock.isInterested && <p>Interested</p>} */}
     </ol>
   );
 }

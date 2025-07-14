@@ -29,24 +29,38 @@ function Pagination({ currentPage, totalPages }) {
   }
 
   return (
-    <div>
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        &lt;
-      </button>
-      {pages.map((page) => (
-        <button key={page} onClick={() => handlePageChange(page)}>
-          {page}
+    <div className="flex justify-center mt-6">
+      <div className="flex gap-2">
+        <button
+          className="px-3 py-1 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-50"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          &lt;
         </button>
-      ))}
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
-        &gt;
-      </button>
+        {pages.map((page) => (
+          <button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`px-3 py-1 rounded-md transition-colors duration-200
+          ${
+            currentPage === page
+              ? "bg-blue-500 text-white"
+              : "bg-white text-gray-700 hover:bg-blue-100 border border-gray-300"
+          }
+          }`}
+          >
+            {page}
+          </button>
+        ))}
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-50"
+        >
+          &gt;
+        </button>
+      </div>
     </div>
   );
 }

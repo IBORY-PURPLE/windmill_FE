@@ -25,6 +25,7 @@ import AllStockPage from "./pages/AllStock";
 import StockDetailPage from "./pages/StockDetail";
 import MyStock from "./pages/MyStock";
 import InterestStock from "./pages/InterestStock";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -70,8 +71,8 @@ const router = createBrowserRouter([
       {
         path: "personal",
         element: <PersonalRoot></PersonalRoot>,
-        // id: "allstock",
-        // loader: allStockLoader,
+        id: "allstock",
+        loader: allStockLoader,
         children: [
           {
             index: true,
@@ -129,7 +130,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;

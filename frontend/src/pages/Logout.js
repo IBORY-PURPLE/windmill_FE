@@ -9,9 +9,6 @@ export async function action() {
     {
       method: "post",
       credentials: "include",
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      // },
     }
   );
   console.log(response.status);

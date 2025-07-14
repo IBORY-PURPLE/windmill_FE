@@ -18,7 +18,7 @@ export async function loader({ request }) {
   const size = 50;
 
   const response = await fetch(
-    `http://localhost:8080/stocks?page=${page}&size=${size}`
+    `https://windmill-be-iqxx.onrender.com/stock?page=${page}&size=${size}`
   );
 
   if (!response.ok) {
@@ -28,11 +28,16 @@ export async function loader({ request }) {
     );
   }
 
-  const data = await response.json();
+  const stocks = await response.json();
+  console.log(stocks);
+  const totalItems = stocks.data.length;
+  const totalPages = Math.ceil(totalItems / size);
+
+  const paginatedData = stocks.data.slice((page - 1) * size, page * size);
 
   return {
-    stocks: data.stocks,
-    totalPages: data.totalPages,
+    stocks: paginatedData,
+    totalPages: totalPages,
     page,
   };
 }

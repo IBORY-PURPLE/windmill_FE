@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, json } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { getAuthToken } from "../util/auth";
 import React, { useState } from "react";
@@ -45,24 +45,34 @@ function StockDetailPage({ context }) {
     setSelectedOptions(selected);
   };
 
-  const handleSave = async (isMine, interest) => {
+  const saveMyStock = async () => {
+    await postStock({ isMine: true });
+  };
+
+  const saveInterestStock = async () => {
+    await postStock({ isInterest: true });
+  };
+
+  const postStock = async (data) => {
     const token = getAuthToken();
     try {
-      const response = await fetch(`/api/stocks/${stockId}`, {
+      const response = await fetch(`/api/sotcks/$${stockId}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          "content-Type": "application/json",
+          Authorization: "Bearer" + token,
         },
-        body: JSON.stringify({ isMine, interest }),
+        body: JSON.stringify(data),
       });
+
       if (!response.ok) {
-        throw new Error("Could not save stock details.");
+        throw json(
+          { message: "Could not save stock detail." },
+          { status: 422 }
+        );
       }
-      // Handle success (e.g., show a message to the user)
-      console.log("Stock details saved successfully!");
+      console.log("Stock details saved successfully.");
     } catch (error) {
-      // Handle error (e.g., show an error message to the user)
       console.error(error);
     }
   };
@@ -74,16 +84,10 @@ function StockDetailPage({ context }) {
       <p>Context: {context}</p>
       {context === "all" && (
         <div className={classes.buttonContainer}>
-          <button
-            className={classes.button}
-            onClick={() => handleSave(true, false)}
-          >
+          <button className={classes.button} onClick={saveMyStock}>
             Save to My Stock
           </button>
-          <button
-            className={classes.button}
-            onClick={() => handleSave(false, true)}
-          >
+          <button className={classes.button} onClick={saveInterestStock}>
             Save to Interest
           </button>
         </div>
