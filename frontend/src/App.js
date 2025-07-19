@@ -15,7 +15,6 @@ import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
 import PersonalPage from "./pages/PersonalPage";
 import PersonalRoot, { loader as allStockLoader } from "./pages/PersonalRoot";
 
-import AllStockPage from "./pages/AllStock";
 import StockDetailPage from "./pages/StockDetail";
 import MyStock from "./pages/MyStock";
 import InterestStock from "./pages/InterestStock";
@@ -28,7 +27,14 @@ const router = createBrowserRouter([
     id: "root",
     loader: tokenLoader,
     children: [
-      { index: true, element: <HomePage /> },
+      {
+        path: "",
+        element: <HomePage />,
+      },
+      {
+        path: "stocks/:stockId",
+        element: <StockDetailPage context="Home" />,
+      },
       {
         path: "personal",
         element: <PersonalRoot></PersonalRoot>,
@@ -38,16 +44,6 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <PersonalPage></PersonalPage>,
-          },
-          {
-            path: "stock",
-            children: [
-              { index: true, element: <AllStockPage /> },
-              {
-                path: ":stockId",
-                element: <StockDetailPage context="all" />,
-              },
-            ],
           },
           {
             path: "mystock",

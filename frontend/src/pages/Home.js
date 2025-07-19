@@ -1,6 +1,6 @@
 import { useStocks } from "../context/StockContext";
 import StockSection from "../components/StockSection";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import Pagination from "../util/Pagination";
 import { useEffect, useState } from "react";
 
@@ -48,8 +48,38 @@ function HomePage() {
   const displayedStocks = searchResults ?? paginatedStocks;
   return (
     <>
-      <div className="h-40 bg-gray-100">News</div>
       <div className="p-4">
+        <div className="flex gap-4 mb-6">
+          {/* 뉴스 박스 */}
+          <div className="flex-1 bg-red-100 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-bold mb-2 text-red-600">
+              📢 오늘의 뉴스
+            </h2>
+            <ul className="list-disc list-inside text-sm text-gray-800">
+              <li>삼성전자 2분기 실적 호조</li>
+              <li>미국 금리 동결 발표</li>
+              <li>AI 기술주 상승세 지속</li>
+            </ul>
+          </div>
+
+          {/* 지수 박스 */}
+          <div className="flex-1 bg-green-100 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-bold mb-2 text-green-600">
+              📈 주요 지수
+            </h2>
+            <ul className="text-sm text-gray-800">
+              <li>
+                KOSPI: 2,710.56 <span className="text-green-600">+0.78%</span>
+              </li>
+              <li>
+                NASDAQ: 15,823.34 <span className="text-red-500">-0.23%</span>
+              </li>
+              <li>
+                S&P 500: 5,456.12 <span className="text-green-600">+0.12%</span>
+              </li>
+            </ul>
+          </div>
+        </div>
         <div className="flex justify-center mb-4">
           <input
             type="text"
@@ -63,6 +93,7 @@ function HomePage() {
         {!searchResults && (
           <Pagination currentPage={page} totalPages={totalPages} />
         )}
+        <Outlet />
       </div>
     </>
   );

@@ -56,14 +56,17 @@ function StockDetailPage({ context }) {
   const postStock = async (data) => {
     const token = getAuthToken();
     try {
-      const response = await fetch(`/api/sotcks/$${stockId}`, {
-        method: "POST",
-        headers: {
-          "content-Type": "application/json",
-          Authorization: "Bearer" + token,
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `https://windmill-be-iqxx.onrender.com/stock/${stockId}`,
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+            Authorization: "Bearer" + token,
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) {
         throw json(
@@ -82,7 +85,7 @@ function StockDetailPage({ context }) {
       <h1>Stock Detail Page</h1>
       <p>Stock ID: {stockId}</p>
       <p>Context: {context}</p>
-      {context === "all" && (
+      {context === "Home" && (
         <div className={classes.buttonContainer}>
           <button className={classes.button} onClick={saveMyStock}>
             Save to My Stock

@@ -13,17 +13,6 @@ function PersonalNavigation() {
         <ul className={classes.list}>
           <li>
             <NavLink
-              to="/personal/stock"
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              end
-            >
-              All stocks
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
               to="/personal/mystock"
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
