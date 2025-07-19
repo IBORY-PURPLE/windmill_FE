@@ -3,6 +3,11 @@
   margin: 2rem auto;
 }
 
+h1 {
+  font-size:30px;
+  font-weight: bold;
+  padding-bottom: 10%;
+}
 .form label,
 .form input,
 .form textarea {
