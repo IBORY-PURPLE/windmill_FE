@@ -1,7 +1,9 @@
 import StockItem from "./StockItem";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function StockList({ stocks }) {
+function StockList({ stocks, basePath }) {
+  const navigate = useNavigate();
+
   if (!stocks || stocks.length === 0) {
     return <p>No stocks found.</p>;
   }
@@ -9,10 +11,12 @@ function StockList({ stocks }) {
   return (
     <ul>
       {stocks.map((stock) => (
-        <li>
-          <Link to={`${stock.id}`}>
-            <StockItem key={stock.id} stock={stock}></StockItem>
-          </Link>
+        <li
+          key={stock.id}
+          className="cursor-pointer"
+          onClick={() => navigate(`${basePath}/${stock.id}`)}
+        >
+          <StockItem stock={stock} />
         </li>
       ))}
     </ul>
