@@ -1,4 +1,5 @@
 import StockItem from "./StockItem";
+import { Link } from "react-router-dom";
 
 function StockList({ stocks }) {
   if (!stocks || stocks.length === 0) {
@@ -8,7 +9,11 @@ function StockList({ stocks }) {
   return (
     <ul>
       {stocks.map((stock) => (
-        <StockItem key={stock.id} stock={stock}></StockItem>
+        <li>
+          <Link to={`${stock.id}`}>
+            <StockItem key={stock.id} stock={stock}></StockItem>
+          </Link>
+        </li>
       ))}
     </ul>
   );

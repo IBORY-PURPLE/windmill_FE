@@ -1,19 +1,11 @@
-import { useStocks } from "../context/StockContext";
-import StockSection from "../components/StockSection";
-import { useLocation } from "react-router-dom";
+import StockList from "../components/StockList";
+// import DUMMY_STOCKS from "../data/stocks";
 import Pagination from "../util/Pagination";
-import { useEffect, useState } from "react";
+import { useRouteLoaderData } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-function HomePage() {
-  const { stocks } = useStocks();
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const page = parseInt(query.get("page") || "1", 10);
-  const size = 50;
-
-  const totalPages = Math.ceil(stocks.length / size);
-  const paginatedStocks = stocks.slice((page - 1) * size, page * size);
-
+function AllStockPage() {
+  const { stocks, page, totalPages } = useRouteLoaderData("allstock");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(null);
 
@@ -39,18 +31,18 @@ function HomePage() {
     };
 
     const debounce = setTimeout(fetchSearchResults, 300);
+
     return () => {
       clearTimeout(debounce);
       controller.abort();
     };
   }, [searchTerm]);
 
-  const displayedStocks = searchResults ?? paginatedStocks;
+  const displayedStocks = searchResults ?? stocks;
   return (
     <>
-      <div className="h-40 bg-gray-100">News</div>
       <div className="p-4">
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-end mb-4">
           <input
             type="text"
             placeholder="Search stocks..."
@@ -59,13 +51,12 @@ function HomePage() {
             className="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:border-blue-400"
           ></input>
         </div>
-        <StockSection stocks={displayedStocks} />
-        {!searchResults && (
-          <Pagination currentPage={page} totalPages={totalPages} />
-        )}
+        <h1>All Stock</h1>
+        <StockList stocks={displayedStocks}></StockList>
+        <Pagination currentPage={page} totalPages={totalPages} />
       </div>
     </>
   );
 }
 
-export default HomePage;
+export default AllStockPage;

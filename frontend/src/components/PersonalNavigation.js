@@ -1,21 +1,21 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import classes from "./PersonalNavigation.module.css";
 
 function PersonalNavigation() {
-  const location = useLocation();
-  const basePath = "/personal";
+  // const location = useLocation();
+  // const basePath = "/personal";
 
-  const query = new URLSearchParams(location.search);
-  const currentFilter = query.get("filter") || "all";
+  // const query = new URLSearchParams(location.search);
+  // const currentFilter = query.get("filter") || "all";
   return (
     <header className={classes.header}>
       <nav>
         <ul className={classes.list}>
           <li>
             <NavLink
-              to={`${basePath}?filter=all`}
+              to="/personal/stock"
               className={({ isActive }) =>
-                currentFilter === "all" ? classes.active : undefined
+                isActive ? classes.active : undefined
               }
               end
             >
@@ -24,9 +24,9 @@ function PersonalNavigation() {
           </li>
           <li>
             <NavLink
-              to={`${basePath}?filter=mystock`}
+              to="/personal/mystock"
               className={({ isActive }) =>
-                currentFilter === "mystock" ? classes.active : undefined
+                isActive ? classes.active : undefined
               }
             >
               Mystock
@@ -34,9 +34,9 @@ function PersonalNavigation() {
           </li>
           <li>
             <NavLink
-              to={`${basePath}?filter=interest`}
+              to="/personal/intereststock"
               className={({ isActive }) =>
-                currentFilter === "interest" ? classes.active : undefined
+                isActive ? classes.active : undefined
               }
             >
               Interest Stock
