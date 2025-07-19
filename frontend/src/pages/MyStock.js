@@ -1,20 +1,17 @@
 import StockList from "../components/StockList";
-// import DUMMY_STOCKS from "../data/stocks";
-import { useStocks } from "../context/StockContext";
 import { useState } from "react";
 import AddStockModal from "../components/AddStockModal";
+import { getAuthToken } from "../util/auth";
+import { useRouteLoaderData, json } from "react-router-dom";
 
 function MyStock() {
   const [modalOpen, setModalOpen] = useState(false);
-  const { stocks } = useStocks();
-
-  // const mystocks = DUMMY_STOCKS.filter((stock) => stock.isMine);
-  const mystocks = stocks.filter((stock) => stock.isMine);
+  const myStocks = useRouteLoaderData("mystock");
 
   return (
     <>
       <h1>My Stock</h1>
-      <StockList stocks={mystocks} basePath="/personal/mystock"></StockList>
+      <StockList stocks={myStocks} basePath="/personal/mystock"></StockList>
       <div>
         <button
           onClick={() => setModalOpen(true)}
@@ -47,6 +44,23 @@ function MyStock() {
       )}
     </>
   );
+}
+
+export async function loader() {
+  const token = getAuthToken();
+  const response = await fetch(
+    "https://windmill-be-iqxx.onrender.com/user/mystock",
+    {
+      headers: "Bearer " + token,
+    }
+  );
+
+  if (!response.ok) {
+    throw json({ message: "Could not find my stock" }, { status: 500 });
+  }
+
+  const data = await response.json();
+  return data.data;
 }
 
 export default MyStock;

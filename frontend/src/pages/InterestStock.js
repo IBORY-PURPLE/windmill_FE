@@ -1,53 +1,36 @@
 import StockList from "../components/StockList";
-// import DUMMY_STOCKS from "../data/stocks";
-import { useStocks } from "../context/StockContext";
-// import { useState } from "react";
-// import AddStockModal from "../components/AddStockModal";
+import { json, useRouteLoaderData } from "react-router-dom";
+import { getAuthToken } from "../util/auth";
 
 function InterestStock() {
-  // const intereststocks = DUMMY_STOCKS.filter((stock) => stock.isInterested);
-  // const [modalOpen, setModalOpen] = useState(false);
-  const { stocks } = useStocks();
-
-  const intereststocks = stocks.filter((s) => s.interested);
-
+  const interestStocks = useRouteLoaderData("intereststock");
   return (
     <>
       <h1>Interest Stock</h1>
       <StockList
-        stocks={intereststocks}
+        stocks={interestStocks}
         basePath="/personal/intereststock"
       ></StockList>
-      {/* <button
-        onClick={() => setModalOpen(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        + 관심종목 추가
-      </button>
-      {modalOpen && (
-        <AddStockModal
-          onClose={() => setModalOpen(false)}
-          mode="interest"
-          onSubmit={async (data) => {
-            try {
-              await fetch(
-                "https://windmill-be-iqxx.onrender.com/user/interest",
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(data),
-                }
-              );
-              alert("관심 종목이 추가되었습니다!");
-            } catch (err) {
-              alert("추가 실패");
-              console.error(err);
-            }
-          }}
-        />
-      )} */}
     </>
   );
 }
 
+export async function loader() {
+  const token = getAuthToken();
+  const response = await fetch(
+    "https://windmill-be-iqxx.onrender.com/user/interest",
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw json({ message: "관심 종목 불러오기 실패" }, { status: 500 });
+  }
+
+  const data = await response.json();
+  return data.data;
+}
 export default InterestStock;

@@ -1,7 +1,6 @@
-import { useParams, json } from "react-router-dom";
+import { useParams, useRouteLoaderData } from "react-router-dom";
 import classes from "./StockDetail.module.css";
-import { getAuthToken } from "../util/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import Select from "react-select";
 import {
   LineChart,
@@ -40,44 +39,17 @@ const result = [
 function StockDetailPage({ context }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { stockId } = useParams();
+  const interestStocks = useRouteLoaderData("intereststock");
+  let stock = null;
+  if (context === "interest") {
+    stock = interestStocks?.find((s) => {
+      console.log("비교 중: ", s.id, "vs", stockId);
+      return s.id === stockId;
+    });
+  }
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
-  };
-
-  const saveMyStock = async () => {
-    await postStock({ isMine: true });
-  };
-
-  const saveInterestStock = async () => {
-    await postStock({ isInterest: true });
-  };
-
-  const postStock = async (data) => {
-    const token = getAuthToken();
-    try {
-      const response = await fetch(
-        `https://windmill-be-iqxx.onrender.com/stock/${stockId}`,
-        {
-          method: "POST",
-          headers: {
-            "content-Type": "application/json",
-            Authorization: "Bearer" + token,
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (!response.ok) {
-        throw json(
-          { message: "Could not save stock detail." },
-          { status: 422 }
-        );
-      }
-      console.log("Stock details saved successfully.");
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -85,14 +57,9 @@ function StockDetailPage({ context }) {
       <h1>Stock Detail Page</h1>
       <p>Stock ID: {stockId}</p>
       <p>Context: {context}</p>
-      {context === "Home" && (
-        <div className={classes.buttonContainer}>
-          <button className={classes.button} onClick={saveMyStock}>
-            Save to My Stock
-          </button>
-          <button className={classes.button} onClick={saveInterestStock}>
-            Save to Interest
-          </button>
+      {context === "interest" && stock && (
+        <div>
+          <h2>Stock name: {stock.name}</h2>
         </div>
       )}
       {context === "mystock" && (

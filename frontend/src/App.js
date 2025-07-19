@@ -13,11 +13,14 @@ import Authentication, { action as authAction } from "./pages/Authentication";
 import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
 
 import PersonalPage from "./pages/PersonalPage";
-import PersonalRoot, { loader as allStockLoader } from "./pages/PersonalRoot";
+import PersonalRoot from "./pages/PersonalRoot";
 
 import StockDetailPage from "./pages/StockDetail";
 import MyStock from "./pages/MyStock";
+import { loader as myStockLoader } from "./pages/MyStock";
+
 import InterestStock from "./pages/InterestStock";
+import { loader as interestStockLoader } from "./pages/InterestStock";
 
 const router = createBrowserRouter([
   {
@@ -38,8 +41,6 @@ const router = createBrowserRouter([
       {
         path: "personal",
         element: <PersonalRoot></PersonalRoot>,
-        id: "allstock",
-        loader: allStockLoader,
         children: [
           {
             index: true,
@@ -47,6 +48,8 @@ const router = createBrowserRouter([
           },
           {
             path: "mystock",
+            id: "mystock",
+            loader: myStockLoader,
             children: [
               { index: true, element: <MyStock /> },
               {
@@ -57,6 +60,8 @@ const router = createBrowserRouter([
           },
           {
             path: "intereststock",
+            id: "intereststock",
+            loader: interestStockLoader,
             children: [
               { index: true, element: <InterestStock /> },
               {
