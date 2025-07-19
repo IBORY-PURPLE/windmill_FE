@@ -9,9 +9,9 @@ function StockList({ stocks }) {
   return (
     <ul>
       {stocks.map((stock) => (
-        <li key={stock.id}>
+        <li>
           <Link to={`${stock.id}`}>
-            <StockItem stock={stock}></StockItem>
+            <StockItem key={stock.id} stock={stock}></StockItem>
           </Link>
         </li>
       ))}

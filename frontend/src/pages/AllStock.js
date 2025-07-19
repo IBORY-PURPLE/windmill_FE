@@ -1,6 +1,6 @@
 import StockList from "../components/StockList";
 // import DUMMY_STOCKS from "../data/stocks";
-import Pagination from "../components/Pagination";
+import Pagination from "../util/Pagination";
 import { useRouteLoaderData } from "react-router-dom";
 import { useState, useEffect } from "react";
 
