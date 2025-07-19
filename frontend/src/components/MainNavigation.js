@@ -2,13 +2,20 @@ import { NavLink, Form, useRouteLoaderData } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import NewsletterSignup from "./NewsletterSignup";
+import logoImg from "../assets/logo.png";
 
 function MainNavigation() {
   const token = useRouteLoaderData("root");
 
   return (
     <header className={classes.header}>
+
       <nav>
+      <div className={classes.brand}>
+          <img src={logoImg} alt="WindMill Logo" className={classes.logo} />
+          <span className={classes.title}>WindMill</span>
+      </div>
+      <hr className={classes.divider} />
         <ul className={classes.list}>
           <li>
             <NavLink
