@@ -1,8 +1,11 @@
-import { NavLink, Form, useRouteLoaderData } from "react-router-dom";
+import { NavLink, useRouteLoaderData } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import NewsletterSignup from "./NewsletterSignup";
+import LogoutButton from "./LogoutButton";
+
 import logoImg from "../assets/logo.png";
+
 
 function MainNavigation() {
   const token = useRouteLoaderData("root");
@@ -76,9 +79,7 @@ function MainNavigation() {
           )}
           {token && (
             <li>
-              <Form action="/logout" method="POST">
-                <button>Logout</button>
-              </Form>
+              <LogoutButton></LogoutButton>
             </li>
           )}
         </ul>

@@ -7,7 +7,6 @@ import ErrorPage from "./pages/Error";
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
 
-import { action as logoutAction } from "./pages/Logout";
 import Authentication, { action as authAction } from "./pages/Authentication";
 
 import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
@@ -20,7 +19,7 @@ import MyStock from "./pages/MyStock";
 import { loader as myStockLoader } from "./pages/MyStock";
 
 import InterestStock from "./pages/InterestStock";
-import { loader as interestStockLoader } from "./pages/InterestStock";
+import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -60,8 +59,6 @@ const router = createBrowserRouter([
           },
           {
             path: "intereststock",
-            id: "intereststock",
-            loader: interestStockLoader,
             children: [
               { index: true, element: <InterestStock /> },
               {
@@ -82,11 +79,6 @@ const router = createBrowserRouter([
         element: <NewsletterPage />,
         action: newsletterAction,
       },
-      {
-        path: "logout",
-        action: logoutAction,
-        element: <></>,
-      },
     ],
   },
 ]);
@@ -94,9 +86,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <StockProvider>
-        <RouterProvider router={router} />
-      </StockProvider>
+      <AuthProvider>
+        <StockProvider>
+          <RouterProvider router={router} />
+        </StockProvider>
+      </AuthProvider>
     </>
   );
 }

@@ -16,7 +16,7 @@ function StockList({ stocks, basePath }) {
           className="cursor-pointer"
           onClick={() => navigate(`${basePath}/${stock.id}`)}
         >
-          <StockItem stock={stock} />
+          <StockItem key={stock.id} stock={stock} />
         </li>
       ))}
     </ul>
