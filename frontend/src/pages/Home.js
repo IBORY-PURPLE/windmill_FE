@@ -58,7 +58,7 @@ function HomePage() {
   }
   return (
     <>
-      <div className="p-4">
+      <div className="max-w-screen-lg mx-auto p-4">
         <div className="flex gap-4 mb-6">
           {/* 뉴스 박스 */}
           <div className="flex-1 bg-red-100 p-4 rounded-lg shadow-md">

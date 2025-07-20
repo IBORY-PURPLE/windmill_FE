@@ -10,11 +10,13 @@ function InterestStock() {
 
   return (
     <>
-      <h1>Interest Stock</h1>
-      <StockList
-        stocks={interestStocks}
-        basePath="/personal/intereststock"
-      ></StockList>
+      <div className="max-w-screen-lg mx-auto p-4">
+        <h1>Interest Stock</h1>
+        <StockList
+          stocks={interestStocks}
+          basePath="/personal/intereststock"
+        ></StockList>
+      </div>
     </>
   );
 }

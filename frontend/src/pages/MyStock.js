@@ -10,41 +10,43 @@ function MyStock() {
 
   return (
     <>
-      <h1>My Stock</h1>
-      <StockList
-        stocks={myStocks ?? []}
-        basePath="/personal/mystock"
-      ></StockList>
-      <div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + 포지션 추가
-        </button>
+      <div className="max-w-screen-lg mx-auto p-4">
+        <h1>My Stock</h1>
+        <StockList
+          stocks={myStocks ?? []}
+          basePath="/personal/mystock"
+        ></StockList>
+        <div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            + 포지션 추가
+          </button>
+        </div>
+        {modalOpen && (
+          <AddStockModal
+            onClose={() => setModalOpen(false)}
+            mode="mystock"
+            onSubmit={async (data) => {
+              try {
+                await fetch(
+                  "https://windmill-be-iqxx.onrender.com/user/mystocks",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                  }
+                );
+                alert("포지션이 추가되었습니다!");
+              } catch (err) {
+                alert("추가 실패");
+                console.error(err);
+              }
+            }}
+          />
+        )}
       </div>
-      {modalOpen && (
-        <AddStockModal
-          onClose={() => setModalOpen(false)}
-          mode="mystock"
-          onSubmit={async (data) => {
-            try {
-              await fetch(
-                "https://windmill-be-iqxx.onrender.com/user/mystocks",
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(data),
-                }
-              );
-              alert("포지션이 추가되었습니다!");
-            } catch (err) {
-              alert("추가 실패");
-              console.error(err);
-            }
-          }}
-        />
-      )}
     </>
   );
 }
