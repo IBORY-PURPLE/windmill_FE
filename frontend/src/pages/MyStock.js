@@ -2,7 +2,7 @@ import StockList from "../components/StockList";
 import { useState } from "react";
 import AddStockModal from "../components/AddStockModal";
 import { getAuthToken } from "../util/auth";
-import { useRouteLoaderData, json } from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
 
 function MyStock() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -11,7 +11,10 @@ function MyStock() {
   return (
     <>
       <h1>My Stock</h1>
-      <StockList stocks={myStocks} basePath="/personal/mystock"></StockList>
+      <StockList
+        stocks={myStocks ?? []}
+        basePath="/personal/mystock"
+      ></StockList>
       <div>
         <button
           onClick={() => setModalOpen(true)}
@@ -48,19 +51,25 @@ function MyStock() {
 
 export async function loader() {
   const token = getAuthToken();
-  const response = await fetch(
-    "https://windmill-be-iqxx.onrender.com/user/mystock",
-    {
-      headers: "Bearer " + token,
+  try {
+    const response = await fetch(
+      "https://windmill-be-iqxx.onrender.com/user/mystock",
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return [];
     }
-  );
-
-  if (!response.ok) {
-    throw json({ message: "Could not find my stock" }, { status: 500 });
+    const data = response.json();
+    return data.data;
+  } catch (err) {
+    console.error("MyStock loader 실패: ", err);
+    return [];
   }
-
-  const data = await response.json();
-  return data.data;
 }
 
 export default MyStock;
