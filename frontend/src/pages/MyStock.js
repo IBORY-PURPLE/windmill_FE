@@ -4,7 +4,7 @@ import AddStockModal from "../components/AddStockModal";
 import { getAuthToken } from "../util/auth";
 import { useRouteLoaderData } from "react-router-dom";
 
-function MyStock() {
+function MyStockPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const myStocks = useRouteLoaderData("mystock");
 
@@ -74,4 +74,4 @@ export async function loader() {
   }
 }
 
-export default MyStock;
+export default MyStockPage;
