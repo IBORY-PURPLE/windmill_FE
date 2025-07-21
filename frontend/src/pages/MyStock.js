@@ -3,8 +3,10 @@ import { useState } from "react";
 import AddStockModal from "../components/AddStockModal";
 import { getAuthToken } from "../util/auth";
 import { useRouteLoaderData } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function MyStockPage() {
+  const { token } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const myStocks = useRouteLoaderData("mystock");
 
@@ -27,15 +29,21 @@ function MyStockPage() {
         {modalOpen && (
           <AddStockModal
             onClose={() => setModalOpen(false)}
-            mode="mystock"
             onSubmit={async (data) => {
               try {
                 await fetch(
-                  "https://windmill-be-iqxx.onrender.com/user/mystocks",
+                  `https://windmill-be-iqxx.onrender.com/user/mystock/${data.id}`,
                   {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
+                    headers: {
+                      Authorization: "Bearer " + token,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      buy_cost: data.purchasePrice,
+                      buy_stock_count: data.quantity,
+                      date: data.date,
+                    }),
                   }
                 );
                 alert("포지션이 추가되었습니다!");
@@ -66,7 +74,8 @@ export async function loader() {
     if (!response.ok) {
       return [];
     }
-    const data = response.json();
+    const data = await response.json();
+    console.log(data.data);
     return data.data;
   } catch (err) {
     console.error("MyStock loader 실패: ", err);

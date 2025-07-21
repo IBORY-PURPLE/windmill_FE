@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useStocks } from "../context/StockContext";
 
-function AddStockModal({ onClose, mode, onSubmit }) {
+function AddStockModal({ onClose, onSubmit }) {
   const { stocks } = useStocks();
 
   const [symbol, setSymbol] = useState("");
@@ -9,23 +9,14 @@ function AddStockModal({ onClose, mode, onSubmit }) {
   const [date, setDate] = useState("");
   const [qty, setQty] = useState("");
   const [price, setPrice] = useState("");
-  const [fee, setFee] = useState("");
 
   const handleSubmit = async () => {
-    const baseData = { name: selected?.name || selected?.symbol };
-
-    if (mode === "mystock") {
-      onSubmit({
-        ...baseData,
-        date,
-        quantity: parseFloat(qty),
-        purchasePrice: parseFloat(price),
-        fee: parseFloat(fee),
-        isMine: true,
-      });
-    } else if (mode === "interest") {
-      onSubmit({ ...baseData, isInterested: true });
-    }
+    onSubmit({
+      id: selected?.id,
+      date,
+      quantity: parseFloat(qty),
+      purchasePrice: parseFloat(price),
+    });
     onClose();
   };
 
@@ -36,9 +27,7 @@ function AddStockModal({ onClose, mode, onSubmit }) {
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-gray-500 rounded-lg p-6 w-[500px]">
-        <h2 className="text-xl font-bold mb-4">
-          {mode === "mystock" ? "포지션 추가" : "관심 종목 추가"}
-        </h2>
+        <h2 className="text-xl font-bold mb-4">포지션 추가</h2>
 
         <input
           placeholder="AAPL 등 검색"
@@ -64,7 +53,7 @@ function AddStockModal({ onClose, mode, onSubmit }) {
           </ul>
         )}
 
-        {selected && mode === "mystock" && (
+        {selected && (
           <>
             <input
               type="date"
@@ -84,13 +73,6 @@ function AddStockModal({ onClose, mode, onSubmit }) {
               placeholder="가격"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="border px-3 py-1 w-full mb-2"
-            />
-            <input
-              type="number"
-              placeholder="수수료"
-              value={fee}
-              onChange={(e) => setFee(e.target.value)}
               className="border px-3 py-1 w-full mb-2"
             />
           </>
