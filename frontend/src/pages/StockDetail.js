@@ -1,7 +1,9 @@
-import { useParams, useRouteLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { useState } from "react";
 import Select from "react-select";
+import { useStocks } from "../context/StockContext";
+
 import {
   LineChart,
   Line,
@@ -37,16 +39,12 @@ const result = [
 ];
 
 function StockDetailPage({ context }) {
+  // useStocks에서 이 디테일페이지로 들어오는 stockId에 맞는 stock종목을 찾고싶어 filter를 사용해야하나?
+  // 좋은 방법 추천해
+  const { stocks } = useStocks();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { stockId } = useParams();
-  const interestStocks = useRouteLoaderData("intereststock");
-  let stock = null;
-  if (context === "interest") {
-    stock = interestStocks?.find((s) => {
-      console.log("비교 중: ", s.id, "vs", stockId);
-      return s.id === stockId;
-    });
-  }
+  const stock = stocks.find((s) => s.id === stockId);
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
@@ -56,12 +54,11 @@ function StockDetailPage({ context }) {
     <div className={classes.container}>
       <h1>Stock Detail Page</h1>
       <p>Stock ID: {stockId}</p>
+      <p>
+        Stock Name: {stock.name} ({stock.ticker})
+      </p>
       <p>Context: {context}</p>
-      {context === "interest" && stock && (
-        <div>
-          <h2>Stock name: {stock.name}</h2>
-        </div>
-      )}
+
       {context === "mystock" && (
         <div style={{ width: 300, marginTop: 20 }}>
           <label>항목 선택(다중)</label>

@@ -32,6 +32,7 @@ export function StockProvider({ children }) {
       try {
         const res = await fetch("https://windmill-be-iqxx.onrender.com/stock");
         const data = await res.json();
+        console.log(data.data);
         setStocks(data.data);
       } catch (err) {
         console.error("Failed to fetch stocks: ", err);
