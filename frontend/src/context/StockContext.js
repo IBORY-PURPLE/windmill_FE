@@ -2,16 +2,29 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { json } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
+/*
+1. 전체 주식 전역으로 가져오기
+2. 관심 종목 주식 전역으로 가져오기
+3. 로그아웃시 상태 reset하기
+4. (주의) 관심종목 fetch해올 때 stock.stock_id로 주식 id에 접근
+    관심종목 키에는 id(관심으로 등록된 주식 id), stock_id(종목 코드로 생각)
+ */
+
 const StockContext = createContext();
 
 export function StockProvider({ children }) {
   const { token } = useAuth();
   const [stocks, setStocks] = useState([]);
   const [interestList, setInterestList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [stocksLoading, setStocksLoading] = useState(true);
+  const [interestLoading, setInterestLoading] = useState(true);
+  const [isInterestFetched, setIsInterestFetched] = useState(false);
+
+  const isLoading = stocksLoading || interestLoading;
 
   const resetStocks = () => {
     setInterestList([]);
+    setIsInterestFetched(false);
   };
 
   useEffect(() => {
@@ -22,6 +35,8 @@ export function StockProvider({ children }) {
         setStocks(data.data);
       } catch (err) {
         console.error("Failed to fetch stocks: ", err);
+      } finally {
+        setStocksLoading(false);
       }
     };
 
@@ -32,7 +47,7 @@ export function StockProvider({ children }) {
     const fetchInterest = async () => {
       if (!token) {
         setInterestList([]);
-        setIsLoading(false);
+        setInterestLoading(false);
         return;
       }
       try {
@@ -45,12 +60,14 @@ export function StockProvider({ children }) {
           }
         );
         const data = await res.json();
+        console.log(data);
         const ids = data.data.map((stock) => stock.stock_id);
         setInterestList(ids);
       } catch (err) {
         console.error("Failed to fetch interest stocks: ", err);
       } finally {
-        setIsLoading(false);
+        setInterestLoading(false);
+        setIsInterestFetched(true);
       }
     };
     fetchInterest();
@@ -91,6 +108,7 @@ export function StockProvider({ children }) {
         toggleInterest,
         resetStocks,
         isLoading,
+        isInterestFetched,
       }}
     >
       {children}
