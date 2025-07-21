@@ -1,7 +1,11 @@
 import { useStocks } from "../context/StockContext";
+import { useAuth } from "../context/AuthContext";
 
 function StockItem({ stock }) {
-  const { interestList, toggleInterest, isLoading } = useStocks();
+  const { token } = useAuth();
+  const { interestList, toggleInterest, isLoading, isInterestFetched } =
+    useStocks();
+
   const isInterested = interestList.includes(stock.id);
 
   const handleClick = (e) => {
@@ -9,9 +13,8 @@ function StockItem({ stock }) {
     toggleInterest(stock.id);
   };
 
-  if (isLoading) {
-    return null;
-  }
+  const shouldDelayRender = token ? isLoading || !isInterestFetched : isLoading;
+  if (shouldDelayRender) return null;
 
   return (
     <div className="flex justify-between items-center border p-2 mb-2">

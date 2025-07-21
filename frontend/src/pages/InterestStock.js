@@ -1,7 +1,7 @@
 import StockList from "../components/StockList";
 import { useStocks } from "../context/StockContext";
 
-function InterestStock() {
+function InterestStockPage() {
   const { stocks, interestList } = useStocks();
 
   const interestStocks = stocks.filter((stock) =>
@@ -21,4 +21,4 @@ function InterestStock() {
   );
 }
 
-export default InterestStock;
+export default InterestStockPage;

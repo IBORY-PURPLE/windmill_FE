@@ -1,6 +1,6 @@
 import { useStocks } from "../context/StockContext";
 import StockSection from "../components/StockSection";
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Pagination from "../util/Pagination";
 import { useEffect, useState } from "react";
 
@@ -56,6 +56,7 @@ function HomePage() {
       </div>
     );
   }
+
   return (
     <>
       <div className="max-w-screen-lg mx-auto p-4">
@@ -99,11 +100,10 @@ function HomePage() {
             className="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:border-blue-400"
           ></input>
         </div>
-        <StockSection stocks={displayedStocks} />
+        <StockSection stocks={displayedStocks} isLoading={isLoading} />
         {!searchResults && (
           <Pagination currentPage={page} totalPages={totalPages} />
         )}
-        <Outlet />
       </div>
     </>
   );
