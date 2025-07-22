@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { json } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-
 /*
 1. 전체 주식 전역으로 가져오기
 2. 관심 종목 주식 전역으로 가져오기
