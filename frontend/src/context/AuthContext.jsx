@@ -1,19 +1,22 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getAuthToken } from "../util/auth";
 
+/*
+1. 인증 토큰 전역으로 관리하기
+*/
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(getAuthToken());
 
-  // 🔁 localStorage의 토큰 변화를 감지
   useEffect(() => {
     const interval = setInterval(() => {
       const storedToken = getAuthToken();
       if (storedToken !== token) {
-        setToken(storedToken); // 자동 갱신
+        setToken(storedToken);
       }
-    }, 500); // 0.5초마다 체크 (또는 requestIdleCallback 활용 가능)
+    }, 500);
 
     return () => clearInterval(interval);
   }, [token]);

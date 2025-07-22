@@ -1,7 +1,9 @@
-import { useParams, useRouteLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { useState } from "react";
 import Select from "react-select";
+import { useStocks } from "../context/StockContext";
+
 import {
   LineChart,
   Line,
@@ -19,15 +21,15 @@ const MULTI_OPTIONS = [
 ];
 
 const result = [
-  { date: "2025-04-25", value: 19722.81 },
-  { date: "2025-04-26", value: 19546.45 },
-  { date: "2025-04-27", value: 19173.04 },
-  { date: "2025-04-28", value: 19171.81 },
-  { date: "2025-04-29", value: 19225.12 },
-  { date: "2025-04-30", value: 19619.7 },
-  { date: "2025-05-01", value: 19284.74 },
-  { date: "2025-05-02", value: 19437.23 },
-  { date: "2025-05-03", value: 19544.76 },
+  { date: "2025-04-25", value: 14000.81 },
+  { date: "2025-04-26", value: 15546.45 },
+  { date: "2025-04-27", value: 16173.04 },
+  { date: "2025-04-28", value: 17171.81 },
+  { date: "2025-04-29", value: 18225.12 },
+  { date: "2025-04-30", value: 18619.7 },
+  { date: "2025-05-01", value: 18284.74 },
+  { date: "2025-05-02", value: 18437.23 },
+  { date: "2025-05-03", value: 18544.76 },
   { date: "2025-05-04", value: 19545.81 },
   { date: "2025-05-05", value: 19145.05 },
   { date: "2025-05-06", value: 19093.2 },
@@ -37,16 +39,12 @@ const result = [
 ];
 
 function StockDetailPage({ context }) {
+  // useStocks에서 이 디테일페이지로 들어오는 stockId에 맞는 stock종목을 찾고싶어 filter를 사용해야하나?
+  // 좋은 방법 추천해
+  const { stocks } = useStocks();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { stockId } = useParams();
-  const interestStocks = useRouteLoaderData("intereststock");
-  let stock = null;
-  if (context === "interest") {
-    stock = interestStocks?.find((s) => {
-      console.log("비교 중: ", s.id, "vs", stockId);
-      return s.id === stockId;
-    });
-  }
+  const stock = stocks.find((s) => s.id === stockId);
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
@@ -56,12 +54,11 @@ function StockDetailPage({ context }) {
     <div className={classes.container}>
       <h1>Stock Detail Page</h1>
       <p>Stock ID: {stockId}</p>
+      <p>
+        Stock Name: {stock.name} ({stock.ticker})
+      </p>
       <p>Context: {context}</p>
-      {context === "interest" && stock && (
-        <div>
-          <h2>Stock name: {stock.name}</h2>
-        </div>
-      )}
+
       {context === "mystock" && (
         <div style={{ width: 300, marginTop: 20 }}>
           <label>항목 선택(다중)</label>

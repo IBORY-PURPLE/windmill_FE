@@ -1,8 +1,16 @@
 import StockItem from "./StockItem";
 import { useNavigate } from "react-router-dom";
 
-function StockList({ stocks, basePath }) {
+function StockList({ stocks, basePath, isLoading }) {
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return (
+      <div className="text-center text-gray-500 py-8">
+        📡 주식 데이터를 불러오는 중입니다...
+      </div>
+    );
+  }
 
   if (!stocks || stocks.length === 0) {
     return <p>No stocks found.</p>;
