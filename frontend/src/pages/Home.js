@@ -17,33 +17,48 @@ function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(null);
 
+  // useEffect(() => {
+  //   const controller = new AbortController();
+
+  //   const fetchSearchResults = async () => {
+  //     if (searchTerm.trim() === "") {
+  //       setSearchResults(null);
+  //       return;
+  //     }
+
+  //     try {
+  //       const response = await fetch(
+  //         `https://windmill-be-iqxx.onrender.com/stock/search?search=${searchTerm}`,
+  //         { signal: controller.signal }
+  //       );
+  //       const data = await response.json();
+  //       setSearchResults(data.data);
+  //     } catch (err) {
+  //       if (err.name !== "AbortError") console.error(err);
+  //     }
+  //   };
+
+  //   const debounce = setTimeout(fetchSearchResults, 300);
+  //   return () => {
+  //     clearTimeout(debounce);
+  //     controller.abort();
+  //   };
+  // }, [searchTerm]);
+
   useEffect(() => {
-    const controller = new AbortController();
+    if (searchTerm.trim() === "") {
+      setSearchResults(null);
+      return;
+    }
 
-    const fetchSearchResults = async () => {
-      if (searchTerm.trim() === "") {
-        setSearchResults(null);
-        return;
-      }
+    const filtered = stocks.filter(
+      (s) =>
+        s.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        s.ticker.toLowerCase().startsWith(searchTerm.toLowerCase())
+    );
 
-      try {
-        const response = await fetch(
-          `https://windmill-be-iqxx.onrender.com/stock/search?search=${searchTerm}`,
-          { signal: controller.signal }
-        );
-        const data = await response.json();
-        setSearchResults(data.data);
-      } catch (err) {
-        if (err.name !== "AbortError") console.error(err);
-      }
-    };
-
-    const debounce = setTimeout(fetchSearchResults, 300);
-    return () => {
-      clearTimeout(debounce);
-      controller.abort();
-    };
-  }, [searchTerm]);
+    setSearchResults(filtered);
+  }, [searchTerm, stocks]);
 
   const displayedStocks = searchResults ?? paginatedStocks;
 

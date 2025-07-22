@@ -1,12 +1,13 @@
 import StockList from "../components/StockList";
 import { useStocks } from "../context/StockContext";
+import { useMemo } from "react";
 
 function InterestStockPage() {
   const { stocks, interestList } = useStocks();
 
-  const interestStocks = stocks.filter((stock) =>
-    interestList.includes(stock.id)
-  );
+  const interestStocks = useMemo(() => {
+    return stocks.filter((stock) => interestList.includes(stock.id));
+  }, [stocks, interestList]);
 
   return (
     <>
