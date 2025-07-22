@@ -105,7 +105,6 @@ export async function loader() {
       return [];
     }
     const data = await response.json();
-    console.log(data.data);
     return data.data;
   } catch (err) {
     console.error("MyStock loader 실패: ", err);
