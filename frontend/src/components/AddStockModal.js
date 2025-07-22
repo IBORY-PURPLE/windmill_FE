@@ -20,8 +20,10 @@ function AddStockModal({ onClose, onSubmit }) {
     onClose();
   };
 
-  const matchingStocks = stocks.filter((s) =>
-    s.name.toLowerCase().includes(symbol.toLowerCase())
+  const matchingStocks = stocks.filter(
+    (s) =>
+      s.name.toLowerCase().startsWith(symbol.toLowerCase()) ||
+      s.ticker.toLowerCase().startsWith(symbol.toLowerCase())
   );
 
   return (
