@@ -1,3 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
+import { predictStock } from "../api/predict";
+
 import { useParams, useRouteLoaderData } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { useState } from "react";
@@ -15,9 +18,11 @@ import {
 } from "recharts";
 
 const MULTI_OPTIONS = [
-  { value: "interestRate", label: "금리" },
-  { value: "closingPrice", label: "종가" },
-  { value: "openingPrice", label: "시가" },
+  { value: "openingPrice", label: "시가" }, // start
+  { value: "highPrice", label: "고가" }, // high
+  { value: "lowPrice", label: "저가" }, // low
+  { value: "volume", label: "거래량" }, // volume
+  { value: "interestRate", label: "고정금리" }, // fixed_rate
 ];
 
 const result = [
@@ -39,18 +44,29 @@ const result = [
 ];
 
 function StockDetailPage({ context }) {
-  // useStocks에서 이 디테일페이지로 들어오는 stockId에 맞는 stock종목을 찾고싶어 filter를 사용해야하나?
-  // 좋은 방법 추천해
   const myStocks = useRouteLoaderData("mystock");
   const { stocks } = useStocks();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { stockId } = useParams();
+
   const stock = stocks.find((s) => String(s.id) === stockId);
 
   const mystock =
     context === "mystock"
       ? myStocks.find((s) => String(s.stock_id) === stockId)
       : null;
+
+  const [predictedData, setPredictedData] = useState(null);
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: ({ stockId, selectedKeys }) =>
+      predictStock({ stockId, selectedKeys }),
+    onSuccess: (data) => setPredictedData(data.result),
+  });
+
+  const handlePredict = () => {
+    const selectedKeys = selectedOptions.map((opt) => opt.value);
+    mutate({ stockId, selectedKeys });
+  };
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
@@ -63,39 +79,45 @@ function StockDetailPage({ context }) {
         Stock Name: {stock.name} ({stock.ticker})
       </p>
       {context === "mystock" && (
-        <div>
-          <p>평단가 : {mystock.average_cost}</p>
-          <p>구매 주식 수: {mystock.all_stock_count}</p>
-        </div>
-      )}
-      {context === "mystock" && (
-        <div style={{ width: 300, marginTop: 20 }}>
-          <label>항목 선택(다중)</label>
-          <Select
-            isMulti
-            options={MULTI_OPTIONS}
-            value={selectedOptions}
-            onChange={handleSelectChange}
-            placeholder="항목을 선택하세요."
-          ></Select>
-        </div>
-      )}
-      {context === "mystock" && (
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={result}>
-            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              dot={false}
-              name="예측값"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <>
+          <div>
+            <p>평단가 : {mystock.average_cost}</p>
+            <p>구매 주식 수: {mystock.all_stock_count}</p>
+          </div>
+          <div style={{ width: 300, marginTop: 20 }}>
+            <label>Selecte Features</label>
+            <Select
+              isMulti
+              options={MULTI_OPTIONS}
+              value={selectedOptions}
+              onChange={handleSelectChange}
+              placeholder="항목을 선택하세요."
+            ></Select>
+          </div>
+          <button
+            onClick={handlePredict}
+            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            예측 그래프 그리기
+          </button>
+          {predictedData && (
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart data={predictedData}>
+                <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#8884d8"
+                  dot={false}
+                  name="예측값"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </>
       )}
     </div>
   );

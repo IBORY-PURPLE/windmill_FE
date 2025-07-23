@@ -20,6 +20,10 @@ import MyStockPage, { loader as myStockLoader } from "./pages/MyStock";
 import InterestStockPage from "./pages/InterestStock";
 import { AuthProvider } from "./context/AuthContext";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -87,7 +91,9 @@ function App() {
     <>
       <AuthProvider>
         <StockProvider>
-          <RouterProvider router={router} />
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
         </StockProvider>
       </AuthProvider>
     </>
