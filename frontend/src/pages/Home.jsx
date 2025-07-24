@@ -5,7 +5,7 @@ import Pagination from "../util/Pagination";
 import { useEffect, useState } from "react";
 
 function HomePage() {
-  const { stocks, isLoading } = useStocks();
+  const { stocks, stocksLoading } = useStocks();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get("page") || "1", 10);
@@ -62,7 +62,7 @@ function HomePage() {
 
   const displayedStocks = searchResults ?? paginatedStocks;
 
-  if (isLoading) {
+  if (stocksLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <p className="text-xl font-semibold text-gray-600">
@@ -115,7 +115,7 @@ function HomePage() {
             className="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:border-blue-400"
           ></input>
         </div>
-        <StockSection stocks={displayedStocks} isLoading={isLoading} />
+        <StockSection stocks={displayedStocks} />
         {!searchResults && (
           <Pagination currentPage={page} totalPages={totalPages} />
         )}

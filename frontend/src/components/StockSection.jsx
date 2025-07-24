@@ -1,10 +1,10 @@
 import StockList from "./StockList";
 
-function StockSection({ stocks, isLoading }) {
+function StockSection({ stocks }) {
   return (
     <div>
       <h2>
-        <StockList stocks={stocks} basePath="stocks" isLoading={isLoading} />
+        <StockList stocks={stocks} basePath="stocks" />
       </h2>
     </div>
   );
