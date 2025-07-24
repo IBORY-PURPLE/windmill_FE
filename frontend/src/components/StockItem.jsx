@@ -1,19 +1,27 @@
-import { useStocks } from "../context/StockContext";
+import { useInterestStocks } from "../hooks/useInterestStocks";
+import { useToggleInterestStock } from "../hooks/useToggleInterestStock";
 import { useAuth } from "../context/AuthContext";
 
-function StockItem({ stock }) {
+function StockItem({ stock, enableInterest }) {
   const { token } = useAuth();
-  const { interestList, toggleInterest, isLoading, isInterestFetched } =
-    useStocks();
+  const {
+    data: interestList = [],
+    isLoading,
+    isError,
+  } = useInterestStocks({
+    enabled: enableInterest && !!token,
+  });
+  const { mutate } = useToggleInterestStock();
 
-  const isInterested = interestList.includes(stock.id);
+  const isInterested = interestList.includes(stock.id) ?? false;
 
   const handleClick = (e) => {
     e.preventDefault();
-    toggleInterest(stock.id);
+    mutate({ stockId: stock.id, isAlreadyInterested: isInterested });
   };
 
-  const shouldDelayRender = token ? isLoading || !isInterestFetched : isLoading;
+  // 수정
+  const shouldDelayRender = token ? isLoading : isLoading;
   if (shouldDelayRender) return null;
 
   return (
