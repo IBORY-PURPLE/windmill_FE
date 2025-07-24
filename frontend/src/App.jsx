@@ -15,7 +15,7 @@ import PersonalPage from "./pages/Personal";
 import PersonalRoot from "./pages/PersonalRoot";
 
 import StockDetailPage from "./pages/StockDetail";
-import MyStockPage, { loader as myStockLoader } from "./pages/MyStock";
+import MyStockPage from "./pages/MyStock";
 
 import InterestStockPage from "./pages/InterestStock";
 import { AuthProvider } from "./context/AuthContext";
@@ -50,8 +50,6 @@ const router = createBrowserRouter([
           },
           {
             path: "mystock",
-            id: "mystock",
-            loader: myStockLoader,
             children: [
               { index: true, element: <MyStockPage /> },
               {
