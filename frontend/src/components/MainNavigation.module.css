@@ -1,18 +1,9 @@
 .brand {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem; /* 필요시 */
 }
-.divider {
-  border: none;
-  border-top: 2px solid var(--color-gray-100); /* 혹은 원하는 색상 */
-  margin: 1rem 0;
-  width: calc(100% + 40rem);
-}
-
-
 .logo {
-  height: 40px; /* 원하는 크기로 조절 */
+  height: 40px; 
   margin-right: 0.7rem;
 }
 
@@ -23,14 +14,29 @@
   color: var(--color-gray-100);
 
 }
+.upper{
+  display:flex;
+  justify-content: space-between;
+}
 
 .header {
   background-color: rgb(0, 78, 150);
   max-width: 60rem;
   margin: auto;
   padding: 1rem;
-  display: flex;
-  justify-content: space-between;
+
+}
+.nav{
+  max-width: 60rem;
+  
+}
+.divider {
+  top: 20px;
+  border: none;
+  border-top: 2px solid var(--color-gray-100);
+  margin: 1rem 0;
+  width: 100%;
+
 }
 
 .list {
@@ -46,4 +52,5 @@
 .list a:hover,
 .list a.active {
   color: var(--color-primary-800);
+
 }
