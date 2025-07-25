@@ -10,7 +10,7 @@ function MainNavigation() {
   const token = useRouteLoaderData("root");
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow bg-[#004e96] max-w-5xl mx-auto p-4">
+    <header className="sticky top-0 z-50  shadow bg-[#004e96] max-w-5xl mx-auto p-4">
       <nav>
         <div className={classes.upper}>
           <div className={classes.brand}>

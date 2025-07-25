@@ -56,6 +56,7 @@ function StockDetailPage({ context }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
+  const [isGraphLoading, setIsGraphLoading] = useState(false);
 
   const stock = stocks.find((s) => String(s.id) === stockId);
 
@@ -74,20 +75,31 @@ function StockDetailPage({ context }) {
       ? myStocks.find((s) => String(s.stock_id) === stockId)
       : null;
 
-  const {
-    mutate,
-    isLoading: isPredictResult,
-    isError,
-    error,
-  } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ stockId, selectedKeys, period }) =>
       predictStock({ stockId, selectedKeys, period }),
-    onSuccess: (data) => setPredictedData(data.data),
   });
 
   const handlePredict = () => {
     const selectedKeys = selectedOptions.map((opt) => opt.value);
-    mutate({ stockId, selectedKeys, period: selectedPeriod.value });
+    setIsGraphLoading(true);
+    mutate(
+      { stockId, selectedKeys, period: selectedPeriod.value },
+      {
+        onSuccess: (data) => {
+          const mapped = data.data.map((d) => ({
+            date: d.date,
+            value: d.data,
+            type: d.type,
+          }));
+          setPredictedData(mapped);
+          setIsGraphLoading(false);
+        },
+        onError: () => {
+          setIsGraphLoading(false);
+        },
+      }
+    );
   };
 
   const handleSelectChange = (selected) => {
@@ -139,27 +151,36 @@ function StockDetailPage({ context }) {
               <button
                 onClick={handlePredict}
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                disabled={isGraphLoading}
               >
-                {isPredictResult
-                  ? "그래프 그리는 중...."
-                  : "예측 그래프 그리기"}
+                {isGraphLoading ? "그래프 그리는 중...." : "예측 그래프 그리기"}
               </button>
-              {predictedData && (
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={predictedData}>
-                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="data"
-                      stroke="#8884d8"
-                      dot={false}
-                      name="예측값"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+              {(isGraphLoading || predictedData) && (
+                <div style={{ position: "relative", height: 400 }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    {/* 과거 실제 값: 진한 보라 */}
+                    <LineChart data={predictedData || []}>
+                      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#8884d8"
+                        dot={false}
+                        name="예측값"
+                        isAnimationActive={false} // 로딩시 flicker 방지
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+
+                  {isGraphLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-yellow-100 bg-opacity-60 z-10">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+                    </div>
+                  )}
+                </div>
               )}
             </>
           )}
