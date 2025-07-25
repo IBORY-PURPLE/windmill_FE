@@ -6,19 +6,17 @@ import LogoutButton from "./LogoutButton";
 
 import logoImg from "../assets/logo.png";
 
-
 function MainNavigation() {
   const token = useRouteLoaderData("root");
 
   return (
     <header className={classes.header}>
-
       <nav>
-      <div className={classes.brand}>
+        <div className={classes.brand}>
           <img src={logoImg} alt="WindMill Logo" className={classes.logo} />
           <span className={classes.title}>WindMill</span>
-      </div>
-      <hr className={classes.divider} />
+        </div>
+        <hr className={classes.divider} />
         <ul className={classes.list}>
           <li>
             <NavLink
