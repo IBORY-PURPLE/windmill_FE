@@ -12,12 +12,22 @@ function MainNavigation() {
 
   return (
     <header className={classes.header}>
+      
 
       <nav>
-      <div className={classes.brand}>
-          <img src={logoImg} alt="WindMill Logo" className={classes.logo} />
-          <span className={classes.title}>WindMill</span>
+        <div className={classes.upper}>
+        <div className={classes.brand}>
+        <img src={logoImg} alt="WindMill Logo" className={classes.logo} />
+          <NavLink
+              to="/"
+              className={classes.title}
+            >
+              WindMill
+            </NavLink>
       </div>
+      <NewsletterSignup />
+        </div>
+   
       <hr className={classes.divider} />
         <ul className={classes.list}>
           <li>
@@ -84,7 +94,8 @@ function MainNavigation() {
           )}
         </ul>
       </nav>
-      <NewsletterSignup />
+
+  
     </header>
   );
 }
