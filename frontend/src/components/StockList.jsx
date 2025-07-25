@@ -1,7 +1,7 @@
 import StockItem from "./StockItem";
 import { useNavigate } from "react-router-dom";
 
-function StockList({ stocks, basePath }) {
+function StockList({ stocks, basePath, interestList }) {
   const navigate = useNavigate();
 
   // if (isLoading) {
@@ -11,8 +11,6 @@ function StockList({ stocks, basePath }) {
   //     </div>
   //   );
   // }
-
-  const enableInterest = basePath === "/personal/intereststock";
 
   if (!stocks || stocks.length === 0) {
     return <p>No stocks found.</p>;
@@ -27,9 +25,8 @@ function StockList({ stocks, basePath }) {
           onClick={() => navigate(`${basePath}/${stock.id}`)}
         >
           <StockItem
-            key={stock.id}
             stock={stock}
-            enableInterest={enableInterest}
+            isInterested={interestList.includes(stock.id)}
           />
         </li>
       ))}

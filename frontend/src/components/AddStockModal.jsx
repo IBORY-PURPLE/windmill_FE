@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useStocks } from "../context/StockContext";
+import { useStocks } from "../hooks/useStocks";
 
 function AddStockModal({ onClose, onSubmit }) {
-  const { stocks } = useStocks();
+  const { data: stocks = [] } = useStocks();
 
   const [symbol, setSymbol] = useState("");
   const [selected, setSelected] = useState(null);
