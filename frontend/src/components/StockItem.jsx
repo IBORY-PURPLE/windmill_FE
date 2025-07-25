@@ -5,6 +5,7 @@ function StockItem({ stock, isInterested }) {
 
   const handleClick = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     mutate({ stockId: stock.id, isAlreadyInterested: isInterested });
   };
 

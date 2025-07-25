@@ -32,23 +32,23 @@ const PERIOD_OPTIONS = [
   { value: "30", label: "30일" },
 ];
 
-const result = [
-  { date: "2025-04-25", value: 14000.81 },
-  { date: "2025-04-26", value: 15546.45 },
-  { date: "2025-04-27", value: 16173.04 },
-  { date: "2025-04-28", value: 17171.81 },
-  { date: "2025-04-29", value: 18225.12 },
-  { date: "2025-04-30", value: 18619.7 },
-  { date: "2025-05-01", value: 18284.74 },
-  { date: "2025-05-02", value: 18437.23 },
-  { date: "2025-05-03", value: 18544.76 },
-  { date: "2025-05-04", value: 19545.81 },
-  { date: "2025-05-05", value: 19145.05 },
-  { date: "2025-05-06", value: 19093.2 },
-  { date: "2025-05-07", value: 19815.38 },
-  { date: "2025-05-08", value: 18992.61 },
-  { date: "2025-05-09", value: 19159.54 },
-];
+// const result = [
+//   { date: "2025-04-25", value: 14000.81 },
+//   { date: "2025-04-26", value: 15546.45 },
+//   { date: "2025-04-27", value: 16173.04 },
+//   { date: "2025-04-28", value: 17171.81 },
+//   { date: "2025-04-29", value: 18225.12 },
+//   { date: "2025-04-30", value: 18619.7 },
+//   { date: "2025-05-01", value: 18284.74 },
+//   { date: "2025-05-02", value: 18437.23 },
+//   { date: "2025-05-03", value: 18544.76 },
+//   { date: "2025-05-04", value: 19545.81 },
+//   { date: "2025-05-05", value: 19145.05 },
+//   { date: "2025-05-06", value: 19093.2 },
+//   { date: "2025-05-07", value: 19815.38 },
+//   { date: "2025-05-08", value: 18992.61 },
+//   { date: "2025-05-09", value: 19159.54 },
+// ];
 
 function StockDetailPage({ context }) {
   const { data: stocks = [] } = useStocks();
@@ -74,7 +74,12 @@ function StockDetailPage({ context }) {
       ? myStocks.find((s) => String(s.stock_id) === stockId)
       : null;
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const {
+    mutate,
+    isLoading: isPredictResult,
+    isError,
+    error,
+  } = useMutation({
     mutationFn: ({ stockId, selectedKeys, period }) =>
       predictStock({ stockId, selectedKeys, period }),
     onSuccess: (data) => setPredictedData(data.data),
@@ -135,7 +140,9 @@ function StockDetailPage({ context }) {
                 onClick={handlePredict}
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
               >
-                예측 그래프 그리기
+                {isPredictResult
+                  ? "그래프 그리는 중...."
+                  : "예측 그래프 그리기"}
               </button>
               {predictedData && (
                 <ResponsiveContainer width="100%" height={400}>
@@ -146,7 +153,7 @@ function StockDetailPage({ context }) {
                     <Tooltip />
                     <Line
                       type="monotone"
-                      dataKey="value"
+                      dataKey="data"
                       stroke="#8884d8"
                       dot={false}
                       name="예측값"
