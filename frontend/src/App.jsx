@@ -1,24 +1,23 @@
+import { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { tokenLoader } from "./util/auth";
-import { StockProvider } from "./context/StockContext";
+import { fetchInterestStocks } from "./api/interest";
+import { fetchAllStocks } from "./api/stocks";
+
+import { useAuth } from "./context/AuthContext";
 
 import ErrorPage from "./pages/Error";
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
-
 import Authentication, { action as authAction } from "./pages/Authentication";
-
 import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
-
 import PersonalPage from "./pages/Personal";
 import PersonalRoot from "./pages/PersonalRoot";
-
 import StockDetailPage from "./pages/StockDetail";
-import MyStockPage, { loader as myStockLoader } from "./pages/MyStock";
-
+import MyStockPage from "./pages/MyStock";
 import InterestStockPage from "./pages/InterestStock";
-import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -46,8 +45,6 @@ const router = createBrowserRouter([
           },
           {
             path: "mystock",
-            id: "mystock",
-            loader: myStockLoader,
             children: [
               { index: true, element: <MyStockPage /> },
               {
@@ -83,15 +80,24 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <>
-      <AuthProvider>
-        <StockProvider>
-          <RouterProvider router={router} />
-        </StockProvider>
-      </AuthProvider>
-    </>
-  );
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (token) {
+      queryClient.prefetchQuery({
+        queryKey: ["interestStocks"],
+        queryFn: fetchInterestStocks,
+      });
+
+      queryClient.prefetchQuery({
+        queryKey: ["stocks"],
+        queryFn: fetchAllStocks,
+      });
+    }
+  }, [token, queryClient]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

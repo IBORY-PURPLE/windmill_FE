@@ -1,20 +1,12 @@
-import { useStocks } from "../context/StockContext";
-import { useAuth } from "../context/AuthContext";
+import { useToggleInterestStock } from "../hooks/useToggleInterestStock";
 
-function StockItem({ stock }) {
-  const { token } = useAuth();
-  const { interestList, toggleInterest, isLoading, isInterestFetched } =
-    useStocks();
-
-  const isInterested = interestList.includes(stock.id);
+function StockItem({ stock, isInterested }) {
+  const { mutate } = useToggleInterestStock();
 
   const handleClick = (e) => {
     e.preventDefault();
-    toggleInterest(stock.id);
+    mutate({ stockId: stock.id, isAlreadyInterested: isInterested });
   };
-
-  const shouldDelayRender = token ? isLoading || !isInterestFetched : isLoading;
-  if (shouldDelayRender) return null;
 
   return (
     <div className="flex justify-between items-center border p-2 mb-2">

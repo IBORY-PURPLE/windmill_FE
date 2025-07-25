@@ -1,18 +1,41 @@
-import StockList from "../components/StockList";
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMyStocks } from "../api/mystock";
+import { useStocks } from "../hooks/useStocks";
+import { useAddMyStock } from "../hooks/useAddMystock";
+
+import StockList from "../components/StockList";
 import AddStockModal from "../components/AddStockModal";
-import { getAuthToken } from "../util/auth";
-import { useRouteLoaderData } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { useStocks } from "../context/StockContext";
+import { useInterestStocks } from "../hooks/useInterestStocks";
 
 function MyStockPage() {
-  const { token } = useAuth();
-  const { stocks } = useStocks();
-
-  const initialMyStocks = useRouteLoaderData("mystock");
+  const { data: stocks = [] } = useStocks();
   const [modalOpen, setModalOpen] = useState(false);
-  const [myStocks, setMyStocks] = useState(initialMyStocks);
+  const { data: interestList = [] } = useInterestStocks();
+
+  const {
+    data: myStocks = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["myStocks"],
+    queryFn: fetchMyStocks,
+  });
+
+  const addMutation = useAddMyStock();
+
+  const handleAddStock = (data) => {
+    addMutation.mutate(data, {
+      onSuccess: () => {
+        alert("포지션이 추가되었습니다.");
+        setModalOpen(false);
+      },
+      onError: (err) => {
+        console.error(err);
+        alert("포지션 추가 실패");
+      },
+    });
+  };
 
   const myStockList = useMemo(() => {
     return myStocks
@@ -26,50 +49,22 @@ function MyStockPage() {
   }, [myStocks, stocks]);
   console.table(myStockList);
 
-  const handleAddStock = async (data) => {
-    try {
-      const res = await fetch(
-        `https://windmill-be-iqxx.onrender.com/user/mystock/${data.id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            buy_cost: data.purchasePrice,
-            buy_stock_count: data.quantity,
-            date: data.date,
-          }),
-        }
-      );
-
-      if (!res.ok) throw new Error("추가 실패");
-
-      const newStock = {
-        stock_id: data.id,
-        buy_cost: data.purchasePrice,
-        buy_stock_count: data.quantity,
-        data: data.date,
-        id: Date.now(),
-      };
-      setMyStocks((prev) => [...prev, newStock]);
-
-      alert("포지션이 추가되었습니다.");
-    } catch (err) {
-      alert("추가 실패");
-      console.log(err);
-    }
-  };
-
   return (
     <>
       <div className="max-w-screen-lg mx-auto p-4">
         <h1>My Stock</h1>
-        <StockList
-          stocks={myStockList ?? []}
-          basePath="/personal/mystock"
-        ></StockList>
+        {isLoading ? (
+          <p>보유 주식 데이터를 불러오는 중입니다...</p>
+        ) : isError ? (
+          <p>데이터 로딩 실패</p>
+        ) : (
+          <StockList
+            stocks={myStockList ?? []}
+            basePath="/personal/mystock"
+            interestList={interestList}
+          ></StockList>
+        )}
+
         <div>
           <button
             onClick={() => setModalOpen(true)}
@@ -87,30 +82,6 @@ function MyStockPage() {
       </div>
     </>
   );
-}
-
-export async function loader() {
-  const token = getAuthToken();
-  try {
-    const response = await fetch(
-      "https://windmill-be-iqxx.onrender.com/user/mystock",
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      return [];
-    }
-    const data = await response.json();
-    console.log(data.data);
-    return data.data;
-  } catch (err) {
-    console.error("MyStock loader 실패: ", err);
-    return [];
-  }
 }
 
 export default MyStockPage;
