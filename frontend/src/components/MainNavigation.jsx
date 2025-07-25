@@ -10,17 +10,27 @@ function MainNavigation() {
   const token = useRouteLoaderData("root");
 
   return (
-    <header className={classes.header}>
+    <header className="sticky top-0 z-50 bg-white shadow bg-[#004e96] max-w-5xl mx-auto p-4">
       <nav>
-        <div className={classes.brand}>
-          <img src={logoImg} alt="WindMill Logo" className={classes.logo} />
-          <span className={classes.title}>WindMill</span>
+        <div className={classes.upper}>
+          <div className={classes.brand}>
+            <img src={logoImg} alt="WindMill Logo" className={classes.logo} />
+            <NavLink
+              to="/"
+              className={classes.title}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              WindMill
+            </NavLink>
+          </div>
+          <NewsletterSignup />
         </div>
         <hr className={classes.divider} />
         <ul className={classes.list}>
           <li>
             <NavLink
               to="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
               }
@@ -82,7 +92,6 @@ function MainNavigation() {
           )}
         </ul>
       </nav>
-      <NewsletterSignup />
     </header>
   );
 }
