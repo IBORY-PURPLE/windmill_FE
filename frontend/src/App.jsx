@@ -1,25 +1,23 @@
+import { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { tokenLoader } from "./util/auth";
-import { StockProvider } from "./context/StockContext";
+import { fetchInterestStocks } from "./api/interest";
+import { fetchAllStocks } from "./api/stocks";
+
+import { useAuth } from "./context/AuthContext";
 
 import ErrorPage from "./pages/Error";
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
-
 import Authentication, { action as authAction } from "./pages/Authentication";
-
 import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
-
-import PersonalPage from "./pages/PersonalPage";
+import PersonalPage from "./pages/Personal";
 import PersonalRoot from "./pages/PersonalRoot";
-
 import StockDetailPage from "./pages/StockDetail";
-import MyStock from "./pages/MyStock";
-import { loader as myStockLoader } from "./pages/MyStock";
-
-import InterestStock from "./pages/InterestStock";
-import { AuthProvider } from "./context/AuthContext";
+import MyStockPage from "./pages/MyStock";
+import InterestStockPage from "./pages/InterestStock";
 
 const router = createBrowserRouter([
   {
@@ -47,10 +45,8 @@ const router = createBrowserRouter([
           },
           {
             path: "mystock",
-            id: "mystock",
-            loader: myStockLoader,
             children: [
-              { index: true, element: <MyStock /> },
+              { index: true, element: <MyStockPage /> },
               {
                 path: ":stockId",
                 element: <StockDetailPage context="mystock" />,
@@ -60,7 +56,7 @@ const router = createBrowserRouter([
           {
             path: "intereststock",
             children: [
-              { index: true, element: <InterestStock /> },
+              { index: true, element: <InterestStockPage /> },
               {
                 path: ":stockId",
                 element: <StockDetailPage context="interest" />,
@@ -84,15 +80,24 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <>
-      <AuthProvider>
-        <StockProvider>
-          <RouterProvider router={router} />
-        </StockProvider>
-      </AuthProvider>
-    </>
-  );
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (token) {
+      queryClient.prefetchQuery({
+        queryKey: ["interestStocks"],
+        queryFn: fetchInterestStocks,
+      });
+
+      queryClient.prefetchQuery({
+        queryKey: ["stocks"],
+        queryFn: fetchAllStocks,
+      });
+    }
+  }, [token, queryClient]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

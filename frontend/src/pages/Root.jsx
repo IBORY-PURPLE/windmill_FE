@@ -4,16 +4,11 @@ import MainNavigation from "../components/MainNavigation";
 import ScrollToTop from "../util/scrollToTop";
 
 function RootLayout() {
-  // const navigation = useNavigation();
-
   return (
     <>
       <ScrollToTop />
       <MainNavigation />
-      <main>
-        {/* {navigation.state === 'loading' && <p>Loading...</p>} */}
-        <Outlet />
-      </main>
+      <Outlet />
     </>
   );
 }

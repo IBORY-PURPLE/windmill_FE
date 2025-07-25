@@ -1,11 +1,20 @@
-import { useStocks } from "../context/StockContext";
+import { useStocks } from "../hooks/useStocks";
+import { useInterestStocks } from "../hooks/useInterestStocks";
 import StockSection from "../components/StockSection";
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Pagination from "../util/Pagination";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function HomePage() {
-  const { stocks, isLoading } = useStocks();
+  const { token } = useAuth();
+  const { data: stocks = [], isLoading: stocksLoading } = useStocks({
+    staleTime: 1000 * 60 * 5,
+  });
+  const { data: interestList = [], isLoading: interestLoading } =
+    useInterestStocks({
+      enabled: !!token,
+    });
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get("page") || "1", 10);
@@ -17,48 +26,76 @@ function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(null);
 
+  // useEffect(() => {
+  //   const controller = new AbortController();
+
+  //   const fetchSearchResults = async () => {
+  //     if (searchTerm.trim() === "") {
+  //       setSearchResults(null);
+  //       return;
+  //     }
+
+  //     try {
+  //       const response = await fetch(
+  //         `https://windmill-be-iqxx.onrender.com/stock/search?search=${searchTerm}`,
+  //         { signal: controller.signal }
+  //       );
+  //       const data = await response.json();
+  //       setSearchResults(data.data);
+  //     } catch (err) {
+  //       if (err.name !== "AbortError") console.error(err);
+  //     }
+  //   };
+
+  //   const debounce = setTimeout(fetchSearchResults, 300);
+  //   return () => {
+  //     clearTimeout(debounce);
+  //     controller.abort();
+  //   };
+  // }, [searchTerm]);
+
   useEffect(() => {
-    const controller = new AbortController();
+    if (searchTerm.trim() === "") {
+      setSearchResults(null);
+      return;
+    }
 
-    const fetchSearchResults = async () => {
-      if (searchTerm.trim() === "") {
-        setSearchResults(null);
-        return;
-      }
+    const filtered = stocks.filter(
+      (s) =>
+        s.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+        s.ticker.toLowerCase().startsWith(searchTerm.toLowerCase())
+    );
 
-      try {
-        const response = await fetch(
-          `https://windmill-be-iqxx.onrender.com/stock/search?search=${searchTerm}`,
-          { signal: controller.signal }
-        );
-        const data = await response.json();
-        setSearchResults(data.data);
-      } catch (err) {
-        if (err.name !== "AbortError") console.error(err);
-      }
-    };
-
-    const debounce = setTimeout(fetchSearchResults, 300);
-    return () => {
-      clearTimeout(debounce);
-      controller.abort();
-    };
-  }, [searchTerm]);
+    setSearchResults(filtered);
+  }, [searchTerm, stocks]);
 
   const displayedStocks = searchResults ?? paginatedStocks;
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-xl font-semibold text-gray-600">
-          Loading 관심종목...
-        </p>
-      </div>
-    );
+  const isLoggedIn = !!token;
+  if (isLoggedIn) {
+    if (stocksLoading || interestLoading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-xl font-semibold text-gray-600">
+            전체 종목을 불러오는 중입니다.
+          </p>
+        </div>
+      );
+    }
+  } else {
+    if (stocksLoading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-xl font-semibold text-gray-600">
+            Loading 전체종목...
+          </p>
+        </div>
+      );
+    }
   }
   return (
     <>
-      <div className="p-4">
+      <div className="max-w-screen-lg mx-auto p-4">
         <div className="flex gap-4 mb-6">
           {/* 뉴스 박스 */}
           <div className="flex-1 bg-red-100 p-4 rounded-lg shadow-md">
@@ -99,11 +136,10 @@ function HomePage() {
             className="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:border-blue-400"
           ></input>
         </div>
-        <StockSection stocks={displayedStocks} />
+        <StockSection stocks={displayedStocks} interestList={interestList} />
         {!searchResults && (
           <Pagination currentPage={page} totalPages={totalPages} />
         )}
-        <Outlet />
       </div>
     </>
   );

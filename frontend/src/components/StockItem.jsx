@@ -1,17 +1,13 @@
-import { useStocks } from "../context/StockContext";
+import { useToggleInterestStock } from "../hooks/useToggleInterestStock";
 
-function StockItem({ stock }) {
-  const { interestList, toggleInterest, isLoading } = useStocks();
-  const isInterested = interestList.includes(stock.id);
+function StockItem({ stock, isInterested }) {
+  const { mutate } = useToggleInterestStock();
 
   const handleClick = (e) => {
     e.preventDefault();
-    toggleInterest(stock.id);
+    e.stopPropagation();
+    mutate({ stockId: stock.id, isAlreadyInterested: isInterested });
   };
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <div className="flex justify-between items-center border p-2 mb-2">
