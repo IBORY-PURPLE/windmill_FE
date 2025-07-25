@@ -1,4 +1,4 @@
-export async function predictStock({ stockId, selectedKeys }) {
+export async function predictStock({ stockId, selectedKeys, period }) {
   const body = {
     stock_id: stockId,
     start: selectedKeys.includes("openingPrice"),
@@ -6,6 +6,7 @@ export async function predictStock({ stockId, selectedKeys }) {
     low: selectedKeys.includes("lowPrice"),
     volume: selectedKeys.includes("volume"),
     fixed_rate: selectedKeys.includes("interestRate"),
+    period: parseInt(period),
   };
   const res = await fetch(`https://your-api.com/predict/${stockId}`, {
     method: "POST",

@@ -1,15 +1,17 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMyStocks } from "../api/mystock";
-import { useStocks } from "../context/StockContext";
+import { useStocks } from "../hooks/useStocks";
 import { useAddMyStock } from "../hooks/useAddMystock";
 
 import StockList from "../components/StockList";
 import AddStockModal from "../components/AddStockModal";
+import { useInterestStocks } from "../hooks/useInterestStocks";
 
 function MyStockPage() {
-  const { stocks } = useStocks();
+  const { data: stocks = [] } = useStocks();
   const [modalOpen, setModalOpen] = useState(false);
+  const { data: interestList = [] } = useInterestStocks();
 
   const {
     data: myStocks = [],
@@ -59,6 +61,7 @@ function MyStockPage() {
           <StockList
             stocks={myStockList ?? []}
             basePath="/personal/mystock"
+            interestList={interestList}
           ></StockList>
         )}
 

@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { useState } from "react";
 import Select from "react-select";
-import { useStocks } from "../context/StockContext";
+import { useStocks } from "../hooks/useStocks";
 
 import {
   LineChart,
@@ -24,6 +24,12 @@ const MULTI_OPTIONS = [
   { value: "lowPrice", label: "저가" }, // low
   { value: "volume", label: "거래량" }, // volume
   { value: "interestRate", label: "고정금리" }, // fixed_rate
+];
+
+const PERIOD_OPTIONS = [
+  { value: "5", label: "5일" },
+  { value: "15", label: "15일" },
+  { value: "30", label: "30일" },
 ];
 
 const result = [
@@ -45,9 +51,10 @@ const result = [
 ];
 
 function StockDetailPage({ context }) {
-  const { stocks } = useStocks();
+  const { data: stocks = [] } = useStocks();
   const { stockId } = useParams();
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
 
   const stock = stocks.find((s) => String(s.id) === stockId);
@@ -68,18 +75,22 @@ function StockDetailPage({ context }) {
       : null;
 
   const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: ({ stockId, selectedKeys }) =>
-      predictStock({ stockId, selectedKeys }),
-    onSuccess: (data) => setPredictedData(data.result),
+    mutationFn: ({ stockId, selectedKeys, period }) =>
+      predictStock({ stockId, selectedKeys, period }),
+    onSuccess: (data) => setPredictedData(data.data),
   });
 
   const handlePredict = () => {
     const selectedKeys = selectedOptions.map((opt) => opt.value);
-    mutate({ stockId, selectedKeys });
+    mutate({ stockId, selectedKeys, period: selectedPeriod.value });
   };
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
+  };
+
+  const handlePeriodChange = (selected) => {
+    setSelectedPeriod(selected);
   };
 
   return (
@@ -108,6 +119,15 @@ function StockDetailPage({ context }) {
                   options={MULTI_OPTIONS}
                   value={selectedOptions}
                   onChange={handleSelectChange}
+                  placeholder="항목을 선택하세요."
+                ></Select>
+              </div>
+              <div style={{ width: 300, marginTop: 20 }}>
+                <label>Selecte Period</label>
+                <Select
+                  options={PERIOD_OPTIONS}
+                  value={selectedPeriod}
+                  onChange={handlePeriodChange}
                   placeholder="항목을 선택하세요."
                 ></Select>
               </div>

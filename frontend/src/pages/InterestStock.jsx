@@ -1,10 +1,10 @@
 import StockList from "../components/StockList";
-import { useStocks } from "../context/StockContext";
+import { useStocks } from "../hooks/useStocks";
 import { useInterestStocks } from "../hooks/useInterestStocks";
 import { useMemo } from "react";
 
 function InterestStockPage() {
-  const { stocks } = useStocks();
+  const { data: stocks = [] } = useStocks();
   const { data: interestList = [], isLoading, isError } = useInterestStocks();
 
   const interestStocks = useMemo(() => {
@@ -21,6 +21,7 @@ function InterestStockPage() {
         <StockList
           stocks={interestStocks}
           basePath="/personal/intereststock"
+          interestList={interestList}
         ></StockList>
       </div>
     </>

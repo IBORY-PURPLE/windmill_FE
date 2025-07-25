@@ -1,11 +1,20 @@
-import { useStocks } from "../context/StockContext";
+import { useStocks } from "../hooks/useStocks";
+import { useInterestStocks } from "../hooks/useInterestStocks";
 import StockSection from "../components/StockSection";
 import { useLocation } from "react-router-dom";
 import Pagination from "../util/Pagination";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function HomePage() {
-  const { stocks, stocksLoading } = useStocks();
+  const { token } = useAuth();
+  const { data: stocks = [], isLoading: stocksLoading } = useStocks({
+    staleTime: 1000 * 60 * 5,
+  });
+  const { data: interestList = [], isLoading: interestLoading } =
+    useInterestStocks({
+      enabled: !!token,
+    });
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const page = parseInt(query.get("page") || "1", 10);
@@ -62,16 +71,28 @@ function HomePage() {
 
   const displayedStocks = searchResults ?? paginatedStocks;
 
-  if (stocksLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-xl font-semibold text-gray-600">
-          Loading 관심종목...
-        </p>
-      </div>
-    );
+  const isLoggedIn = !!token;
+  if (isLoggedIn) {
+    if (stocksLoading || interestLoading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-xl font-semibold text-gray-600">
+            전체 종목을 불러오는 중입니다.
+          </p>
+        </div>
+      );
+    }
+  } else {
+    if (stocksLoading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-xl font-semibold text-gray-600">
+            Loading 전체종목...
+          </p>
+        </div>
+      );
+    }
   }
-
   return (
     <>
       <div className="max-w-screen-lg mx-auto p-4">
@@ -115,7 +136,7 @@ function HomePage() {
             className="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:border-blue-400"
           ></input>
         </div>
-        <StockSection stocks={displayedStocks} />
+        <StockSection stocks={displayedStocks} interestList={interestList} />
         {!searchResults && (
           <Pagination currentPage={page} totalPages={totalPages} />
         )}
