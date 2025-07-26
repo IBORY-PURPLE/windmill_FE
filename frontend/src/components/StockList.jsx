@@ -17,9 +17,9 @@ function StockList({ stocks, basePath, interestList }) {
   }
 
   return (
-    <ul>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {stocks.map((stock) => (
-        <li
+        <div
           key={stock.id}
           className="cursor-pointer"
           onClick={() => navigate(`${basePath}/${stock.id}`)}
@@ -28,9 +28,9 @@ function StockList({ stocks, basePath, interestList }) {
             stock={stock}
             isInterested={interestList.includes(stock.id)}
           />
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }
 
