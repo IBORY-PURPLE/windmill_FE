@@ -114,7 +114,7 @@ function StockDetailPage({ context }) {
     addMutation.mutate(data, {
       onSuccess: () => {
         alert("거래가 반영되었습니다.");
-        setQueryData((prev) => [...prev, newLog.data]);
+        refetchLogs();
       },
       onError: () => {
         alert("오류 발생");
