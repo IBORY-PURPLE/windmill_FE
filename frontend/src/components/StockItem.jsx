@@ -5,27 +5,25 @@ function StockItem({ stock, isInterested }) {
 
   const handleClick = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     mutate({ stockId: stock.id, isAlreadyInterested: isInterested });
   };
 
   return (
-    <div className="flex justify-between items-center border p-2 mb-2">
-      <div>
-        <p className="font-bold">
-          {stock.name} ({stock.ticker})
-        </p>
-        <p className="text-sm text-gray-600">현재가: {stock.price}</p>
-      </div>
+    <div className="relative rounded-xl shadow-md border p-4 bg-white">
       <button
         onClick={handleClick}
-        className={`text-sm px-2 py-1 rounded ${
+        className={`absolute top-2 right-3 text-xl transition ${
           isInterested
-            ? "bg-yellow-500 text-white"
-            : "bg-gray-200 text-gray-600 hover:bg-yellow-300"
+            ? "text-yellow-500"
+            : "text-gray-400 hover:text-yellow-400 transition text-xl"
         }`}
       >
-        {isInterested ? "⭐ 관심 중" : "☆ 관심 추가"}
+        {isInterested ? "⭐" : "☆"}
       </button>
+      <p className="font-bold text-base pr-8 truncate">{stock.name}</p>
+      <p className="font-bold text-base">({stock.ticker})</p>
+      <p className="text-sm text-gray-600 mt-1">현재가: {stock.price}</p>
     </div>
   );
 }

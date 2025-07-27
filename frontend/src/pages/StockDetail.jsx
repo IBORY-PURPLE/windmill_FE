@@ -1,6 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { predictStock } from "../api/predict";
 import { fetchMyStocks } from "../api/mystock";
+import { useAddMyStock } from "../hooks/useAddMystock";
+import { useMyStockLog } from "../hooks/useMyStockLog";
+import SimpleStockModal from "../components/SimpleStockModal";
 
 import { useParams } from "react-router-dom";
 import classes from "./StockDetail.module.css";
@@ -19,11 +22,11 @@ import {
 } from "recharts";
 
 const MULTI_OPTIONS = [
-  { value: "openingPrice", label: "시가" }, // start
-  { value: "highPrice", label: "고가" }, // high
-  { value: "lowPrice", label: "저가" }, // low
-  { value: "volume", label: "거래량" }, // volume
-  { value: "interestRate", label: "고정금리" }, // fixed_rate
+  { value: "openingPrice", label: "시가" },
+  { value: "highPrice", label: "고가" },
+  { value: "lowPrice", label: "저가" },
+  { value: "volume", label: "거래량" },
+  { value: "interestRate", label: "고정금리" },
 ];
 
 const PERIOD_OPTIONS = [
@@ -32,23 +35,7 @@ const PERIOD_OPTIONS = [
   { value: "30", label: "30일" },
 ];
 
-const result = [
-  { date: "2025-04-25", value: 14000.81 },
-  { date: "2025-04-26", value: 15546.45 },
-  { date: "2025-04-27", value: 16173.04 },
-  { date: "2025-04-28", value: 17171.81 },
-  { date: "2025-04-29", value: 18225.12 },
-  { date: "2025-04-30", value: 18619.7 },
-  { date: "2025-05-01", value: 18284.74 },
-  { date: "2025-05-02", value: 18437.23 },
-  { date: "2025-05-03", value: 18544.76 },
-  { date: "2025-05-04", value: 19545.81 },
-  { date: "2025-05-05", value: 19145.05 },
-  { date: "2025-05-06", value: 19093.2 },
-  { date: "2025-05-07", value: 19815.38 },
-  { date: "2025-05-08", value: 18992.61 },
-  { date: "2025-05-09", value: 19159.54 },
-];
+// 디테일 컴포넌트 시작 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 function StockDetailPage({ context }) {
   const { data: stocks = [] } = useStocks();
@@ -56,6 +43,12 @@ function StockDetailPage({ context }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
+  const [isGraphLoading, setIsGraphLoading] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [showLogs, setShowLogs] = useState(false);
+
+  const addMutation = useAddMyStock();
 
   const stock = stocks.find((s) => String(s.id) === stockId);
 
@@ -66,23 +59,47 @@ function StockDetailPage({ context }) {
   } = useQuery({
     queryKey: ["myStocks"],
     queryFn: fetchMyStocks,
-    enabled: context === "mystock", // 조건부 fetch
+    enabled: context === "mystock",
   });
+
+  const {
+    stockLogs,
+    isLoading: isLogLoading,
+    isError: isLogError,
+    refetch: refetchLogs,
+    setQueryData,
+  } = useMyStockLog(stockId, false);
 
   const mystock =
     context === "mystock"
       ? myStocks.find((s) => String(s.stock_id) === stockId)
       : null;
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ stockId, selectedKeys, period }) =>
       predictStock({ stockId, selectedKeys, period }),
-    onSuccess: (data) => setPredictedData(data.data),
   });
 
   const handlePredict = () => {
     const selectedKeys = selectedOptions.map((opt) => opt.value);
-    mutate({ stockId, selectedKeys, period: selectedPeriod.value });
+    setIsGraphLoading(true);
+    mutate(
+      { stockId, selectedKeys, period: selectedPeriod.value },
+      {
+        onSuccess: (data) => {
+          const mapped = data.data.map((d) => ({
+            date: d.date,
+            value: d.data,
+            type: d.type,
+          }));
+          setPredictedData(mapped);
+          setIsGraphLoading(false);
+        },
+        onError: () => {
+          setIsGraphLoading(false);
+        },
+      }
+    );
   };
 
   const handleSelectChange = (selected) => {
@@ -93,6 +110,18 @@ function StockDetailPage({ context }) {
     setSelectedPeriod(selected);
   };
 
+  const handleTradeSubmit = (data) => {
+    addMutation.mutate(data, {
+      onSuccess: () => {
+        alert("거래가 반영되었습니다.");
+        refetchLogs();
+      },
+      onError: () => {
+        alert("오류 발생");
+      },
+    });
+  };
+
   return (
     <div className={classes.container}>
       <h1>Stock Detail Page</h1>
@@ -101,6 +130,55 @@ function StockDetailPage({ context }) {
       </p>
       {context === "mystock" && (
         <>
+          <button
+            onClick={() => setShowModal(true)}
+            className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+          >
+            거래 추가
+          </button>
+          {showModal && (
+            <SimpleStockModal
+              stockId={stockId}
+              onClose={() => setShowModal(false)}
+              onSubmit={handleTradeSubmit}
+            />
+          )}
+          <button
+            onClick={() => {
+              if (showLogs) {
+                setShowLogs(false);
+              } else {
+                setShowLogs(true);
+                refetchLogs();
+              }
+            }}
+            className="mt-4 bg-purple-600 text-white px-4 py-2 rounded"
+          >
+            거래 로그 보기
+          </button>
+          {showLogs && (
+            <div
+              className={`fixed top-0 right-0 h-full w-80 bg-white border-l shadow-lg z-50 transform transition-transform duration-500 ${
+                showLogs ? "translate-x-0" : "translate-x-full"
+              }`}
+            >
+              {isLogLoading && <p>불러오는 중...</p>}
+              {isLogError && <p>불러오기 실패</p>}
+              {!isLogLoading && !isLogError && stockLogs.length === 0 && (
+                <p>기록 없음</p>
+              )}
+              {!isLogLoading && !isLogError && (
+                <ul>
+                  {stockLogs.map((log, i) => (
+                    <li key={i}>
+                      {log.date} - 💸 {log.buy_cost}원 / 📈{" "}
+                      {log.buy_stock_count}주
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           {isMyStockLoading ? (
             <p>보유 주식 데이터를 불러오는 중...</p>
           ) : isMyStockError ? (
@@ -134,25 +212,36 @@ function StockDetailPage({ context }) {
               <button
                 onClick={handlePredict}
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                disabled={isGraphLoading}
               >
-                예측 그래프 그리기
+                {isGraphLoading ? "그래프 그리는 중...." : "예측 그래프 그리기"}
               </button>
-              {predictedData && (
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={predictedData}>
-                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#8884d8"
-                      dot={false}
-                      name="예측값"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+              {(isGraphLoading || predictedData) && (
+                <div style={{ position: "relative", height: 400 }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    {/* 과거 실제 값: 진한 보라 */}
+                    <LineChart data={predictedData || []}>
+                      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#8884d8"
+                        dot={false}
+                        name="예측값"
+                        isAnimationActive={false} // 로딩시 flicker 방지
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+
+                  {isGraphLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-yellow-100 bg-opacity-60 z-10">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+                    </div>
+                  )}
+                </div>
               )}
             </>
           )}

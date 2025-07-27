@@ -36,5 +36,22 @@ export const addMyStock = async (stockData) => {
   );
 
   if (!res.ok) throw new Error("포지션 추가 실패");
+  console.log(res);
   return res.json();
+};
+
+export const fetchMyStockLogs = async (stockId) => {
+  const token = getAuthToken();
+  const res = await fetch(
+    `https://windmill-be-iqxx.onrender.com/user/mystock/${stockId}`,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error("거래 로그 조회 실패");
+  const data = await res.json();
+  return data.data; // 배열 형태로 로그가 올 것으로 예상
 };

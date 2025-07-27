@@ -37,6 +37,7 @@ function MyStockPage() {
     });
   };
 
+  // mystoks_db와 allstock_db의 필드들을 합친 데이터 생성.
   const myStockList = useMemo(() => {
     return myStocks
       .map((my) => {
@@ -53,6 +54,14 @@ function MyStockPage() {
     <>
       <div className="max-w-screen-lg mx-auto p-4">
         <h1>My Stock</h1>
+        <div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-5"
+          >
+            + 포지션 추가
+          </button>
+        </div>
         {isLoading ? (
           <p>보유 주식 데이터를 불러오는 중입니다...</p>
         ) : isError ? (
@@ -65,14 +74,6 @@ function MyStockPage() {
           ></StockList>
         )}
 
-        <div>
-          <button
-            onClick={() => setModalOpen(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            + 포지션 추가
-          </button>
-        </div>
         {modalOpen && (
           <AddStockModal
             onClose={() => setModalOpen(false)}

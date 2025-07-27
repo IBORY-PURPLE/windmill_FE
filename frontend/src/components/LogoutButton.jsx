@@ -1,8 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { LogOut } from "lucide-react";
 
 function LogoutButton() {
-  const navigate = useNavigate();
   const { setToken } = useAuth();
 
   const handleLogout = async () => {
@@ -26,8 +25,9 @@ function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="bg-red-500 text-white px-4 py-2 rounded"
+      className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-md text-sm font-semibold shadow-sm transition duration-200"
     >
+      <LogOut className="w-4 h-4 " />
       logout
     </button>
   );

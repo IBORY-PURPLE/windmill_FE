@@ -2,13 +2,16 @@ import { Outlet } from "react-router-dom";
 
 import MainNavigation from "../components/MainNavigation";
 import ScrollToTop from "../util/scrollToTop";
+import MainLayout from "./Main";
 
 function RootLayout() {
   return (
     <>
-      <ScrollToTop />
-      <MainNavigation />
-      <Outlet />
+      <MainLayout>
+        <ScrollToTop />
+        <MainNavigation />
+        <Outlet />
+      </MainLayout>
     </>
   );
 }

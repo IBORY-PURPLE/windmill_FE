@@ -8,11 +8,15 @@ export async function predictStock({ stockId, selectedKeys, period }) {
     fixed_rate: selectedKeys.includes("interestRate"),
     period: parseInt(period),
   };
-  const res = await fetch(`https://your-api.com/predict/${stockId}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+
+  const res = await fetch(
+    `https://windmill-be-iqxx.onrender.com/predict/${stockId}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }
+  );
 
   if (!res.ok) {
     throw new Error("예측에 실패했습니다.");
