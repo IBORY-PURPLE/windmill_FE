@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMyStocks } from "../api/mystock";
 import { useStocks } from "../hooks/useStocks";
 import { useAddMyStock } from "../hooks/useAddMystock";
+import ErrorBox from "../components/ErrorBox";
 
 import StockList from "../components/StockList";
 import AddStockModal from "../components/AddStockModal";
@@ -17,6 +18,7 @@ function MyStockPage() {
     data: myStocks = [],
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ["myStocks"],
     queryFn: fetchMyStocks,
@@ -65,7 +67,11 @@ function MyStockPage() {
         {isLoading ? (
           <p>보유 주식 데이터를 불러오는 중입니다...</p>
         ) : isError ? (
-          <p>데이터 로딩 실패</p>
+          <ErrorBox
+            message={
+              error?.message || "보유 주식 정보를 불러오는데 실패했습니다."
+            }
+          />
         ) : (
           <StockList
             stocks={myStockList ?? []}
