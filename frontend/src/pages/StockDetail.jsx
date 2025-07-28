@@ -4,6 +4,7 @@ import { fetchMyStocks } from "../api/mystock";
 import { useAddMyStock } from "../hooks/useAddMystock";
 import { useMyStockLog } from "../hooks/useMyStockLog";
 import SimpleStockModal from "../components/SimpleStockModal";
+import ErrorBox from "../components/ErrorBox";
 
 import { useParams } from "react-router-dom";
 import classes from "./StockDetail.module.css";
@@ -66,6 +67,7 @@ function StockDetailPage({ context }) {
     stockLogs,
     isLoading: isLogLoading,
     isError: isLogError,
+    error,
     refetch: refetchLogs,
     setQueryData,
   } = useMyStockLog(stockId, false);
@@ -163,7 +165,11 @@ function StockDetailPage({ context }) {
               }`}
             >
               {isLogLoading && <p>불러오는 중...</p>}
-              {isLogError && <p>불러오기 실패</p>}
+              {isLogError && (
+                <ErrorBox
+                  message={error?.message || "거래 로그 조회 실패했습니다"}
+                />
+              )}
               {!isLogLoading && !isLogError && stockLogs.length === 0 && (
                 <p>기록 없음</p>
               )}

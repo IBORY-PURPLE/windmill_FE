@@ -12,7 +12,7 @@ export const fetchMyStocks = async () => {
     }
   );
 
-  if (!res.ok) throw new Error("보유 종목 조회 실패");
+  if (!res.ok) throw new Error("보유 주식 정보를 불러오는데 실패했습니다.");
   const data = await res.json();
   return data.data;
 };
@@ -36,8 +36,8 @@ export const addMyStock = async (stockData) => {
   );
 
   if (!res.ok) throw new Error("포지션 추가 실패");
-  console.log(res);
-  return res.json();
+  const data = await res.json();
+  return data;
 };
 
 export const fetchMyStockLogs = async (stockId) => {
@@ -51,7 +51,7 @@ export const fetchMyStockLogs = async (stockId) => {
     }
   );
 
-  if (!res.ok) throw new Error("거래 로그 조회 실패");
+  if (!res.ok) throw new Error("거래 로그 조회 실패했습니다.");
   const data = await res.json();
   return data.data; // 배열 형태로 로그가 올 것으로 예상
 };
