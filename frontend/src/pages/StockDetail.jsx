@@ -5,8 +5,9 @@ import { useAddMyStock } from "../hooks/useAddMystock";
 import { useMyStockLog } from "../hooks/useMyStockLog";
 import SimpleStockModal from "../components/SimpleStockModal";
 import ErrorBox from "../components/ErrorBox";
+import { toast } from "react-toastify";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { useState } from "react";
 import Select from "react-select";
@@ -41,6 +42,7 @@ const PERIOD_OPTIONS = [
 function StockDetailPage({ context }) {
   const { data: stocks = [] } = useStocks();
   const { stockId } = useParams();
+  const navigate = useNavigate();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
@@ -114,12 +116,20 @@ function StockDetailPage({ context }) {
 
   const handleTradeSubmit = (data) => {
     addMutation.mutate(data, {
-      onSuccess: () => {
-        alert("거래가 반영되었습니다.");
-        refetchLogs();
+      onSuccess: async (res) => {
+        const remaining = res?.data?.all_stock_count || 0;
+
+        if (remaining <= 0) {
+          toast.info("모든 주식을 매도했습니다.");
+          navigate("/personal/mystock");
+          return;
+        }
+
+        toast.success("거래가 반영되었습니다.");
+        await refetchLogs();
       },
       onError: () => {
-        alert("오류 발생");
+        toast.error("오류 발생");
       },
     });
   };
