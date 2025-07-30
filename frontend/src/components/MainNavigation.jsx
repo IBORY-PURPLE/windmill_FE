@@ -36,25 +36,67 @@ function MainNavigation() {
               Home
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
-              to="/events"
+              to="/stock"
               className={({ isActive }) =>
                 isActive ? "border-b-2 border-white pb-1" : "hover:underline"
               }
             >
               Stock
             </NavLink>
-          </li>
-          <li>
+            <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50">
+              <li>
+                <NavLink
+                  to="/stock/ko_stock"
+                  className="block px-4 py-2 mt-1 hover:bg-gray-100"
+                >
+                  한국 주식
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/stock/en_stock"
+                  className="block px-4 py-2 mb-1 hover:bg-gray-100"
+                >
+                  미국 주식
+                </NavLink>
+              </li>
+            </ul>
+          </li> */}
+          <li className="relative group">
             <NavLink
-              to="/newsletter"
-              className={({ isActive }) =>
-                isActive ? "border-b-2 border-white pb-1" : "hover:underline"
-              }
+              to="/news?query=경제"
+              className="cursor-pointer hover:underline"
             >
               News
             </NavLink>
+            <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50">
+              <li>
+                <NavLink
+                  to="/news?query=경제"
+                  className="block px-4 py-2 mt-1 hover:bg-gray-100"
+                >
+                  경제
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/news?query=금융"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  금융
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/news?query=S%26P500"
+                  className="block px-4 py-2 mb-1 hover:bg-gray-100"
+                >
+                  S&P500
+                </NavLink>
+              </li>
+            </ul>
           </li>
           {!token && (
             <li>
