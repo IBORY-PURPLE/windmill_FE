@@ -12,12 +12,12 @@ import ErrorPage from "./pages/Error";
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
 import Authentication, { action as authAction } from "./pages/Authentication";
-import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
 import PersonalPage from "./pages/Personal";
 import PersonalRoot from "./pages/PersonalRoot";
 import StockDetailPage from "./pages/StockDetail";
 import MyStockPage from "./pages/MyStock";
 import InterestStockPage from "./pages/InterestStock";
+import NewsPage from "./pages/NewsPage";
 
 const router = createBrowserRouter([
   {
@@ -71,9 +71,8 @@ const router = createBrowserRouter([
         action: authAction,
       },
       {
-        path: "newsletter",
-        element: <NewsletterPage />,
-        action: newsletterAction,
+        path: "news",
+        element: <NewsPage />,
       },
     ],
   },
