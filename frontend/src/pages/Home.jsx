@@ -7,8 +7,10 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 import { useNews } from "../hooks/useNews";
+import { useQueryClient } from "@tanstack/react-query";
 
 function HomePage() {
+  const queryClient = useQueryClient();
   const { token } = useAuth();
   const { data: stocks = [], isLoading: stocksLoading } = useStocks({
     staleTime: 1000 * 60 * 5,
@@ -18,9 +20,9 @@ function HomePage() {
       enabled: !!token,
     });
 
-  const { data: economyNews = [] } = useNews("경제");
-  const { data: financeNews = [] } = useNews("금융");
-  const { data: sp500News = [] } = useNews("S&P500");
+  const economyNews = queryClient.getQueryData(["news", "경제"]) ?? [];
+  const financeNews = queryClient.getQueryData(["news", "금융"]) ?? [];
+  const sp500News = queryClient.getQueryData(["news", "S&P500"]) ?? [];
 
   const safe = (arr) => (Array.isArray(arr) ? arr : []);
 
@@ -118,20 +120,13 @@ function HomePage() {
   }
 
   // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     if (combinedNews.length === 0) return;
-  //     setCurrentIndex((prev) => (prev + 1) % combinedNews.length);
-  //   }, 5000);
-  //   return () => clearInterval(timer);
-  // }, [combinedNews.length]);
-  // useEffect(() => {
   //   if (combinedNews.length > 0) {
   //     const timer = setInterval(() => {
   //       setCurrentIndex((prev) => (prev + 1) % combinedNews.length);
   //     }, 2500);
   //     return () => clearInterval(timer);
   //   }
-  // }, [combinedNews.length]);
+  // }, [combinedNews.map((n) => n.link).join("")]);
 
   const getCategoryBadgeColor = (category) => {
     switch (category) {
@@ -159,7 +154,7 @@ function HomePage() {
               {combinedNews.length > 0 ? (
                 <div
                   key={currentIndex}
-                  className="flex-shrink-0 w-full p-4 transition-opacity duration-500"
+                  className="flex-shrink-0 w-full p-4 transition-opacity duration-500 opacity-100 animate-fadeIn"
                 >
                   {/* 카테고리 뱃지 */}
                   <span
