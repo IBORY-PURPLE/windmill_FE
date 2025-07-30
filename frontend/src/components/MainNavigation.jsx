@@ -20,7 +20,6 @@ function MainNavigation() {
               WindMill
             </NavLink>
           </div>
-          <NewsletterSignup />
         </div>
         <hr className="border-gray-300 mb-4" />
         <ul className="flex justify-center space-x-6 text-white font-medium text-lg">
