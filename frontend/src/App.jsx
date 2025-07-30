@@ -18,6 +18,7 @@ import StockDetailPage from "./pages/StockDetail";
 import MyStockPage from "./pages/MyStock";
 import InterestStockPage from "./pages/InterestStock";
 import NewsPage from "./pages/NewsPage";
+// import { fetchNews } from "./api/news";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ function App() {
       });
     }
   }, [token, queryClient]);
+
+  // queryClient.prefetchQuery(["news", "경제"]), () => fetchNews("경제");
+  // queryClient.prefetchQuery(["news", "금융"]), () => fetchNews("금융");
+  // queryClient.prefetchQuery(["news", "S&P500"]), () => fetchNews("S&P500");
 
   return <RouterProvider router={router} />;
 }

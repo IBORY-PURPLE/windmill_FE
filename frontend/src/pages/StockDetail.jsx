@@ -29,10 +29,19 @@ const MULTI_OPTIONS = [
   { value: "lowPrice", label: "저가" },
   { value: "volume", label: "거래량" },
   { value: "interestRate", label: "고정금리" },
+  { value: "per", label: "PER" },
+  { value: "pbr", label: "PBR" },
+  { value: "psr", label: "PSR" },
+  { value: "snp", label: "S&P" },
+  { value: "roe", label: "ROE" },
+  { value: "roa", label: "ROA" },
+  { value: "opm", label: "OPM" },
+  { value: "npm", label: "NPM" },
 ];
 
 const PERIOD_OPTIONS = [
-  { value: "5", label: "5일" },
+  { value: "3", label: "3일" },
+  { value: "7", label: "7일" },
   { value: "15", label: "15일" },
   { value: "30", label: "30일" },
 ];
