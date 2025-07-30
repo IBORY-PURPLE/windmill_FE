@@ -1,5 +1,4 @@
 import { NavLink, useRouteLoaderData } from "react-router-dom";
-import NewsletterSignup from "./NewsletterSignup";
 import LogoutButton from "./LogoutButton";
 import logoImg from "../assets/logo.png";
 
