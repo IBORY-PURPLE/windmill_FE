@@ -6,12 +6,11 @@ import Pagination from "../util/Pagination";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-import { useNews } from "../hooks/useNews";
-import { useQueryClient } from "@tanstack/react-query";
+import NewsSection from "../components/NewsSection";
 
 function HomePage() {
-  const queryClient = useQueryClient();
   const { token } = useAuth();
+
   const { data: stocks = [], isLoading: stocksLoading } = useStocks({
     staleTime: 1000 * 60 * 5,
   });
@@ -19,26 +18,6 @@ function HomePage() {
     useInterestStocks({
       enabled: !!token,
     });
-
-  const economyNews = queryClient.getQueryData(["news", "경제"]) ?? [];
-  const financeNews = queryClient.getQueryData(["news", "금융"]) ?? [];
-  const sp500News = queryClient.getQueryData(["news", "S&P500"]) ?? [];
-
-  const safe = (arr) => (Array.isArray(arr) ? arr : []);
-
-  const combinedNews = [
-    ...safe(economyNews)
-      .slice(0, 3)
-      .map((n) => ({ ...n, category: "경제" })),
-    ...safe(financeNews)
-      .slice(0, 3)
-      .map((n) => ({ ...n, category: "금융" })),
-    ...safe(sp500News)
-      .slice(0, 3)
-      .map((n) => ({ ...n, category: "S&P500" })),
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -50,34 +29,6 @@ function HomePage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(null);
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-
-  //   const fetchSearchResults = async () => {
-  //     if (searchTerm.trim() === "") {
-  //       setSearchResults(null);
-  //       return;
-  //     }
-
-  //     try {
-  //       const response = await fetch(
-  //         `https://windmill-be-iqxx.onrender.com/stock/search?search=${searchTerm}`,
-  //         { signal: controller.signal }
-  //       );
-  //       const data = await response.json();
-  //       setSearchResults(data.data);
-  //     } catch (err) {
-  //       if (err.name !== "AbortError") console.error(err);
-  //     }
-  //   };
-
-  //   const debounce = setTimeout(fetchSearchResults, 300);
-  //   return () => {
-  //     clearTimeout(debounce);
-  //     controller.abort();
-  //   };
-  // }, [searchTerm]);
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -97,98 +48,31 @@ function HomePage() {
   const displayedStocks = searchResults ?? paginatedStocks;
 
   const isLoggedIn = !!token;
-  if (isLoggedIn) {
-    if (stocksLoading || interestLoading) {
-      return (
-        <div className="flex justify-center items-center h-screen">
-          <p className="text-xl font-semibold text-gray-600">
-            전체 종목을 불러오는 중입니다.
-          </p>
-        </div>
-      );
-    }
-  } else {
-    if (stocksLoading) {
-      return (
-        <div className="flex justify-center items-center h-screen">
-          <p className="text-xl font-semibold text-gray-600">
-            Loading 전체종목...
-          </p>
-        </div>
-      );
-    }
+  const isLoading = isLoggedIn
+    ? stocksLoading || interestLoading
+    : stocksLoading;
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-semibold text-gray-600">
+          종목 정보를 불러오는 중입니다.
+        </p>
+      </div>
+    );
   }
-
-  // useEffect(() => {
-  //   if (combinedNews.length > 0) {
-  //     const timer = setInterval(() => {
-  //       setCurrentIndex((prev) => (prev + 1) % combinedNews.length);
-  //     }, 2500);
-  //     return () => clearInterval(timer);
-  //   }
-  // }, [combinedNews.map((n) => n.link).join("")]);
-
-  const getCategoryBadgeColor = (category) => {
-    switch (category) {
-      case "경제":
-        return "bg-green-500";
-      case "금융":
-        return "bg-yellow-500";
-      case "S&P500":
-        return "bg-purple-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
 
   return (
     <>
       <div className="max-w-screen-lg mx-auto p-4">
         <div className="flex gap-4 mb-6">
-          {/* 뉴스 박스 */}
-          <div className="flex-1 bg-red-100 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-bold mb-2 text-red-600">
-              📢 오늘의 뉴스
-            </h2>
-            <div className="flex overflow-hidden h-24 rounded-lg border bg-white">
-              {combinedNews.length > 0 ? (
-                <div
-                  key={currentIndex}
-                  className="flex-shrink-0 w-full p-4 transition-opacity duration-500 opacity-100 animate-fadeIn"
-                >
-                  {/* 카테고리 뱃지 */}
-                  <span
-                    className={`inline-block text-xs mr-1 text-white px-2 py-1 rounded-full mb-1 ${getCategoryBadgeColor(
-                      combinedNews[currentIndex].category
-                    )}`}
-                  >
-                    {combinedNews[currentIndex].category}
-                  </span>
-                  <a
-                    href={combinedNews[currentIndex].link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium hover:underline text-gray-900"
-                  >
-                    {combinedNews[currentIndex].title}
-                  </a>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {combinedNews[currentIndex].pubDate}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-sm text-gray-500 p-4">
-                  뉴스를 불러오는 중...
-                </p>
-              )}
-            </div>
-          </div>
+          <NewsSection />
         </div>
-        <div className="flex-1 bg-green-100 p-4 mb-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-bold mb-2 text-green-600">
-            📈 주요 지수
+        <div className="flex-1 bg-white p-4 mb-4 rounded-lg shadow-md border border-black">
+          <h2 className="text-lg font-bold mb-2 ml-2 text-black hover:text-[#C20E2F]">
+            주요 지수
           </h2>
-          <ul className="text-sm text-gray-800">
+          <ul className="text-sm text-gray-800 border border-black">
             <li>
               KOSPI: 2,710.56 <span className="text-green-600">+0.78%</span>
             </li>
@@ -207,7 +91,7 @@ function HomePage() {
             placeholder="Search stocks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:border-blue-400"
+            className="border border-black rounded px-3 py-1 w-64 focus:outline-none focus:ring bg-white"
           ></input>
         </div>
         <StockSection stocks={displayedStocks} interestList={interestList} />

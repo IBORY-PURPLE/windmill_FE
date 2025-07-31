@@ -4,30 +4,35 @@ import logoImg from "../assets/logo.png";
 
 function MainNavigation() {
   const token = useRouteLoaderData("root");
-
+  // hover:bg-[#FFF8E0]
   return (
-    <header className="sticky top-0 z-50  shadow bg-[#004e96] max-w-5xl mx-auto p-4">
-      <nav>
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center space-x-4">
+    <>
+      <header className="rounded shadow bg-white-200 max-w-5xl mx-auto pb-4 border-t border-r border-l border-black">
+        <div className="flex justify-between items-center mb-2 ">
+          <div className="ml-3 mt-3 flex items-center space-x-4 p-2">
             <img src={logoImg} alt="WindMill Logo" className="h-10" />
             <NavLink
               to="/"
-              className="text-white text-2xl font-bold hover:underline"
+              className="text-black text-2xl font-bold hover:underline hover:text-[#C20E2F]"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               WindMill
             </NavLink>
+            {token && <LogoutButton></LogoutButton>}
           </div>
         </div>
-        <hr className="border-gray-300 mb-4" />
-        <ul className="flex justify-center space-x-6 text-white font-medium text-lg">
+      </header>
+      <nav className="rounded sticky top-0 z-50 bg-gary-200 border border-black hover:bg-[#FFF8E0]">
+        {/* <hr className="border-gray-300" /> */}
+        <ul className="flex justify-center space-x-6 text-black font-medium text-lg py-2">
           <li>
             <NavLink
               to="/"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className={({ isActive }) =>
-                isActive ? "border-b-2 border-white pb-1" : "hover:underline"
+                isActive
+                  ? "border-b-2 border-[#C20E2F] pb-1 text-[#C20E2F]"
+                  : "hover:underline"
               }
               end
             >
@@ -141,14 +146,9 @@ function MainNavigation() {
               </ul>
             </li>
           )}
-          {token && (
-            <li>
-              <LogoutButton></LogoutButton>
-            </li>
-          )}
         </ul>
       </nav>
-    </header>
+    </>
   );
 }
 
