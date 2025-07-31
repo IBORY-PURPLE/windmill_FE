@@ -97,10 +97,6 @@ function App() {
     }
   }, [token, queryClient]);
 
-  // queryClient.prefetchQuery(["news", "경제"]), () => fetchNews("경제");
-  // queryClient.prefetchQuery(["news", "금융"]), () => fetchNews("금융");
-  // queryClient.prefetchQuery(["news", "S&P500"]), () => fetchNews("S&P500");
-
   return <RouterProvider router={router} />;
 }
 

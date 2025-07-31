@@ -9,8 +9,13 @@ module.exports = {
       animation: {
         "pulse-green": "pulseGradientGreen 3s ease-in-out infinite",
         "pulse-red": "pulseGradientRed 3s ease-in-out infinite",
+        fadeIn: "fadeIn 0.5s ease-in-out",
       },
       keyframes: {
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
         pulseGradientGreen: {
           "0%, 100%": {
             backgroundPosition: "0% 50%",
