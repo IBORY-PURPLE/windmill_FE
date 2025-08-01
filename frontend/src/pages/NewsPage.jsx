@@ -14,12 +14,15 @@ function NewsPage() {
       <h1 className="text-2xl font-bold mb-4">뉴스 - {query}</h1>
       <ul className="space-y-4">
         {data?.map((article, index) => (
-          <li key={index} className="p-4 border rounded shadow-sm">
+          <li
+            key={index}
+            className="p-4 border rounded shadow-sm border-black bg-white transition-all duration-300 hover:scale-105 hover-shadow-xl hover:z-10"
+          >
             <a
               href={article.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-lg font-semibold hover:underline"
+              className="text-lg font-semibold hover:underline hover:text-[#C20E2F]"
             >
               {article.title}
             </a>

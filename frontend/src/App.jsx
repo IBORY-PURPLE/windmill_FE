@@ -18,7 +18,11 @@ import StockDetailPage from "./pages/StockDetail";
 import MyStockPage from "./pages/MyStock";
 import InterestStockPage from "./pages/InterestStock";
 import NewsPage from "./pages/NewsPage";
-// import { fetchNews } from "./api/news";
+
+import PortfolioPage from "./pages/Portfolio/Portfolio";
+import AvatarPage from "./pages/Portfolio/Avatar";
+import SavePortfolioPage from "./pages/Portfolio/SavePortfolio";
+import RecommendPortfolioPage from "./pages/Portfolio/RcommendPortfolio";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +65,26 @@ const router = createBrowserRouter([
               {
                 path: ":stockId",
                 element: <StockDetailPage context="interest" />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "portfolio",
+        element: <PortfolioPage></PortfolioPage>,
+        children: [
+          {
+            path: ":avatarId",
+            element: <AvatarPage></AvatarPage>,
+            children: [
+              {
+                index: true,
+                element: <RecommendPortfolioPage></RecommendPortfolioPage>,
+              },
+              {
+                path: "portfoliosave",
+                element: <SavePortfolioPage></SavePortfolioPage>,
               },
             ],
           },
