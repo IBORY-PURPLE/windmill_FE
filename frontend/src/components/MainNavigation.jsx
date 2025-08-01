@@ -70,15 +70,19 @@ function MainNavigation() {
           <li className="relative group">
             <NavLink
               to="/news?query=경제"
-              className="cursor-pointer hover:underline"
+              className={({ isActive }) =>
+                isActive
+                  ? "border-b-2 border-[#C20E2F] pb-1 text-[#C20E2F]"
+                  : "hover:underline"
+              }
             >
               News
             </NavLink>
-            <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50">
+            <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50 border border-black">
               <li>
                 <NavLink
                   to="/news?query=경제"
-                  className="block px-4 py-2 mt-1 hover:bg-gray-100"
+                  className="block px-4 py-2 mt-1 hover:text-[#C20E2F] hover:underline"
                 >
                   경제
                 </NavLink>
@@ -86,7 +90,7 @@ function MainNavigation() {
               <li>
                 <NavLink
                   to="/news?query=금융"
-                  className="block px-4 py-2 hover:bg-gray-100"
+                  className="block px-4 py-2 hover:text-[#C20E2F] hover:underline"
                 >
                   금융
                 </NavLink>
@@ -94,7 +98,7 @@ function MainNavigation() {
               <li>
                 <NavLink
                   to="/news?query=S%26P500"
-                  className="block px-4 py-2 mb-1 hover:bg-gray-100"
+                  className="block px-4 py-2 mb-1 hover:text-[#C20E2F] hover:underline"
                 >
                   S&P500
                 </NavLink>
@@ -106,7 +110,9 @@ function MainNavigation() {
               <NavLink
                 to="/auth?mode=login"
                 className={({ isActive }) =>
-                  isActive ? "border-b-2 border-white pb-1" : "hover:underline"
+                  isActive
+                    ? "border-b-2 border-[#C20E2F] pb-1 text-[#C20E2F]"
+                    : "hover:underline"
                 }
                 end
               >
@@ -121,7 +127,7 @@ function MainNavigation() {
                   to="/personal"
                   className={({ isActive }) =>
                     isActive
-                      ? "border-b-2 border-white pb-1"
+                      ? "border-b-2 border-[#C20E2F] pb-1 text-[#C20E2F]"
                       : "hover:underline"
                   }
                   end
@@ -129,11 +135,11 @@ function MainNavigation() {
                   PersonalPage
                 </NavLink>
                 {/* 드롭다운 메뉴 */}
-                <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50">
+                <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50 border border-black">
                   <li>
                     <NavLink
                       to="/personal/mystock"
-                      className="block px-4 py-2 mt-1 hover:bg-gray-100"
+                      className="block px-4 py-2 mt-1 hover:text-[#C20E2F] hover:underline"
                     >
                       MyStock
                     </NavLink>
@@ -141,7 +147,7 @@ function MainNavigation() {
                   <li>
                     <NavLink
                       to="/personal/intereststock"
-                      className="block px-4 py-2 mb-1 hover:bg-gray-100"
+                      className="block px-4 py-2 mb-1 hover:text-[#C20E2F] hover:underline"
                     >
                       Interest Stock
                     </NavLink>
@@ -153,7 +159,7 @@ function MainNavigation() {
                   to="/portfolio"
                   className={({ isActive }) =>
                     isActive
-                      ? "border-b-2 border-white pb-1"
+                      ? "border-b-2 border-[#C20E2F] pb-1 text-[#C20E2F]"
                       : "hover:underline"
                   }
                   end
