@@ -27,7 +27,7 @@ function InterestStockPage() {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto p-4">
+      <div className="max-w-screen-lg mx-auto p-4 border border-black">
         <h1>Interest Stock</h1>
         <StockList
           stocks={interestStocks}
