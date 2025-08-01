@@ -115,36 +115,53 @@ function MainNavigation() {
             </li>
           )}
           {token && (
-            <li className="relative group">
-              <NavLink
-                to="/personal"
-                className={({ isActive }) =>
-                  isActive ? "border-b-2 border-white pb-1" : "hover:underline"
-                }
-                end
-              >
-                PersonalPage
-              </NavLink>
-              {/* 드롭다운 메뉴 */}
-              <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50">
-                <li>
-                  <NavLink
-                    to="/personal/mystock"
-                    className="block px-4 py-2 mt-1 hover:bg-gray-100"
-                  >
-                    MyStock
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/personal/intereststock"
-                    className="block px-4 py-2 mb-1 hover:bg-gray-100"
-                  >
-                    Interest Stock
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
+            <>
+              <li className="relative group">
+                <NavLink
+                  to="/personal"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "border-b-2 border-white pb-1"
+                      : "hover:underline"
+                  }
+                  end
+                >
+                  PersonalPage
+                </NavLink>
+                {/* 드롭다운 메뉴 */}
+                <ul className="absolute left-0 w-48 bg-white text-black rounded shadow-md hidden group-hover:block z-50">
+                  <li>
+                    <NavLink
+                      to="/personal/mystock"
+                      className="block px-4 py-2 mt-1 hover:bg-gray-100"
+                    >
+                      MyStock
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/personal/intereststock"
+                      className="block px-4 py-2 mb-1 hover:bg-gray-100"
+                    >
+                      Interest Stock
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <NavLink
+                  to="/portfolio"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "border-b-2 border-white pb-1"
+                      : "hover:underline"
+                  }
+                  end
+                >
+                  PortfolioPage
+                </NavLink>
+              </li>
+            </>
           )}
         </ul>
       </nav>
