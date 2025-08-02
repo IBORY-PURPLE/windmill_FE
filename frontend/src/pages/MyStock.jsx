@@ -54,7 +54,7 @@ function MyStockPage() {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto p-4 border border-black">
+      <div className="max-w-screen-lg mx-auto p-4 border border-black rounded">
         <h1>My Stock</h1>
         <div>
           <button

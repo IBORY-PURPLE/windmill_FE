@@ -91,7 +91,7 @@ function HomePage() {
             placeholder="Search stocks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-black rounded px-3 py-1 w-64 focus:outline-none focus:ring bg-white"
+            className="transition-transform duration-300 focus:scale-125 border border-black rounded px-3 py-1 w-64 focus:outline-none bg-white"
           ></input>
         </div>
         <StockSection stocks={displayedStocks} interestList={interestList} />

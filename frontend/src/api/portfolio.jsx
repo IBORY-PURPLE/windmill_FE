@@ -13,7 +13,7 @@ export const fetchAvatars = async () => {
   return data.data;
 };
 
-export const addAvatar = async (data) => {
+export const addAvatar = async (avatarData) => {
   const token = getAuthToken();
   const res = await fetch("https://windmill-be-iqxx.onrender.com/user/avatar", {
     method: "POST",
@@ -22,8 +22,8 @@ export const addAvatar = async (data) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      age: data.age,
-      demage: data.demage,
+      age: avatarData.age,
+      loss: avatarData.loss,
     }),
   });
 

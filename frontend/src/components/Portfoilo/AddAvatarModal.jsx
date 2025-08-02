@@ -1,8 +1,16 @@
 import { useState } from "react";
 
-function AddAvatarModal({ onClose }) {
+function AddAvatarModal({ onClose, onSubmit }) {
   const [age, setAge] = useState("");
   const [lossTolerance, setLossTolerance] = useState(0);
+
+  const handleSubmit = async () => {
+    onSubmit({
+      age: parseFloat(age),
+      loss: parseFloat(lossTolerance),
+    });
+    onClose();
+  };
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -12,7 +20,7 @@ function AddAvatarModal({ onClose }) {
           type="number"
           placeholder="나이"
           value={age}
-          onChange={(e) => setAge(e.target.age)}
+          onChange={(e) => setAge(e.target.value)}
           className="border border-black px-3 py-1 w-full mb-2 bg-[#FFF8E0] text-black"
         ></input>
         <div className="mt-4">
@@ -41,6 +49,13 @@ function AddAvatarModal({ onClose }) {
             className="px-4 py-2 bg-gray-300 rounded hover:bg-[#C20E2F] hover:text-white"
           >
             취소
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            disabled={!age}
+          >
+            추가
           </button>
         </div>
       </div>

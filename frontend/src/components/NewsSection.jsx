@@ -24,11 +24,11 @@ function NewsSection() {
   const current = todayNews[index];
 
   return (
-    <div className="flex-1 bg-white p-4 rounded-lg shadow-md border border-black transition-all duration-300 hover:scale-105 hover-shadow-xl hover:z-10">
-      <h2 className="text-lg font-bold mb-2 ml-2 text-black hover:text-[#C20E2F]">
+    <div className="group relative flex-1 bg-white p-4 rounded-lg shadow-md border border-black transition-all duration-500 ease-in-out hover:scale-y-125 hover:scale-x-110 origin-top hover-shadow-xl hover:z-10">
+      <h2 className="text-lg font-bold mb-2 ml-2 text-black group-hover:text-[#C20E2F]">
         오늘의 주요 뉴스
       </h2>
-      <div className="flex overflow-hidden h-24 rounded-lg border bg-white border border-black ">
+      <div className="flex h-24 rounded-lg border bg-white border border-black group-hover:h-auto transition-all duration-500">
         {current && (
           <div className="flex-shrink-0 w-full p-4 transition-opacity duration-500 opacity-100 animate-fadeIn">
             <a
@@ -40,6 +40,9 @@ function NewsSection() {
               {current.title}
             </a>
             <p className="text-xs text-gray-500 mt-1">{current.pubDate}</p>
+            <p className="text-xs text-gray-600 mt-2 max-h-0 overflow-hidden transition-all duration-500 group-hover:max-h-40">
+              {current.description}
+            </p>
           </div>
         )}
       </div>
