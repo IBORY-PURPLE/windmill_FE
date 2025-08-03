@@ -34,7 +34,7 @@ function PortfolioPage() {
         setModalOpen(false);
       },
       onError: (err) => {
-        conlsole.log(err);
+        console.log(err);
         alert("아바타 추가 실패");
       },
     });
@@ -55,8 +55,10 @@ function PortfolioPage() {
         <ErrorBox
           message={error?.message || "아바타를 불러오는데 실패했습니다."}
         />
+      ) : Array.isArray(avatars) && avatars.length > 0 ? (
+        <AvatarList avatars={avatars}></AvatarList>
       ) : (
-        <AvatarList avatars={avatars ?? []}></AvatarList>
+        <p>"아바타를 추가해주세요."</p>
       )}
 
       {modalOpen && (
