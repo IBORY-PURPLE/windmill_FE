@@ -3,11 +3,13 @@ import { useState } from "react";
 function AddAvatarModal({ onClose, onSubmit }) {
   const [age, setAge] = useState("");
   const [lossTolerance, setLossTolerance] = useState(0);
+  const [name, setName] = useState("");
 
   const handleSubmit = async () => {
     onSubmit({
       age: parseFloat(age),
       loss: parseFloat(lossTolerance),
+      name: name,
     });
     onClose();
   };
@@ -16,6 +18,13 @@ function AddAvatarModal({ onClose, onSubmit }) {
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg p-6 w-[500px] border border-black">
         <h2>아바타 생성</h2>
+        <input
+          type="text"
+          placeholder="이름"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="border border-black px-3 py-1 w-full mb-2 bg-[#FFF8E0] text-black"
+        ></input>
         <input
           type="number"
           placeholder="나이"

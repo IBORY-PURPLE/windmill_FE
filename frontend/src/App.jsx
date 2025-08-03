@@ -83,7 +83,7 @@ const router = createBrowserRouter([
                 element: <RecommendPortfolioPage></RecommendPortfolioPage>,
               },
               {
-                path: "portfoliosave",
+                path: "saveportfolio",
                 element: <SavePortfolioPage></SavePortfolioPage>,
               },
             ],
