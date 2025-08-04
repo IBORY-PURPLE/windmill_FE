@@ -6,4 +6,3 @@
 - npm install @tanstack/react-query
 - npm install react-toastify
 - npm install @tanstack/react-query-devtools
-

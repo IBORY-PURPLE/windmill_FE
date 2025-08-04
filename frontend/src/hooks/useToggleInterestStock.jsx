@@ -16,6 +16,7 @@ export function useToggleInterestStock() {
       } else {
         toast.info("관심등록!");
       }
+
       await queryClient.cancelQueries(["interestStocks"]);
 
       const previousInterest = queryClient.getQueryData(["interestStocks"]);
