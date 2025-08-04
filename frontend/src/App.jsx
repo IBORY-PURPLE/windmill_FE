@@ -72,8 +72,11 @@ const router = createBrowserRouter([
       },
       {
         path: "portfolio",
-        element: <PortfolioPage></PortfolioPage>,
         children: [
+          {
+            index: true,
+            element: <PortfolioPage></PortfolioPage>,
+          },
           {
             path: ":avatarId",
             element: <AvatarPage></AvatarPage>,

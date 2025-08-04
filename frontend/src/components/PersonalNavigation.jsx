@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import classes from "./PersonalNavigation.module.css";
 
 function PersonalNavigation() {
   // const location = useLocation();
@@ -7,15 +6,19 @@ function PersonalNavigation() {
 
   // const query = new URLSearchParams(location.search);
   // const currentFilter = query.get("filter") || "all";
+
+  const baseClasses =
+    "border border-black bg-gray-200 text-gray-900 px-6 py-2 rounded no-underline transition-colors duration-200";
+  const activeClasses = "bg-[#C20E2F] text-white";
   return (
-    <header className={classes.header}>
+    <header className="p-8 flex justify-center">
       <nav>
-        <ul className={classes.list}>
+        <ul className="flex gap-4">
           <li>
             <NavLink
               to="/personal/mystock"
               className={({ isActive }) =>
-                isActive ? classes.active : undefined
+                isActive ? `${baseClasses} ${activeClasses}` : baseClasses
               }
             >
               Mystock
@@ -25,7 +28,7 @@ function PersonalNavigation() {
             <NavLink
               to="/personal/intereststock"
               className={({ isActive }) =>
-                isActive ? classes.active : undefined
+                isActive ? `${baseClasses} ${activeClasses}` : baseClasses
               }
             >
               Interest Stock
