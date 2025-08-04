@@ -9,7 +9,7 @@ function PersonalNavigation() {
 
   const baseClasses =
     "border border-black bg-gray-200 text-gray-900 px-6 py-2 rounded no-underline transition-colors duration-200";
-  const activeClasses = "bg-[#C20E2F] text-white";
+  const activeClasses = "text-white bg-[#C20E2F]";
   return (
     <header className="p-8 flex justify-center">
       <nav>
