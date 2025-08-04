@@ -26,7 +26,7 @@ function MainLayout({ children }) {
 
       {/* 우측 콘텐츠 영역 */}
       <main className="flex-1 w-full p-0 flex justify-center">
-        <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-[#FFF8E0]">
+        <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-[#FFF8E0] mx-auto">
           {children}
         </div>
       </main>

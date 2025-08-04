@@ -58,8 +58,10 @@ function MyStockPage() {
         <h1>My Stock</h1>
         <div>
           <button
-            onClick={() => setModalOpen(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-5"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+            className="border border-black bg-gray-200 text-gray-900 px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white mb-4"
           >
             + 포지션 추가
           </button>

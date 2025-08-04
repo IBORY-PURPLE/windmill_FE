@@ -10,7 +10,10 @@ function AvatarList({ avatars }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {avatars.map((avatar) => (
-        <div key={avatar.id} onClick={() => navigate(`/${avatar.id}`)}>
+        <div
+          key={avatar.id}
+          onClick={() => navigate(`/portfolio/${avatar.id}`)}
+        >
           <AvatarItem avatar={avatar}></AvatarItem>
         </div>
       ))}
