@@ -29,10 +29,10 @@ function Pagination({ currentPage, totalPages }) {
   }
 
   return (
-    <div className="flex justify-center mt-6">
+    <div className="flex justify-center mt-6 pb-20">
       <div className="flex gap-2">
         <button
-          className="px-3 py-1 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-50"
+          className="px-3 py-1 rounded-md bg-white text-black hover:text-white hover:bg-black  border boder-black disabled:opacity-50"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -45,8 +45,8 @@ function Pagination({ currentPage, totalPages }) {
             className={`px-3 py-1 rounded-md transition-colors duration-200
           ${
             currentPage === page
-              ? "bg-blue-500 text-white"
-              : "bg-white text-gray-700 hover:bg-blue-100 border border-gray-300"
+              ? "bg-black text-white"
+              : "bg-white hover:text-white hover:bg-black border border-black"
           }
           }`}
           >
@@ -56,7 +56,7 @@ function Pagination({ currentPage, totalPages }) {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-50"
+          className="px-3 py-1 rounded-md bg-white text-black hover:text-white hover:bg-black border border-black disabled:opacity-50"
         >
           &gt;
         </button>

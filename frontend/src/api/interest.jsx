@@ -12,7 +12,7 @@ export const fetchInterestStocks = async () => {
     }
   );
 
-  if (!res.ok) throw new Error("관심 종목 조회 실패");
+  if (!res.ok) throw new Error("관심 종목 정보를 불러오는 데 실패했습니다.");
 
   const data = await res.json();
   return data.data.map((stock) => stock.stock_id); // stock_id 배열만 반환 수정요구

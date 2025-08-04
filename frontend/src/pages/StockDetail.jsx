@@ -4,8 +4,10 @@ import { fetchMyStocks } from "../api/mystock";
 import { useAddMyStock } from "../hooks/useAddMystock";
 import { useMyStockLog } from "../hooks/useMyStockLog";
 import SimpleStockModal from "../components/SimpleStockModal";
+import ErrorBox from "../components/ErrorBox";
+import { toast } from "react-toastify";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import classes from "./StockDetail.module.css";
 import { useState } from "react";
 import Select from "react-select";
@@ -27,10 +29,19 @@ const MULTI_OPTIONS = [
   { value: "lowPrice", label: "저가" },
   { value: "volume", label: "거래량" },
   { value: "interestRate", label: "고정금리" },
+  { value: "per", label: "PER" },
+  { value: "pbr", label: "PBR" },
+  { value: "psr", label: "PSR" },
+  { value: "snp", label: "S&P" },
+  { value: "roe", label: "ROE" },
+  { value: "roa", label: "ROA" },
+  { value: "opm", label: "OPM" },
+  { value: "npm", label: "NPM" },
 ];
 
 const PERIOD_OPTIONS = [
-  { value: "5", label: "5일" },
+  { value: "3", label: "3일" },
+  { value: "7", label: "7일" },
   { value: "15", label: "15일" },
   { value: "30", label: "30일" },
 ];
@@ -40,6 +51,7 @@ const PERIOD_OPTIONS = [
 function StockDetailPage({ context }) {
   const { data: stocks = [] } = useStocks();
   const { stockId } = useParams();
+  const navigate = useNavigate();
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
@@ -66,6 +78,7 @@ function StockDetailPage({ context }) {
     stockLogs,
     isLoading: isLogLoading,
     isError: isLogError,
+    error,
     refetch: refetchLogs,
     setQueryData,
   } = useMyStockLog(stockId, false);
@@ -112,12 +125,20 @@ function StockDetailPage({ context }) {
 
   const handleTradeSubmit = (data) => {
     addMutation.mutate(data, {
-      onSuccess: () => {
-        alert("거래가 반영되었습니다.");
-        refetchLogs();
+      onSuccess: async (res) => {
+        const remaining = res?.data?.all_stock_count || 0;
+
+        if (remaining <= 0) {
+          toast.info("모든 주식을 매도했습니다.");
+          navigate("/personal/mystock");
+          return;
+        }
+
+        toast.success("거래가 반영되었습니다.");
+        await refetchLogs();
       },
       onError: () => {
-        alert("오류 발생");
+        toast.error("오류 발생");
       },
     });
   };
@@ -163,7 +184,11 @@ function StockDetailPage({ context }) {
               }`}
             >
               {isLogLoading && <p>불러오는 중...</p>}
-              {isLogError && <p>불러오기 실패</p>}
+              {isLogError && (
+                <ErrorBox
+                  message={error?.message || "거래 로그 조회 실패했습니다"}
+                />
+              )}
               {!isLogLoading && !isLogError && stockLogs.length === 0 && (
                 <p>기록 없음</p>
               )}

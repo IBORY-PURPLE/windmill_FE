@@ -1,0 +1,6 @@
+필요 페이지
+- home : 주요 뉴스와 종목 (즐겨찾기) 기능이 포함되어 있음
+-stock : ??
+- news : ??
+- authentication : 로그인/회원가입 페이지 ( hover 기능 빼기)
+- personal 페이지: 그래프와 보고서 나옴

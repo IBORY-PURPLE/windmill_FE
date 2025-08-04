@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMyStocks } from "../api/mystock";
 import { useStocks } from "../hooks/useStocks";
 import { useAddMyStock } from "../hooks/useAddMystock";
+import ErrorBox from "../components/ErrorBox";
 
 import StockList from "../components/StockList";
 import AddStockModal from "../components/AddStockModal";
@@ -17,6 +18,7 @@ function MyStockPage() {
     data: myStocks = [],
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ["myStocks"],
     queryFn: fetchMyStocks,
@@ -52,12 +54,14 @@ function MyStockPage() {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto p-4">
+      <div className="max-w-screen-lg mx-auto p-4 border border-black rounded">
         <h1>My Stock</h1>
         <div>
           <button
-            onClick={() => setModalOpen(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-5"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+            className="border border-black bg-gray-200 text-gray-900 px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white mb-4"
           >
             + 포지션 추가
           </button>
@@ -65,7 +69,11 @@ function MyStockPage() {
         {isLoading ? (
           <p>보유 주식 데이터를 불러오는 중입니다...</p>
         ) : isError ? (
-          <p>데이터 로딩 실패</p>
+          <ErrorBox
+            message={
+              error?.message || "보유 주식 정보를 불러오는데 실패했습니다."
+            }
+          />
         ) : (
           <StockList
             stocks={myStockList ?? []}

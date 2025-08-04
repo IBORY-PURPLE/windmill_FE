@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleInterestStock } from "../api/interest";
+import { toast } from "react-toastify";
 
 export function useToggleInterestStock() {
   const queryClient = useQueryClient();
@@ -10,6 +11,12 @@ export function useToggleInterestStock() {
 
     // 1. 요청 전에 낙관적 업데이트 수행
     onMutate: async ({ stockId, isAlreadyInterested }) => {
+      if (isAlreadyInterested) {
+        toast.info("관심취소");
+      } else {
+        toast.info("관심등록!");
+      }
+
       await queryClient.cancelQueries(["interestStocks"]);
 
       const previousInterest = queryClient.getQueryData(["interestStocks"]);
