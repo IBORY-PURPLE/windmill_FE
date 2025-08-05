@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <PersonalPage></PersonalPage>,
+            element: <MyStockPage />,
           },
           {
             path: "mystock",
