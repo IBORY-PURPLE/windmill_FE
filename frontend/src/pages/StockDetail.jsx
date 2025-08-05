@@ -155,7 +155,7 @@ function StockDetailPage({ context }) {
             onClick={() => setShowModal(true)}
             className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
           >
-            거래 추가
+            매도/매입
           </button>
           {showModal && (
             <SimpleStockModal

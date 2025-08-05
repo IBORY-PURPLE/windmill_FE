@@ -19,7 +19,9 @@ function StockItem({ stock, isInterested }) {
             : "text-gray-400 hover:text-yellow-400 transition text-xl"
         }`}
       >
-        {isInterested ? "⭐" : "☆"}
+        <span className={`text-2xl ${isInterested ? "text-[#C20E2F]" : "text-gray-300"}`}>
+  ☆
+</span>
       </button>
       <p className="font-bold text-base pr-8 truncate">{stock.name}</p>
       <p className="font-bold text-base">({stock.ticker})</p>

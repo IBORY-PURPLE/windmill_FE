@@ -23,9 +23,7 @@ function MainNavigation() {
         </div>
       </header>
       <nav className="rounded sticky top-0 z-50 bg-gary-200 border border-black hover:bg-[#FFF8E0]">
-        {/* <hr className="border-gray-300" /> */}
-        {/* <ul className="flex justify-center space-x-6 text-black font-medium text-lg py-2"> */}
-          <ul className="flex justify-center space-x-6 text-black font-medium text-base sm:text-lg py-2">
+        <ul className="flex justify-center space-x-6 text-black font-medium text-base sm:text-lg py-2 bg-[rgb(255,248,224)]">
           <li>
             <NavLink
               to="/"
