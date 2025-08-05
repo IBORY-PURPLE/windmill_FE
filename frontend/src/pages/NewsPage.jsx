@@ -11,7 +11,7 @@ function NewsPage() {
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">뉴스 - {query}</h1>
+      <h1 className="text-3xl font-bold mb-1 pb-3 pt-2">뉴스 - {query}</h1>
       <ul className="space-y-4">
         {data?.map((article, index) => (
           <li

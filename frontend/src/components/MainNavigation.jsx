@@ -7,24 +7,23 @@ function MainNavigation() {
   // hover:bg-[#FFF8E0]
   return (
     <>
-      <header className="rounded shadow bg-white-200 max-w-5xl mx-auto pb-4 border-t border-r border-l border-black">
-        <div className="flex justify-between items-center mb-2 ">
+      <header className="rounded shadow bg-white-200 max-w-5xl mx-auto pb-2 border-t border-r border-l border-black">
+        <div className="flex justify-between items-center mb-1 ">
           <div className="ml-3 mt-3 flex items-center space-x-4 p-2">
             <img src={logoImg} alt="WindMill Logo" className="h-10" />
             <NavLink
               to="/"
-              className="text-black text-2xl font-bold"
+              className="text-black text-4xl font-bold"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               WindMill
             </NavLink>
-            {token && <LogoutButton></LogoutButton>}
           </div>
+          {token && <LogoutButton></LogoutButton>}
         </div>
       </header>
       <nav className="rounded sticky top-0 z-50 bg-gary-200 border border-black hover:bg-[#FFF8E0]">
-        {/* <hr className="border-gray-300" /> */}
-        <ul className="flex justify-center space-x-6 text-black font-medium text-lg py-2">
+        <ul className="flex justify-center space-x-6 text-black font-medium text-base sm:text-lg py-2 bg-[rgb(255,248,224)]">
           <li>
             <NavLink
               to="/"
