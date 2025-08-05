@@ -25,7 +25,7 @@ function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="flex items-center mr-5 gap-2 bg-white hover:bg-[#C20E2F] hover:text-white text-black px-4 py-1.5 rounded-md text-sm font-semibold shadow-sm transition duration-200 border border-black"
+      className="flex items-center mr-5 mt-2 gap-2 bg-white hover:bg-[#C20E2F] hover:text-white text-black px-4 py-1.5 rounded-md text-sm font-semibold shadow-sm transition duration-200 border border-black"
     >
       <LogOut className="w-4 h-4 " />
       logout
