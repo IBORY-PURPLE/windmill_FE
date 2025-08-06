@@ -70,7 +70,6 @@ function RecommendPortfolioPage() {
   }
 
   const { result, result2 } = data;
-
   return (
     <div className="border border-black bg-white rounded mx-2 p-2 ">
       {isLoading ? (
