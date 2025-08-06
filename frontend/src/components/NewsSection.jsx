@@ -50,7 +50,7 @@ function NewsSection() {
   const visibleIndicators = todayNews.slice(start, start + Math.min(total, maxVisible));
 
   return (
-    <div className="group relative flex-1 bg-white p-4 rounded-lg shadow-md border border-black transition-all duration-500 ease-in-out origin-top hover:scale-y-125 hover:scale-x-110 hover:z-10 max-w-xl mx-auto overflow-hidden">
+    <div className="group relative flex-1 bg-white p-4 rounded-lg shadow-md border border-black transition-all duration-500 ease-in-out origin-top hover:scale-y-125 hover:scale-x-105 hover:z-10 max-w-xl mx-auto overflow-hidden">
       <h2 className="text-lg font-bold mb-2 ml-2 text-black group-hover:text-[#C20E2F]">
         오늘의 주요 뉴스
       </h2>

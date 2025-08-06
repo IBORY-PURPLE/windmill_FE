@@ -160,11 +160,11 @@ function StockDetailPage({ context }) {
         {context === "mystock" && (
           <>
             <button
-              onClick={() => setShowModal(true)}
-              className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
-            >
-              거래 추가
-            </button>
+            onClick={() => setShowModal(true)}
+            className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+          >
+            매도/매입
+          </button>
             {showModal && (
               <SimpleStockModal
                 stockId={stockId}
