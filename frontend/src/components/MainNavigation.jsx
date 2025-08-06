@@ -88,18 +88,18 @@ function MainNavigation() {
               </li>
               <li>
                 <NavLink
-                  to="/news?query=금융"
+                  to="/news?query=암호화폐"
                   className="block px-4 py-2 hover:text-[#C20E2F] hover:underline"
                 >
-                  금융
+                  암호화폐
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/news?query=S%26P500"
+                  to="/news?query=주식시장"
                   className="block px-4 py-2 mb-1 hover:text-[#C20E2F] hover:underline"
                 >
-                  S&P500
+                  주식시장
                 </NavLink>
               </li>
             </ul>

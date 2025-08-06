@@ -6,7 +6,14 @@ function NewsPage() {
   const query = searchParams.get("query") || "경제";
   const { data: data, isLoading, error } = useNews(query);
 
-  if (isLoading) return <p>로딩 중...</p>;
+  if (isLoading)
+    return (
+      <div className="grid grid-cols-1 justify-center items-center h-screen">
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+        </div>
+      </div>
+    );
   if (error) return <p>에러 발생: {error.message}</p>;
 
   return (

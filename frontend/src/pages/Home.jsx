@@ -54,10 +54,10 @@ function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-xl font-semibold text-gray-600">
-          종목 정보를 불러오는 중입니다.
-        </p>
+      <div className="grid grid-cols-1 justify-center items-center h-screen">
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+        </div>
       </div>
     );
   }
