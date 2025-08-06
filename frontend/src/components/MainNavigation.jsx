@@ -13,7 +13,7 @@ function MainNavigation() {
             <img src={logoImg} alt="WindMill Logo" className="h-10" />
             <NavLink
               to="/"
-              className="text-black text-4xl font-bold"
+              className="text-black text-4xl font-bold font-serif"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               WindMill
