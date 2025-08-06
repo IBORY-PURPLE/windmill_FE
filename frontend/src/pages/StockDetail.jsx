@@ -152,7 +152,7 @@ function StockDetailPage({ context }) {
 
   return (
     <>
-      <div className={classes.container}>
+      <div className="mx-auto my-8 p-8 w-[90%] max-w-[40rem] text-center bg-primary-600 rounded-lg shadow-md">
         <h1>Stock Detail Page</h1>
         <p>
           Stock Name: {stock.name} ({stock.ticker})
@@ -283,7 +283,7 @@ function StockDetailPage({ context }) {
           </>
         )}
       </div>
-      <div className="max-w-3xl mx-auto mt-4">
+      <div className="max-w-3xl mx-auto mt-4 mb-20">
         <div className="flex justify-center">
           <button
             onClick={() => setShowNews((prev) => !prev)}
@@ -295,7 +295,9 @@ function StockDetailPage({ context }) {
         {showNews && (
           <div className="p-4 max-w-3xl mx-auto">
             {isNewsLoading ? (
-              <p>뉴스 로딩 중...</p>
+              <div className="flex justify-center items-center mt-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+              </div>
             ) : isNewsError ? (
               <p>뉴스 불러오기 실패</p>
             ) : newsList.length === 0 ? (
