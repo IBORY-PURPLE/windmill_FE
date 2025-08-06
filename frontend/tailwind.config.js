@@ -3,8 +3,20 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      colors: {
+        red: 'rgb(195, 22, 50)',       // rgb(195,22,50)
+        beige: 'rgb(210, 184, 135)',     // rgb(210,184,135)
+        lightgold: 'rgb(215, 191, 119)', // rgb(215,191,119)
+      },
       backgroundSize: {
         "200%": "200% 200%",
+      },
+      fontFamily: {
+        customSerif: [
+          'Georgia',           // 영문, serif 계열
+          'Nanum Gothic',      // 한글 전용 폰트 (혹은 Noto Sans KR 등)
+          'serif'
+        ]
       },
       animation: {
         "pulse-green": "pulseGradientGreen 3s ease-in-out infinite",

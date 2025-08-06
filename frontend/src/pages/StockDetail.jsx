@@ -152,7 +152,7 @@ function StockDetailPage({ context }) {
 
   return (
     <>
-      <div className="mx-auto my-8 p-8 w-[90%] max-w-[40rem] text-center bg-primary-600 rounded-lg shadow-md">
+      <div className="mx-auto my-8 p-8 w-[90%] max-w-[40rem] text-center bg-primary-600 rounded-lg shadow-md bg-emerald-50 border border-black">
         <h1>Stock Detail Page</h1>
         <p>
           Stock Name: {stock.name} ({stock.ticker})
@@ -160,11 +160,12 @@ function StockDetailPage({ context }) {
         {context === "mystock" && (
           <>
             <button
-            onClick={() => setShowModal(true)}
-            className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
-          >
-            매도/매입
-          </button>
+              onClick={() => setShowModal(true)}
+              className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+            >
+              매도/매수 
+            </button>
+
             {showModal && (
               <SimpleStockModal
                 stockId={stockId}

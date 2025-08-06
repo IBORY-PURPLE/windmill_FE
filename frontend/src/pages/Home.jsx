@@ -72,7 +72,7 @@ function HomePage() {
           <h2 className="text-lg font-bold mb-2 ml-2 text-black hover:text-[#C20E2F]">
             주요 지수
           </h2>
-          <ul className="text-sm text-gray-800 border border-black">
+          <ul className="text-sm text-gray-800 border border-black p-2">
             <li>
               KOSPI: 2,710.56 <span className="text-green-600">+0.78%</span>
             </li>

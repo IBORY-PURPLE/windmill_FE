@@ -23,8 +23,8 @@ function MainLayout({ children }) {
         </div>
       </aside> */}
       {/* 우측 콘텐츠 영역 */}
-      <main className="flex-1 w-full p-0 flex justify-center m-0">
-        <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-[#FFF8E0] mx-auto shadow-2xl z-10 rounded-xl">
+      <main className="flex-1 w-full p-0 flex justify-center m-0 font-customSerif text-xl">
+        <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-beige mx-auto shadow-2xl z-10 rounded-xl">
           {children}
         </div>
       </main>
