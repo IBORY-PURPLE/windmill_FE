@@ -47,11 +47,12 @@ const PERIOD_OPTIONS = [
   { value: "30", label: "30일" },
 ];
 
+// 디테일 컴포넌트 시작 /////////////////////////////////////////////////////////////////////////////////////////////////
+
 function StockDetailPage({ context }) {
   const { data: stocks = [] } = useStocks();
   const { stockId } = useParams();
   const navigate = useNavigate();
-
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
@@ -61,15 +62,14 @@ function StockDetailPage({ context }) {
   const [showLogs, setShowLogs] = useState(false);
   const [showNews, setShowNews] = useState(false);
 
-  const addStockMutation = useAddMyStock();
+  const addMutation = useAddMyStock();
 
   const stock = stocks.find((s) => String(s.id) === stockId);
-
   const {
     data: newsList = [],
     isLoading: isNewsLoading,
     isError: isNewsError,
-  } = useNews(showNews ? stock?.name : null);
+  } = useNews(showNews ? stock.name : null);
 
   const {
     data: myStocks = [],
@@ -87,6 +87,7 @@ function StockDetailPage({ context }) {
     isError: isLogError,
     error,
     refetch: refetchLogs,
+    setQueryData,
   } = useMyStockLog(stockId, false);
 
   const mystock =
@@ -94,19 +95,15 @@ function StockDetailPage({ context }) {
       ? myStocks.find((s) => String(s.stock_id) === stockId)
       : null;
 
-  const predictMutation = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ stockId, selectedKeys, period }) =>
       predictStock({ stockId, selectedKeys, period }),
   });
 
   const handlePredict = () => {
-    if (selectedOptions.length === 0) {
-      toast.info("최소 하나의 항목을 선택하세요.");
-      return;
-    }
     const selectedKeys = selectedOptions.map((opt) => opt.value);
     setIsGraphLoading(true);
-    predictMutation.mutate(
+    mutate(
       { stockId, selectedKeys, period: selectedPeriod.value },
       {
         onSuccess: (data) => {
@@ -120,14 +117,13 @@ function StockDetailPage({ context }) {
         },
         onError: () => {
           setIsGraphLoading(false);
-          toast.error("예측 데이터를 불러오는데 실패했습니다.");
         },
       }
     );
   };
 
   const handleSelectChange = (selected) => {
-    setSelectedOptions(selected || []);
+    setSelectedOptions(selected);
   };
 
   const handlePeriodChange = (selected) => {
@@ -135,7 +131,7 @@ function StockDetailPage({ context }) {
   };
 
   const handleTradeSubmit = (data) => {
-    addStockMutation.mutate(data, {
+    addMutation.mutate(data, {
       onSuccess: async (res) => {
         const remaining = res?.data?.all_stock_count || 0;
 
@@ -154,146 +150,140 @@ function StockDetailPage({ context }) {
     });
   };
 
-  if (!stock) {
-    return <p>존재하지 않는 종목입니다.</p>;
-  }
-
   return (
-    <div className={classes.container}>
-      <h1>Stock Detail Page</h1>
-      <p>
-        Stock Name: {stock.name} ({stock.ticker})
-      </p>
-
-      {context === "mystock" && (
-        <>
-          <button
-            onClick={() => setShowModal(true)}
-            className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
-          >
-            매도/매입
-          </button>
-          {showModal && (
-            <SimpleStockModal
-              stockId={stockId}
-              onClose={() => setShowModal(false)}
-              onSubmit={handleTradeSubmit}
-            />
-          )}
-
-          <button
-            onClick={() => {
-              setShowLogs((prev) => {
-                if (!prev) {
+    <>
+      <div className="mx-auto my-8 p-8 w-[90%] max-w-[40rem] text-center bg-primary-600 rounded-lg shadow-md">
+        <h1>Stock Detail Page</h1>
+        <p>
+          Stock Name: {stock.name} ({stock.ticker})
+        </p>
+        {context === "mystock" && (
+          <>
+            <button
+              onClick={() => setShowModal(true)}
+              className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+            >
+              거래 추가
+            </button>
+            {showModal && (
+              <SimpleStockModal
+                stockId={stockId}
+                onClose={() => setShowModal(false)}
+                onSubmit={handleTradeSubmit}
+              />
+            )}
+            <button
+              onClick={() => {
+                if (showLogs) {
+                  setShowLogs(false);
+                } else {
+                  setShowLogs(true);
                   refetchLogs();
                 }
-                return !prev;
-              });
-            }}
-            className="mt-4 bg-purple-600 text-white px-4 py-2 rounded"
-          >
-            {showLogs ? "거래 로그 닫기" : "거래 로그 보기"}
-          </button>
-
-          {showLogs && (
-            <div
-              className={`fixed top-0 right-0 h-full w-80 bg-white border-l shadow-lg z-50 transform transition-transform duration-500 translate-x-0 overflow-auto`}
+              }}
+              className="mt-4 bg-purple-600 text-white px-4 py-2 rounded"
             >
-              {isLogLoading && <p>불러오는 중...</p>}
-              {isLogError && (
-                <ErrorBox
-                  message={error?.message || "거래 로그 조회 실패했습니다"}
-                />
-              )}
-              {!isLogLoading && !isLogError && stockLogs.length === 0 && (
-                <p>기록 없음</p>
-              )}
-              {!isLogLoading && !isLogError && stockLogs.length > 0 && (
-                <ul>
-                  {stockLogs.map((log, i) => (
-                    <li key={i}>
-                      {log.date} - 💸 {log.buy_cost}원 / 📈 {log.buy_stock_count}주
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {isMyStockLoading ? (
-            <p>보유 주식 데이터를 불러오는 중...</p>
-          ) : isMyStockError ? (
-            <p>보유 종목 데이터를 불러오는데 실패했습니다...</p>
-          ) : mystock ? (
-            <>
-              <div>
-                <p>평단가 : {mystock.average_cost}</p>
-                <p>구매 주식 수: {mystock.all_stock_count}</p>
-              </div>
-
-              <div style={{ width: 300, marginTop: 20 }}>
-                <label>항목 선택</label>
-                <Select
-                  isMulti
-                  options={MULTI_OPTIONS}
-                  value={selectedOptions}
-                  onChange={handleSelectChange}
-                  placeholder="항목을 선택하세요."
-                />
-              </div>
-
-              <div style={{ width: 300, marginTop: 20 }}>
-                <label>기간 선택</label>
-                <Select
-                  options={PERIOD_OPTIONS}
-                  value={selectedPeriod}
-                  onChange={handlePeriodChange}
-                  placeholder="항목을 선택하세요."
-                />
-              </div>
-
-              <button
-                onClick={handlePredict}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                disabled={isGraphLoading}
+              거래 로그 보기
+            </button>
+            {showLogs && (
+              <div
+                className={`fixed top-0 right-0 h-full w-80 bg-white border-l shadow-lg z-50 transform transition-transform duration-500 ${
+                  showLogs ? "translate-x-0" : "translate-x-full"
+                }`}
               >
-                {isGraphLoading ? "그래프 그리는 중..." : "예측 그래프 그리기"}
-              </button>
-
-              {(isGraphLoading || predictedData) && (
-                <div style={{ position: "relative", height: 400, marginTop: 20 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={predictedData || []}>
-                      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#8884d8"
-                        dot={false}
-                        name="예측값"
-                        isAnimationActive={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-
-                  {isGraphLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-yellow-100 bg-opacity-60 z-10">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
-                    </div>
-                  )}
+                {isLogLoading && <p>불러오는 중...</p>}
+                {isLogError && (
+                  <ErrorBox
+                    message={error?.message || "거래 로그 조회 실패했습니다"}
+                  />
+                )}
+                {!isLogLoading && !isLogError && stockLogs.length === 0 && (
+                  <p>기록 없음</p>
+                )}
+                {!isLogLoading && !isLogError && (
+                  <ul>
+                    {stockLogs.map((log, i) => (
+                      <li key={i}>
+                        {log.date} - 💸 {log.buy_cost}원 / 📈{" "}
+                        {log.buy_stock_count}주
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+            {isMyStockLoading ? (
+              <p>보유 주식 데이터를 불러오는 중...</p>
+            ) : isMyStockError ? (
+              <p>보유 종목 데이터를 불러오는데 실패했습니다...</p>
+            ) : (
+              <>
+                {" "}
+                <div>
+                  <p>평단가 : {mystock.average_cost}</p>
+                  <p>구매 주식 수: {mystock.all_stock_count}</p>
                 </div>
-              )}
-            </>
-          ) : (
-            <p>보유 주식 정보를 찾을 수 없습니다.</p>
-          )}
-        </>
-      )}
+                <div style={{ width: 300, marginTop: 20 }}>
+                  <label>Selecte Features</label>
+                  <Select
+                    isMulti
+                    options={MULTI_OPTIONS}
+                    value={selectedOptions}
+                    onChange={handleSelectChange}
+                    placeholder="항목을 선택하세요."
+                  ></Select>
+                </div>
+                <div style={{ width: 300, marginTop: 20 }}>
+                  <label>Selecte Period</label>
+                  <Select
+                    options={PERIOD_OPTIONS}
+                    value={selectedPeriod}
+                    onChange={handlePeriodChange}
+                    placeholder="항목을 선택하세요."
+                  ></Select>
+                </div>
+                <button
+                  onClick={handlePredict}
+                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                  disabled={isGraphLoading}
+                >
+                  {isGraphLoading
+                    ? "그래프 그리는 중...."
+                    : "예측 그래프 그리기"}
+                </button>
+                {(isGraphLoading || predictedData) && (
+                  <div style={{ position: "relative", height: 400 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      {/* 과거 실제 값: 진한 보라 */}
+                      <LineChart data={predictedData || []}>
+                        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#8884d8"
+                          dot={false}
+                          name="예측값"
+                          isAnimationActive={false} // 로딩시 flicker 방지
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
 
-      <div className="max-w-3xl mx-auto mt-4">
+                    {isGraphLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-yellow-100 bg-opacity-60 z-10">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </div>
+      <div className="max-w-3xl mx-auto mt-4 mb-20">
         <div className="flex justify-center">
           <button
             onClick={() => setShowNews((prev) => !prev)}
@@ -302,11 +292,12 @@ function StockDetailPage({ context }) {
             {showNews ? "<관련 기사 닫기>" : "<관련 기사 보기>"}
           </button>
         </div>
-
         {showNews && (
           <div className="p-4 max-w-3xl mx-auto">
             {isNewsLoading ? (
-              <p>뉴스 로딩 중...</p>
+              <div className="flex justify-center items-center mt-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+              </div>
             ) : isNewsError ? (
               <p>뉴스 불러오기 실패</p>
             ) : newsList.length === 0 ? (
@@ -337,7 +328,7 @@ function StockDetailPage({ context }) {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
 
