@@ -54,7 +54,7 @@ function MyStockPage() {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto p-4 border border-black rounded">
+      <div className="max-w-screen-lg mx-auto p-4 border border-black rounded h-screen">
         <h1>My Stock</h1>
         <div>
           <button
@@ -67,7 +67,9 @@ function MyStockPage() {
           </button>
         </div>
         {isLoading ? (
-          <p>보유 주식 데이터를 불러오는 중입니다...</p>
+          <div className="flex justify-center items-center mt-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+          </div>
         ) : isError ? (
           <ErrorBox
             message={
