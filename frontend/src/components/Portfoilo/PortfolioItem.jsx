@@ -14,7 +14,7 @@ function PortfolioItem({ result, chartData, showDetails }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <NavLink
-        to={`/stock/${stockId}`}
+        to={`/stocks/${stockId}`}
         className="block bg-white border border-gray-300 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 p-4"
       >
         <div className="flex justify-between items-center mb-2">

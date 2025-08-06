@@ -34,6 +34,7 @@ function StockItem({ stock, isInterested }) {
             />
           </svg>
         </span>
+
       </button>
       <p className="font-bold text-base pr-8 truncate">{stock.name}</p>
       <p className="font-bold text-base">({stock.ticker})</p>

@@ -165,6 +165,7 @@ function StockDetailPage({ context }) {
             >
               매도/매수 
             </button>
+
             {showModal && (
               <SimpleStockModal
                 stockId={stockId}
