@@ -7,9 +7,6 @@ function PersonalNavigation() {
   // const query = new URLSearchParams(location.search);
   // const currentFilter = query.get("filter") || "all";
 
-  const baseClasses =
-    "border border-black bg-gray-200 text-gray-900 px-6 py-2 rounded no-underline transition-colors duration-200";
-  const activeClasses = "text-white bg-[#C20E2F]";
   return (
     <header className="p-8 flex justify-center">
       <nav>
@@ -18,7 +15,11 @@ function PersonalNavigation() {
             <NavLink
               to="/personal/mystock"
               className={({ isActive }) =>
-                isActive ? `${baseClasses} ${activeClasses}` : baseClasses
+                `border border-black ${
+                  isActive
+                    ? "bg-[#C20E2F] text-white"
+                    : "bg-gray-200 text-gray-900"
+                } px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white`
               }
             >
               Mystock
@@ -28,7 +29,11 @@ function PersonalNavigation() {
             <NavLink
               to="/personal/intereststock"
               className={({ isActive }) =>
-                isActive ? `${baseClasses} ${activeClasses}` : baseClasses
+                `border border-black ${
+                  isActive
+                    ? "bg-[#C20E2F] text-white"
+                    : "bg-gray-200 text-gray-900"
+                } px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white`
               }
             >
               Interest Stock
