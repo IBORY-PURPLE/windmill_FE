@@ -10,7 +10,7 @@ function PortfolioItemList({ results, showDetails }) {
         return (
           <li
             key={result.stockId}
-            className="border border-black p-2 rounded hover:bg-gray-100 transition"
+            className="p-2 rounded hover:bg-gray-100 transition"
           >
             <PortfolioItem
               result={result}

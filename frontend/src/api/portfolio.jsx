@@ -61,23 +61,15 @@ export const allDeleteAvatar = async () => {
 };
 
 export const fetchPortfolio = async (avatarId) => {
-  const token = getAuthToken();
   const res = await fetch(
     `https://windmill-be-iqxx.onrender.com/portfolio/${avatarId}`,
     {
       method: "POST",
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      //   "Content-Type": "application/json",
-      // },
     }
   );
 
-  const text = await res.text(); // JSON이 아닐 수도 있으므로
-  console.log("서버 응답 내용:", text);
-
   if (!res.ok) throw new Error("포트폴리오 조회 실패했습니다.");
   const data = await res.json();
-  console.log(data);
+  console.log(data.data);
   return data.data;
 };
