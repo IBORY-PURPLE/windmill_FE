@@ -4,12 +4,17 @@ function SimpleStockModal({ onClose, onSubmit, stockId }) {
   const [date, setDate] = useState("");
   const [qty, setQty] = useState("");
   const [price, setPrice] = useState("");
+  const [tradeType, setTradeType] = useState("buy"); // "buy" or "sell"
+
 
   const handleSubmit = () => {
+    const pureQty = parseFloat(qty);
+    const returnQty = tradeType === "sell" ? -Math.abs(pureQty) : Math.abs(pureQty);
+
     onSubmit({
       id: stockId,
       date,
-      quantity: parseFloat(qty), // 음수도 허용
+      quantity: returnQty,
       purchasePrice: parseFloat(price),
     });
     onClose();
@@ -28,13 +33,29 @@ function SimpleStockModal({ onClose, onSubmit, stockId }) {
           onChange={(e) => setDate(e.target.value)}
           className="border px-3 py-2 w-full mb-3"
         />
-        <input
-          type="number"
-          placeholder="수량 (음수 입력 시 매도)"
-          value={qty}
-          onChange={(e) => setQty(e.target.value)}
-          className="border px-3 py-2 w-full mb-3"
-        />
+        <div className="flex items-center mb-3">
+          <select
+            value={tradeType}
+            onChange={(e) => setTradeType(e.target.value)}
+            className="border px-2 py-2 mr-2 rounded bg-white"
+          >
+            <option value="buy">매수</option>
+            <option value="sell">매도</option>
+          </select>
+          <input
+            type="number"
+            min={0}
+            placeholder="수량"
+            value={qty}
+            onChange={e => {
+              // 무조건 양수로 저장 및 표기
+              const v = e.target.value;
+              setQty(v.replace("-", ""));
+            }}
+            className="border px-3 py-2 w-full"
+          />
+        </div>
+
         <input
           type="number"
           placeholder="가격"
