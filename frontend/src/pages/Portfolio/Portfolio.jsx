@@ -1,7 +1,7 @@
-import AddAvatarModal from "../../components/Portfoilo/AddAvatarModal";
 import ErrorBox from "../../components/ErrorBox";
 import AvatarList from "../../components/Portfoilo/AvatarList";
 import { useAvatars } from "../../hooks/Portfolio/useAvatars";
+import AddAvatarModalWithStepper from "../../components/Portfoilo/AddAvatarModalWithStepper";
 
 function PortfolioPage() {
   const {
@@ -50,10 +50,10 @@ function PortfolioPage() {
         )}
 
         {modalOpen && (
-          <AddAvatarModal
+          <AddAvatarModalWithStepper
             onClose={() => setModalOpen(false)}
             onSubmit={handleAddAvatar}
-          ></AddAvatarModal>
+          ></AddAvatarModalWithStepper>
         )}
       </div>
     </div>

@@ -12,7 +12,7 @@ import {
 function PortfolioItem({ result, chartData, showDetails }) {
   const { stockId, ticker, ratio, returnRate, avgRoc } = result;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
       <NavLink
         to={`/stocks/${stockId}`}
         className="block bg-white border border-gray-300 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 p-4"
