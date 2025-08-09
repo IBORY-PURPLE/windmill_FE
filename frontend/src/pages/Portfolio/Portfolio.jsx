@@ -17,7 +17,7 @@ function PortfolioPage() {
 
   return (
     <div className="max-w-screen-lg mx-auto">
-      <div className="p-7 flex justify-center">
+      <div className="p-7 flex justify-start">
         <div className="flex gap-4">
           <button
             onClick={() => setModalOpen(true)}
@@ -26,12 +26,12 @@ function PortfolioPage() {
             + New Avatar
           </button>
 
-          <button
+          {/* <button
             onClick={handleDeleteAll}
             className="border border-black bg-gray-200 text-gray-900 px-4 py-1 rounded no-underline transition-colors duration-200 hover:bg-red-600 hover:text-white"
           >
             전체 삭제
-          </button>
+          </button> */}
         </div>
       </div>
       <div>

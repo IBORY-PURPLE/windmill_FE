@@ -19,6 +19,7 @@ export const fetchAvatars = async () => {
 
   // if (!res.ok) throw new Error("아바타를 불러오는데 실패했습니다.");
   const data = await res.json();
+  console.log(data.data);
   return data.data;
 };
 
@@ -43,6 +44,21 @@ export const addAvatar = async (avatarData) => {
   if (!res.ok) throw new Error("아바타 추가 실패");
   const data = await res.json();
   return data.data;
+};
+
+export const singleDeleteAvatar = async (avatarId) => {
+  const token = getAuthToken();
+  const res = await fetch(
+    `https://windmill-be-iqxx.onrender.com/portfolio/${avatarId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error("아바타 삭제 실패");
 };
 
 export const allDeleteAvatar = async () => {
