@@ -1,6 +1,8 @@
 import { Trash2 } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { singleDeleteAvatar } from "../../api/avatar";
+import TiltedCard from "../../style/AvatarCard";
+import character from "../../assets/character.png";
 
 function AvatarItem({ avatar }) {
   const queryClient = useQueryClient();
@@ -46,21 +48,57 @@ function AvatarItem({ avatar }) {
     }
   };
   return (
-    <div className="relative rounded-xl shadow-md border p-4 bg-white border-black transition-all duration-300 hover:scale-105 hover-shadow-xl hover:z-10">
-      <p>{avatar?.name}</p>
-      <p>{avatar?.age}</p>
-      <p>{avatar?.loss}</p>
-      <button
-        type="button"
-        onClick={(e) => handleDelete(e, avatar.id)}
-        disabled={isPending}
-        aria-label="아바타 삭제"
-        title="삭제"
-        className="absolute right-2 top-2 inline-flex items-center justify-center rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
-      >
-        <Trash2 className="w-5 h-5" />
-      </button>
+    <div className="flex justify-center border border-black rounded">
+      <TiltedCard
+        imageSrc={character}
+        altText={avatar.age}
+        captionText={avatar.age}
+        containerHeight="250px"
+        containerWidth="200px"
+        imageHeight="200px"
+        imageWidth="200px"
+        rotateAmplitude={12}
+        scaleOnHover={1.2}
+        showMobileWarning={false}
+        showTooltip={true}
+        displayOverlayContent={true}
+        overlayContent={
+          <div className="relative w-full h-full p-2">
+            <div className="absolute top-2 left-2 right-2 flex items-center justify-between gap-2">
+              <p className="tilted-card-demo-text text-sm font-semibold line-clamp-1">
+                {avatar.name}
+              </p>
+              <button
+                type="button"
+                onClick={(e) => handleDelete(e, avatar.id)}
+                disabled={isPending}
+                aria-label="아바타 삭제"
+                title="삭제"
+                className="inline-flex items-center justify-center rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        }
+      />
     </div>
+
+    // <div className="relative rounded-xl shadow-md border p-4 bg-white border-black transition-all duration-300 hover:scale-105 hover-shadow-xl hover:z-10">
+    //   <p>{avatar?.name}</p>
+    //   <p>{avatar?.age}</p>
+    //   <p>{avatar?.loss}</p>
+    //   <button
+    //     type="button"
+    //     onClick={(e) => handleDelete(e, avatar.id)}
+    //     disabled={isPending}
+    //     aria-label="아바타 삭제"
+    //     title="삭제"
+    //     className="absolute right-2 top-2 inline-flex items-center justify-center rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
+    //   >
+    //     <Trash2 className="w-5 h-5" />
+    //   </button>
+    // </div>
   );
 }
 

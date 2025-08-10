@@ -24,7 +24,6 @@ function MainNavigation() {
       </header>
       <nav className="rounded sticky top-0 z-50 bg-gary-200 border border-black bg-beige">
         <ul className="flex justify-center space-x-6 text-black font-medium text-base sm:text-lg py-2">
-
           <li>
             <NavLink
               to="/"
@@ -101,6 +100,14 @@ function MainNavigation() {
                   className="block px-4 py-2 mb-1 hover:text-[#C20E2F] hover:underline"
                 >
                   주식시장
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/news?query=정치"
+                  className="block px-4 py-2 mb-1 hover:text-[#C20E2F] hover:underline"
+                >
+                  정치
                 </NavLink>
               </li>
             </ul>

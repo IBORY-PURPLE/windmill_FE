@@ -2,7 +2,7 @@
 
 function SavePortfolioPage() {
   return (
-    <div>
+    <div className="min-h-screen">
       <h1>저장한 포트폴리오 출력해줘</h1>
     </div>
   );
