@@ -14,7 +14,7 @@ function MainLayout({ children }) {
 
         <footer className="bg-gray-200 text-black py-6 shadow-2xl">
           <p className="mb-2 text-center text-sm">
-            © 2025 WindMill.corp All rights reserved.
+            © 2025 WindMill All rights reserved.
           </p>
           <ul className="flex justify-center gap-4 text-sm">
             <li>
@@ -29,7 +29,7 @@ function MainLayout({ children }) {
             </li>
             <li>
               <a href="/contact" className="hover:underline">
-                AI model: made by gpt-4
+                AI model: made by gpt
               </a>
             </li>
           </ul>
