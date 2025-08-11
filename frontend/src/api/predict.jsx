@@ -19,7 +19,7 @@ export async function predictStock({ stockId, selectedKeys, period }) {
   console.log(JSON.stringify(body));
 
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/predict/${stockId}`,
+    `https://windmill-be-5qid.onrender.com/predict/${stockId}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,7 +30,6 @@ export async function predictStock({ stockId, selectedKeys, period }) {
   if (!res.ok) {
     throw new Error("예측에 실패했습니다.");
   }
-  console.log(body);
 
   return await res.json();
 }

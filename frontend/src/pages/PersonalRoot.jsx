@@ -27,7 +27,7 @@ export default PersonalRoot;
 //   const size = 50;
 
 //   const response = await fetch(
-//     `https://windmill-be-iqxx.onrender.com/stock?page=${page}&size=${size}`
+//     `https://windmill-be-5qid.onrender.com/stock?page=${page}&size=${size}`
 //   );
 
 //   if (!response.ok) {

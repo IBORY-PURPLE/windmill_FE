@@ -48,10 +48,10 @@ function AvatarItem({ avatar }) {
     }
   };
   return (
-    <div className="flex justify-center border border-black rounded">
+    <div className="flex justify-center rounded">
       <TiltedCard
         imageSrc={character}
-        altText={avatar.age}
+        altText={(avatar.age, avatar.loss)}
         captionText={avatar.age}
         containerHeight="250px"
         containerWidth="200px"

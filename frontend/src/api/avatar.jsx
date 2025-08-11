@@ -3,7 +3,7 @@ import { getAuthToken } from "../util/auth";
 export const fetchAvatars = async () => {
   const token = getAuthToken();
   const res = await fetch(
-    "https://windmill-be-iqxx.onrender.com/portfolio/avatar",
+    "https://windmill-be-5qid.onrender.com/portfolio/avatar",
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -19,14 +19,13 @@ export const fetchAvatars = async () => {
 
   // if (!res.ok) throw new Error("아바타를 불러오는데 실패했습니다.");
   const data = await res.json();
-  console.log(data.data);
   return data.data;
 };
 
 export const addAvatar = async (avatarData) => {
   const token = getAuthToken();
   const res = await fetch(
-    "https://windmill-be-iqxx.onrender.com/portfolio/avatar",
+    "https://windmill-be-5qid.onrender.com/portfolio/avatar",
     {
       method: "POST",
       headers: {
@@ -49,7 +48,7 @@ export const addAvatar = async (avatarData) => {
 export const singleDeleteAvatar = async (avatarId) => {
   const token = getAuthToken();
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/portfolio/${avatarId}`,
+    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}`,
     {
       method: "DELETE",
       headers: {
@@ -64,7 +63,7 @@ export const singleDeleteAvatar = async (avatarId) => {
 export const allDeleteAvatar = async () => {
   const token = getAuthToken();
   const res = await fetch(
-    "https://windmill-be-iqxx.onrender.com/portfolio/delete_all",
+    "https://windmill-be-5qid.onrender.com/portfolio/delete_all",
     {
       method: "DELETE",
       headers: {

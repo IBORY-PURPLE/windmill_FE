@@ -50,7 +50,6 @@ function MyStockPage() {
       })
       .filter(Boolean);
   }, [myStocks, stocks]);
-  console.table(myStockList);
 
   return (
     <>
