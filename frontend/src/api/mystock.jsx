@@ -4,7 +4,7 @@ import { getAuthToken } from "../util/auth";
 export const fetchMyStocks = async () => {
   const token = getAuthToken();
   const res = await fetch(
-    "https://windmill-be-iqxx.onrender.com/user/mystock",
+    "https://windmill-be-5qid.onrender.com/user/mystock",
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -20,7 +20,7 @@ export const fetchMyStocks = async () => {
 export const addMyStock = async (stockData) => {
   const token = getAuthToken();
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/user/mystock/${stockData.id}`,
+    `https://windmill-be-5qid.onrender.com/user/mystock/${stockData.id}`,
     {
       method: "POST",
       headers: {
@@ -43,7 +43,7 @@ export const addMyStock = async (stockData) => {
 export const fetchMyStockLogs = async (stockId) => {
   const token = getAuthToken();
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/user/mystock/${stockId}`,
+    `https://windmill-be-5qid.onrender.com/user/mystock/${stockId}`,
     {
       headers: {
         Authorization: "Bearer " + token,

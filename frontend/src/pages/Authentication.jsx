@@ -29,7 +29,7 @@ export async function action({ request }) {
   };
 
   const response = await fetch(
-    "https://windmill-be-iqxx.onrender.com/auth/" + mode,
+    "https://windmill-be-5qid.onrender.com/auth/" + mode,
     {
       method: "POST",
       credentials: "include",

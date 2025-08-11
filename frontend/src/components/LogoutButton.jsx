@@ -6,7 +6,7 @@ function LogoutButton() {
 
   const handleLogout = async () => {
     const res = await fetch(
-      "https://windmill-be-iqxx.onrender.com/auth/logout",
+      "https://windmill-be-5qid.onrender.com/auth/logout",
       {
         method: "POST",
         credentials: "include",

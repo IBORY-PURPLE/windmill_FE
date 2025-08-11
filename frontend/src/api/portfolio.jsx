@@ -2,7 +2,7 @@ import { getAuthToken } from "../util/auth";
 
 export const fetchPortfolio = async (avatarId) => {
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/portfolio/${avatarId}`,
+    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}`,
     {
       method: "POST",
     }
@@ -17,7 +17,7 @@ export const fetchPortfolio = async (avatarId) => {
 export const fetchSavedPortfolioList = async (avatarId) => {
   const token = getAuthToken();
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/portfolio/${avatarId}/save`,
+    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}/save`,
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -39,7 +39,7 @@ export const togglePortfolio = async (
   const token = getAuthToken();
   const method = isAlreadySaved ? "DELETE" : "POST";
   const res = await fetch(
-    `https://windmill-be-iqxx.onrender.com/portfolio/${avatarId}/save/${portfolioId}`,
+    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}/save/${portfolioId}`,
     {
       method,
       headers: {
