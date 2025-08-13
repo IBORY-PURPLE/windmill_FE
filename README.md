@@ -6,9 +6,10 @@
 - npm install @tanstack/react-query
 - npm install react-toastify
 - npm install @tanstack/react-query-devtools
-- npm i framer-motion
+- npm install framer-motion
+  
 
-# colocr palet
+# coloer palette
 // tailwind.config.js
 module.exports = {
   theme: {
