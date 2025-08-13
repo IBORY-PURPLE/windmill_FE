@@ -4,7 +4,7 @@ import PortfolioItem from "./PortfolioItem";
 // 자세히 버튼을 누른 상태값에 따라 다른 item을 출력하고싶다.
 function PortfolioItemList({ results, showDetails }) {
   return (
-    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <ul className="grid grid-cols-1 md:grid-cols-1 gap-4">
       {results.map((result) => {
         const chartData = result.graph || [];
         return (

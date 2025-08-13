@@ -23,6 +23,7 @@ import PortfolioPage from "./pages/Portfolio/Portfolio";
 import AvatarPage from "./pages/Portfolio/Avatar";
 import SavePortfolioPage from "./pages/Portfolio/SavePortfolio";
 import RecommendPortfolioPage from "./pages/Portfolio/RcommendPortfolio";
+import SavePortfolioDetailPage from "./pages/Portfolio/SavePortfolioDetail";
 
 const router = createBrowserRouter([
   {
@@ -87,7 +88,18 @@ const router = createBrowserRouter([
               },
               {
                 path: "saveportfolio",
-                element: <SavePortfolioPage></SavePortfolioPage>,
+                children: [
+                  {
+                    index: true,
+                    element: <SavePortfolioPage></SavePortfolioPage>,
+                  },
+                  {
+                    path: ":portfolioId",
+                    element: (
+                      <SavePortfolioDetailPage></SavePortfolioDetailPage>
+                    ),
+                  },
+                ],
               },
             ],
           },

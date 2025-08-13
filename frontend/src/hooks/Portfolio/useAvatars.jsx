@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { fetchAvatars, addAvatar, allDeleteAvatar } from "../../api/portfolio";
+import { fetchAvatars, addAvatar, allDeleteAvatar } from "../../api/avatar";
 
 export function useAvatars() {
   const queryClient = useQueryClient();
