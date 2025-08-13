@@ -16,7 +16,8 @@ module.exports = {
           'Georgia',           // 영문, serif 계열
           'Nanum Gothic',      // 한글 전용 폰트 (혹은 Noto Sans KR 등)
           'serif'
-        ]
+        ],
+        times: ['TimesNewRoman', 'serif']
       },
       animation: {
         "pulse-green": "pulseGradientGreen 3s ease-in-out infinite",
@@ -55,6 +56,9 @@ module.exports = {
       md: "768px", // 이 지점부터 사이드 패널 표시
       lg: "1024px",
     },
+  },
+  variants: {
+    extend: {},
   },
   plugins: [],
 };
