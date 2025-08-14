@@ -17,8 +17,6 @@ function SavePortfolioPage() {
           </div>
         ))}
       </div>
-
-      <Outlet />
     </div>
   );
 }
