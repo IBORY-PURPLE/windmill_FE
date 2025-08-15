@@ -1,6 +1,6 @@
 import { NavLink, useRouteLoaderData } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
-import logoImg from "../assets/logo.png";
+import logoImg from "../assets/windmill.png";
 
 function MainNavigation() {
   const token = useRouteLoaderData("root");
@@ -13,7 +13,7 @@ function MainNavigation() {
             <img src={logoImg} alt="WindMill Logo" className="h-11" />
             <NavLink
               to="/"
-              className="text-black text-5xl font-bold font-times"
+              className="text-black text-5xl font-bold font-customfont"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               WindMill

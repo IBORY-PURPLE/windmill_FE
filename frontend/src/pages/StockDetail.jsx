@@ -110,7 +110,7 @@ function StockDetailPage({ context }) {
           const mapped = data.data.map((d) => ({
             date: d.date,
             value: d.data,
-            type: d.type,
+            type: d.type, 
           }));
           setPredictedData(mapped);
           setIsGraphLoading(false);
@@ -152,18 +152,22 @@ function StockDetailPage({ context }) {
 
   return (
     <>
-      <div className="mx-auto my-8 p-8 w-[90%] max-w-[40rem] text-center bg-primary-600 rounded-lg shadow-md bg-emerald-50 border border-black">
-        <h1>Stock Detail Page</h1>
-        <p>
-          Stock Name: {stock.name} ({stock.ticker})
-        </p>
+      <div className="mx-auto my-8 p-8 w-[90%] max-w-5xl bg-gray-50 rounded-2xl shadow-lg border border-[#ad8961]/30 space-y-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-[#292826] mb-4 font-windmill">주식 상세 정보</h1>
+          <div className="bg-blue-600 text-gray-100 px-6 py-3 rounded-full inline-block shadow-md">
+            <p className="text-xl font-semibold">
+              {stock.name} <span>({stock.ticker})</span>
+            </p>
+          </div>
+        </div>
         {context === "mystock" && (
           <>
             <button
               onClick={() => setShowModal(true)}
-              className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+              className="mt-6 bg-[#90d9e5] text hover:bg-[#04406d] text-white px-8 py-3 rounded-full font-semibold shadow-md transform hover:scale-105 transition-all duration-200 flex items-center gap-2 mx-auto font-windmill"
             >
-              매도/매수 
+              <span>💰</span> 매도/매수
             </button>
 
             {showModal && (
@@ -182,13 +186,13 @@ function StockDetailPage({ context }) {
                   refetchLogs();
                 }
               }}
-              className="mt-4 bg-purple-600 text-white px-4 py-2 rounded"
+              className="mt-4 bg-[#90d9e5] hover:bg-[#04406d] text-white px-8 py-3 rounded-full font-semibold shadow-md transform hover:scale-105 transition-all duration-200 flex items-center gap-2 mx-auto font-windmill"
             >
-              거래 로그 보기
+              <span>📊</span> 거래 로그 보기
             </button>
             {showLogs && (
               <div
-                className={`fixed top-0 right-0 h-full w-80 bg-white border-l shadow-lg z-50 transform transition-transform duration-500 ${
+                className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg z-50 transform transition-transform duration-500 ${
                   showLogs ? "translate-x-0" : "translate-x-full"
                 }`}
               >
@@ -220,40 +224,70 @@ function StockDetailPage({ context }) {
             ) : (
               <>
                 {" "}
-                <div>
-                  <p>평단가 : {mystock.average_cost}</p>
-                  <p>구매 주식 수: {mystock.all_stock_count}</p>
+                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <span>📈</span> 보유 현황
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-blue-50 p-4 rounded-lg text-center">
+                      <p className="text-sm text-gray-600 mb-1">평단가</p>
+                      <p className="text-xl font-bold text-blue-600">{mystock.average_cost.toLocaleString()}원</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg text-center">
+                      <p className="text-sm text-gray-600 mb-1">보유 주식 수</p>
+                      <p className="text-xl font-bold text-green-600">{mystock.all_stock_count}주</p>
+                    </div>
+                  </div>
                 </div>
-                <div style={{ width: 300, marginTop: 20 }}>
-                  <label>Selecte Features</label>
-                  <Select
-                    isMulti
-                    options={MULTI_OPTIONS}
-                    value={selectedOptions}
-                    onChange={handleSelectChange}
-                    placeholder="항목을 선택하세요."
-                  ></Select>
-                </div>
-                <div style={{ width: 300, marginTop: 20 }}>
-                  <label>Selecte Period</label>
-                  <Select
-                    options={PERIOD_OPTIONS}
-                    value={selectedPeriod}
-                    onChange={handlePeriodChange}
-                    placeholder="항목을 선택하세요."
-                  ></Select>
+                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 mb-6">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <span>🔍</span> 예측 설정
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">분석 항목 선택</label>
+                      <Select
+                        isMulti
+                        options={MULTI_OPTIONS}
+                        value={selectedOptions}
+                        onChange={handleSelectChange}
+                        placeholder="분석할 항목을 선택하세요"
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">예측 기간 선택</label>
+                      <Select
+                        options={PERIOD_OPTIONS}
+                        value={selectedPeriod}
+                        onChange={handlePeriodChange}
+                        placeholder="예측 기간을 선택하세요"
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <button
                   onClick={handlePredict}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                  className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 disabled:hover:bg-gray-400 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transform hover:scale-105 disabled:hover:scale-100 transition-all duration-200 flex items-center justify-center gap-2"
                   disabled={isGraphLoading}
                 >
-                  {isGraphLoading
-                    ? "그래프 그리는 중...."
-                    : "예측 그래프 그리기"}
+                  {isGraphLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white"></div>
+                      <span>분석 중...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>📊</span>
+                      <span>예측 그래프 생성</span>
+                    </>
+                  )}
                 </button>
                 {(isGraphLoading || predictedData) && (
-                  <div style={{ position: "relative", height: 400 }}>
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 mt-6" style={{ position: "relative", height: 450 }}>
                     <ResponsiveContainer width="100%" height="100%">
                       {/* 과거 실제 값: 진한 보라 */}
                       <LineChart data={predictedData || []}>
@@ -273,7 +307,7 @@ function StockDetailPage({ context }) {
                     </ResponsiveContainer>
 
                     {isGraphLoading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-yellow-100 bg-opacity-60 z-10">
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#e5ecea] bg-opacity-80 z-10 rounded-lg">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
                       </div>
                     )}
@@ -284,13 +318,14 @@ function StockDetailPage({ context }) {
           </>
         )}
       </div>
-      <div className="max-w-3xl mx-auto mt-4 mb-20">
+      <div className="max-w-4xl mx-auto mt-12 mb-20 px-4">
         <div className="flex justify-center">
           <button
             onClick={() => setShowNews((prev) => !prev)}
-            className="mt-4 bg-transparent text-black px-4 py-2 rounded hover:border border-black"
+            className="bg-[#90d9e5] hover:bg-[#032e4d] text-white px-8 py-3 rounded-full font-semibold shadow-md transform hover:scale-105 transition-all duration-200 flex items-center gap-2 border-2 border-[#ad8961] font-windmill"
           >
-            {showNews ? "<관련 기사 닫기>" : "<관련 기사 보기>"}
+            <span>{showNews ? "📰" : "📰"}</span>
+            {showNews ? "관련 기사 닫기" : "관련 기사 보기"}
           </button>
         </div>
         {showNews && (
