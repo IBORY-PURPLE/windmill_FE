@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         red: 'rgb(195, 22, 50)',       // rgb(195,22,50)
-        beige: 'rgb(255, 255, 255)',     // rgb(210,184,135)
+        beige: 'rgb(249 250 251)',     // rgb(210,184,135)
         lightgold: 'rgb(215, 191, 119)', // rgb(215,191,119)
       },
       backgroundSize: {
