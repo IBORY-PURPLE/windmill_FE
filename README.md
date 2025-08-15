@@ -9,7 +9,7 @@
 - npm i framer-motion
 - npm install dayjs
 
-# colocr palet
+# color palette
 // tailwind.config.js
 module.exports = {
   theme: {
