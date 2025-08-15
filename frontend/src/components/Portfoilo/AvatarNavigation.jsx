@@ -5,7 +5,7 @@ function AvatarNavigation() {
   return (
     <>
       {/* 데스크탑: 상단 탭 */}
-      <nav className="hidden md:block sticky bottom-0 inset-x-0  z-40 bg-white/70 backdrop-blur border-b">
+      <nav className="hidden md:block fixed bottom-0 inset-x-0  z-40 bg-white/70 backdrop-blur border-b">
         <div className="mx-auto w-full max-w-md sm:max-w-lg lg:max-w-xl">
           <ul className="flex">
             <Tab to="." label="Recommend" end />

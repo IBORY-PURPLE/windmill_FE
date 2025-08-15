@@ -7,7 +7,6 @@ export async function fetchStockChart({ stockId, days }) {
   );
   if (!res.ok) throw new Error("차트 데이터를 불러오지 못했습니다.");
   const data = await res.json();
-  console.log(data.data);
 
   return data.data;
 }
