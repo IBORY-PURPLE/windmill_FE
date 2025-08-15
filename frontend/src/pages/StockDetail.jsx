@@ -15,6 +15,13 @@ import { useStocks } from "../hooks/useStocks";
 import { useNews } from "../hooks/useNews";
 
 import {
+  useStockChart,
+  usePrefetchStockCharts,
+  CHART_PERIODS,
+} from "../hooks/useStockChart";
+import StockPriceChart from "../components/stockPriceChart";
+
+import {
   LineChart,
   Line,
   XAxis,
@@ -61,6 +68,14 @@ function StockDetailPage({ context }) {
   const [showModal, setShowModal] = useState(false);
   const [showLogs, setShowLogs] = useState(false);
   const [showNews, setShowNews] = useState(false);
+
+  const [days, setDays] = useState(7);
+  usePrefetchStockCharts(stockId);
+  const {
+    data: chartData = [],
+    isLoading: isChartLoading,
+    isError: isChartError,
+  } = useStockChart(stockId, days);
 
   const addMutation = useAddMyStock();
 
@@ -157,13 +172,38 @@ function StockDetailPage({ context }) {
         <p>
           Stock Name: {stock.name} ({stock.ticker})
         </p>
+        <div className="flex gap-2 justify-start my-4">
+          {[7, 30, 360].map((d) => (
+            <button
+              key={d}
+              onClick={() => setDays(d)}
+              className={`px-3 py-1 rounded border ${
+                days === d ? "bg-black text-white" : "bg-white"
+              } border-black`}
+            >
+              {d}일
+            </button>
+          ))}
+        </div>
+        <div className="mx-auto max-w-3xl bg-white border border-black rounded-md p-3">
+          {isChartLoading && <p>차트 불러오는 중…</p>}
+          {isChartError && <p>차트를 불러오지 못했습니다.</p>}
+          {!isChartLoading && !isChartError && (
+            <StockPriceChart
+              data={chartData}
+              showCandle={false}
+              showVolume={true}
+            />
+          )}
+        </div>
+
         {context === "mystock" && (
           <>
             <button
               onClick={() => setShowModal(true)}
               className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
             >
-              매도/매수 
+              매도/매수
             </button>
 
             {showModal && (
