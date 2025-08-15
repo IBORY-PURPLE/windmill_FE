@@ -15,6 +15,13 @@ import { useStocks } from "../hooks/useStocks";
 import { useNews } from "../hooks/useNews";
 
 import {
+  useStockChart,
+  usePrefetchStockCharts,
+  CHART_PERIODS,
+} from "../hooks/useStockChart";
+import StockPriceChart from "../components/stockPriceChart";
+
+import {
   LineChart,
   Line,
   XAxis,
@@ -61,6 +68,14 @@ function StockDetailPage({ context }) {
   const [showModal, setShowModal] = useState(false);
   const [showLogs, setShowLogs] = useState(false);
   const [showNews, setShowNews] = useState(false);
+
+  const [days, setDays] = useState(7);
+  usePrefetchStockCharts(stockId);
+  const {
+    data: chartData = [],
+    isLoading: isChartLoading,
+    isError: isChartError,
+  } = useStockChart(stockId, days);
 
   const addMutation = useAddMyStock();
 
