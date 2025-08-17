@@ -19,7 +19,7 @@ import {
   usePrefetchStockCharts,
   CHART_PERIODS,
 } from "../hooks/useStockChart";
-import StockPriceChart from "../components/stockPriceChart";
+import StockPriceChart from "../components/StockPriceChart";
 
 import {
   LineChart,
