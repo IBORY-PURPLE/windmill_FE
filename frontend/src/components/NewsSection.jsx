@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNews } from "../hooks/useNews";
 
 function NewsSection() {
-  const { data: todayNews = [], isLoading } = useNews("오늘의 주요 뉴스");
+  const { data: todayNews = [], isLoading } = useNews("오늘의 주요 경제 뉴스");
   const [index, setIndex] = useState(0);
 
   // 자동 슬라이드
@@ -47,7 +47,10 @@ function NewsSection() {
       start = index - half;
     }
   }
-  const visibleIndicators = todayNews.slice(start, start + Math.min(total, maxVisible));
+  const visibleIndicators = todayNews.slice(
+    start,
+    start + Math.min(total, maxVisible)
+  );
 
   return (
     <div className="group relative flex-1 bg-white p-4 rounded-lg shadow-md border border-black transition-all duration-500 ease-in-out origin-top hover:scale-y-125 hover:scale-x-105 hover:z-10 max-w-xl mx-auto overflow-hidden">
@@ -56,7 +59,7 @@ function NewsSection() {
       </h2>
 
       {/* 뉴스 슬라이드 영역 */}
-      <div className="relative flex h-24 rounded-lg border bg-white border-black group-hover:h-auto transition-all duration-500 overflow-hidden pl-3 pr-3">        
+      <div className="relative flex h-24 rounded-lg border bg-white border-black group-hover:h-auto transition-all duration-500 overflow-hidden pl-3 pr-3">
         {/* 왼쪽 화살표 */}
         <button
           onClick={goPrev}
@@ -114,7 +117,6 @@ function NewsSection() {
           })}
         </div>
       </div>
-
     </div>
   );
 }

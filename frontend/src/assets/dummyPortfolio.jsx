@@ -1,4 +1,5 @@
 export const dummyPortfoilo = {
+  portfolioId: "dkanrothflskgksmstkfka",
   result: [
     {
       stockId: "5bcccf00-16c7-4386-b5dd-caa045e92ff0",

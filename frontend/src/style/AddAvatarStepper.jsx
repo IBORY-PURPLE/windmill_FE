@@ -123,7 +123,7 @@ export default function Stepper({
                   className={`duration-350 rounded px-2 py-1 transition ${
                     currentStep === 1
                       ? "pointer-events-none opacity-50 text-neutral-400"
-                      : "text-neutral-400 hover:text-neutral-700"
+                      : "text-black hover:text-neutral-700"
                   }`}
                   {...backButtonProps}
                 >
@@ -244,17 +244,25 @@ function StepIndicator({
     >
       <motion.div
         variants={{
-          inactive: { scale: 1, backgroundColor: "#222", color: "#a3a3a3" },
-          active: { scale: 1, backgroundColor: "#5227FF", color: "#5227FF" },
-          complete: { scale: 1, backgroundColor: "#5227FF", color: "#3b82f6" },
+          inactive: { scale: 1, backgroundColor: "#222", color: "#eae4e4ff" },
+          active: {
+            scale: 1,
+            backgroundColor: "#2eb627ff",
+            color: "#ebeeebff",
+          },
+          complete: {
+            scale: 1,
+            backgroundColor: "#2eb627ff",
+            color: "#eaf1eaff",
+          },
         }}
         transition={{ duration: 0.3 }}
         className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
       >
         {status === "complete" ? (
-          <CheckIcon className="h-4 w-4 text-black" />
+          <CheckIcon className="h-4 w-4 text-white" />
         ) : status === "active" ? (
-          <div className="h-3 w-3 rounded-full bg-[#060010]" />
+          <div className="h-3 w-3 rounded-full bg-white" />
         ) : (
           <span className="text-sm">{step}</span>
         )}
@@ -266,7 +274,7 @@ function StepIndicator({
 function StepConnector({ isComplete }) {
   const lineVariants = {
     incomplete: { width: 0, backgroundColor: "transparent" },
-    complete: { width: "100%", backgroundColor: "#5227FF" },
+    complete: { width: "100%", backgroundColor: "#1f8319ff" },
   };
 
   return (

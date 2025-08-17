@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Stepper, { Step } from "../../style/AddAvatarStepper";
-import { X } from "lucide-react";
+import classes from "./AddAvatarModalWithStepper.module.css";
 
 function AddAvatarModalWithStepper({ onClose, onSubmit }) {
   const [name, setName] = useState("");
@@ -31,7 +31,8 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
         nextButtonText="다음"
         backButtonText="이전"
         onClose={onClose}
-        stepCircleContainerClassName="bg-white rounded"
+        stepCircleContainerClassName="bg-[#FFF8E0] rounded"
+
         //   onStepChange={setCurrentStep}
         //   nextButtonProps={{
         //     disabled: isContinueDisabled,
@@ -87,8 +88,12 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
               max="100"
               step="25"
               value={lossTolerance}
-              onChange={(e) => setLossTolerance(Number(e.target.value))}
-              className="w-full"
+              onChange={(e) => setLossTolerance(e.target.value)}
+              ref={input => {
+                if (input) {
+                  input.style.setProperty("--value", `${lossTolerance}%`);
+                }
+              }}
             />
             <div className="flex justify-between text-sm mt-1">
               {[0, 25, 50, 75, 100].map((val) => (
