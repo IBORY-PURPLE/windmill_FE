@@ -14,8 +14,14 @@ import Select from "react-select";
 import { useStocks } from "../hooks/useStocks";
 import { useNews } from "../hooks/useNews";
 
-import { useStockChart, usePrefetchStockCharts } from "../hooks/useStockChart";
-import StockPriceChart from "../components/stockPriceChart";
+
+import {
+  useStockChart,
+  usePrefetchStockCharts,
+  CHART_PERIODS,
+} from "../hooks/useStockChart";
+import StockPriceChart from "../components/StockPriceChart";
+
 
 import {
   LineChart,
