@@ -61,10 +61,10 @@ export default function StockPriceChart({
 
   if (showCandle && hasOHLC) {
     return (
-      <ResponsiveContainer width="100%" height={360}>
+      <ResponsiveContainer width="95%" height={360}>
         <ComposedChart
           data={data}
-          margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
+          margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
         >
           <CartesianGrid strokeDasharray="4 4" />
           <XAxis dataKey="date" />
@@ -109,18 +109,7 @@ export default function StockPriceChart({
         <CartesianGrid strokeDasharray="4 4" />
         <XAxis
           dataKey="date"
-          tickFormatter={(dateStr, index) => {
-            const date = dayjs(dateStr);
-            const prevDate = data?.[index - 1]
-              ? dayjs(data[index - 1].date)
-              : null;
-            if (!prevDate || date.year() !== prevDate.year()) {
-              return `${date.year()} ${date.month() + 1}`;
-            }
-            if (prevDate.month() !== date.month) {
-              return `${date.month() + 1}`;
-            }
-          }}
+          tickFormatter={(dateStr, index) => ''}
           interval="preserveStartEnd"
           minTickGap={30}
         />
@@ -132,6 +121,7 @@ export default function StockPriceChart({
           type="monotone"
           dataKey="data"
           name="종가"
+          strokeWidth={2}
           dot={false}
           stroke="#d66369"
         />
