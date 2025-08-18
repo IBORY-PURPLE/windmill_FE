@@ -5,11 +5,11 @@ function AvatarNavigation() {
   return (
     <>
       {/* 데스크탑: 상단 탭 */}
-      <nav className="hidden md:block fixed bottom-0 inset-x-0  z-40 bg-white/70 backdrop-blur border-b">
-        <div className="mx-auto w-full max-w-md sm:max-w-lg lg:max-w-xl">
+      <nav className="hidden md:block fixed bottom-0 inset-x-0  z-40 backdrop-blur border-b">
+        <div className="mx-auto bg-white/70 w-full max-w-md sm:max-w-lg lg:max-w-xl">
           <ul className="flex">
-            <Tab to="." label="Recommend" end />
-            <Tab to="saveportfolio" label="Saved" />
+            <Tab to="." label="Recommend" icon={Home} end />
+            <Tab to="saveportfolio" label="Saved" icon={Bookmark} />
           </ul>
         </div>
       </nav>
@@ -25,20 +25,21 @@ function AvatarNavigation() {
   );
 }
 
-function Tab({ to, label, end }) {
+function Tab({ to, label, icon: Icon, end }) {
   return (
     <li className="flex-1">
       <NavLink
         to={to}
         end={end}
         className={({ isActive }) =>
-          `block text-center py-3 font-medium transition-colors ${
+          `flex flex-col items-center block text-center py-3 font-medium transition-colors ${
             isActive
-              ? "text-red-600 border-b-2 border-red-600"
+              ? "text-red-600 border-b-4 border-red-600"
               : "text-gray-500 hover:text-gray-800"
           }`
         }
       >
+        <Icon size={40} aria-hidden="true" />
         {label}
       </NavLink>
     </li>
@@ -53,7 +54,7 @@ function BottomItem({ to, label, icon: Icon, end }) {
       aria-label={label}
       className={({ isActive }) =>
         `flex flex-col items-center py-2 flex-1 transition-colors ${
-          isActive ? "text-red-600 font-semibold" : "text-gray-500"
+          isActive ? "text-red-600 font-semibold border-b-2 border-red-600" : "text-gray-500"
         }`
       }
     >
