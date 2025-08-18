@@ -25,10 +25,9 @@ function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="flex items-center mr-5 mt-2 gap-2 bg-white hover:bg-[#C20E2F] hover:text-white text-black px-4 py-1.5 rounded-md text-sm font-semibold shadow-sm transition duration-200 border border-black"
-    >
-      <LogOut className="w-4 h-4 " />
-      logout
+      className="ml-2 px-4 py-2 rounded-lg font-medium text-white bg-[#C20E2F] hover:bg-red-700 transition-colors duration-200 flex items-center"
+    ><span className="mr-2">🔑</span>
+      로그아웃
     </button>
   );
 }

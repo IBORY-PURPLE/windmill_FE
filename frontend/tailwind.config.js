@@ -3,19 +3,19 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      colors: {
-        red: 'rgb(195, 22, 50)',       // rgb(195,22,50)
-        beige: 'rgb(210, 184, 135)',     // rgb(210,184,135)
-        lightgold: 'rgb(215, 191, 119)', // rgb(215,191,119)
-      },
+
       backgroundSize: {
         "200%": "200% 200%",
       },
       fontFamily: {
-        customSerif: [
-          'Georgia',           // 영문, serif 계열
-          'Nanum Gothic',      // 한글 전용 폰트 (혹은 Noto Sans KR 등)
+        customfont: [
+          'Times New Roman',           // 영문, serif 계열
+          'Nanum Myeongjo',      // 한글 전용 폰트 (혹은 Noto Sans KR 등)
           'serif'
+        ],
+        windmill: [
+          'Noto Sans KR',
+          'sans-serif'
         ]
       },
       animation: {
@@ -55,6 +55,9 @@ module.exports = {
       md: "768px", // 이 지점부터 사이드 패널 표시
       lg: "1024px",
     },
+  },
+  variants: {
+    extend: {},
   },
   plugins: [],
 };

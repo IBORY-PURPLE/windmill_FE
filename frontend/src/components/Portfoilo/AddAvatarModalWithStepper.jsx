@@ -88,11 +88,12 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
               max="100"
               step="25"
               value={lossTolerance}
-              onChange={(e) => {
-                setLossTolerance(e.target.value);
-                e.target.style.setProperty("--value", `${e.target.value}%`);
+              onChange={(e) => setLossTolerance(e.target.value)}
+              ref={input => {
+                if (input) {
+                  input.style.setProperty("--value", `${lossTolerance}%`);
+                }
               }}
-              style={{ "--value": `${lossTolerance}%` }}
             />
             <div className="flex justify-between text-sm mt-1">
               {[0, 25, 50, 75, 100].map((val) => (
