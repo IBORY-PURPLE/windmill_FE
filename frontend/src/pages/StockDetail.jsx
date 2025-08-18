@@ -16,6 +16,7 @@ import { useStockChart, usePrefetchStockCharts } from "../hooks/useStockChart";
 import StockPriceChart from "../components/stockPriceChart";
 import FavoriteButton from "../components/FavoriteButton";
 import { useInterestStocks } from "../hooks/useInterestStocks";
+
 import {
   LineChart,
   Line,
