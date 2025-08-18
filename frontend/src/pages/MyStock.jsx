@@ -4,7 +4,6 @@ import { fetchMyStocks } from "../api/mystock";
 import { useStocks } from "../hooks/useStocks";
 import { useAddMyStock } from "../hooks/useAddMystock";
 import ErrorBox from "../components/ErrorBox";
-
 import StockList from "../components/StockList";
 import AddStockModal from "../components/AddStockModal";
 import { useInterestStocks } from "../hooks/useInterestStocks";
@@ -39,7 +38,6 @@ function MyStockPage() {
     });
   };
 
-  // mystoks_db와 allstock_db의 필드들을 합친 데이터 생성.
   const myStockList = useMemo(() => {
     return myStocks
       .map((my) => {
@@ -52,22 +50,21 @@ function MyStockPage() {
   }, [myStocks, stocks]);
 
   return (
-    <>
-      <div className="max-w-screen-lg mx-auto p-4 border border-black rounded h-screen">
-        <h1>My Stock</h1>
-        <div>
+    <div className="bg-gray-900 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-screen-lg mx-auto bg-gray-800 rounded-xl shadow-2xl p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold text-white">My Stock</h1>
           <button
-            onClick={() => {
-              setModalOpen(true);
-            }}
-            className="border border-black bg-gray-200 text-gray-900 px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white mb-4"
+            onClick={() => setModalOpen(true)}
+            className="bg-purple-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-300 ease-in-out transform hover:bg-purple-700 hover:scale-105 shadow-md"
           >
             + 포지션 추가
           </button>
         </div>
+
         {isLoading ? (
           <div className="flex justify-center items-center mt-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500"></div>
           </div>
         ) : isError ? (
           <ErrorBox
@@ -76,21 +73,23 @@ function MyStockPage() {
             }
           />
         ) : (
-          <StockList
-            stocks={myStockList ?? []}
-            basePath="/personal/mystock"
-            interestList={interestList}
-          ></StockList>
-        )}
-
-        {modalOpen && (
-          <AddStockModal
-            onClose={() => setModalOpen(false)}
-            onSubmit={handleAddStock}
-          />
+          <div className="space-y-6">
+            <StockList
+              stocks={myStockList ?? []}
+              basePath="/personal/mystock"
+              interestList={interestList}
+            ></StockList>
+          </div>
         )}
       </div>
-    </>
+
+      {modalOpen && (
+        <AddStockModal
+          onClose={() => setModalOpen(false)}
+          onSubmit={handleAddStock}
+        />
+      )}
+    </div>
   );
 }
 

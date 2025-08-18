@@ -7,12 +7,9 @@ import {
   useNavigation,
 } from "react-router-dom";
 
-import classes from "./AuthForm.module.css";
-
 function AuthForm() {
   const data = useActionData();
   const navigation = useNavigation();
-
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
   const message = searchParams.get("message");
@@ -26,43 +23,131 @@ function AuthForm() {
   }, [message]);
 
   return (
-    <>
-      <Form method="post" className={classes.form}>
-        <h1>{isLogin ? "Log in" : "Create a new user"}</h1>
-        {data && data.errors && (
-          <ul>
-            {Object.values(data.errors).map((err) => (
-              <li key={err}>{err}</li>
-            ))}
-          </ul>
-        )}
-        {data && data.message && <p>{data.message}</p>}
-        {!isLogin && (
-          <p>
-            <label htmlFor="username">Username</label>
-            <input id="username" type="text" name="userName" required />
-          </p>
-        )}
-        <p>
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" required />
-        </p>
-        <p>
-          <label htmlFor="image">Password</label>
-          <input id="password" type="password" name="password" required />
-        </p>
-        <div className={classes.actions}>
-          {!isSubmitting && (
-            <Link to={`?mode=${isLogin ? "signup" : "login"}`}>
-              {isLogin ? "Create new user" : "Login"}
-            </Link>
-          )}
-          <button disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Save"}
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {isLogin ? "로그인" : "회원가입"}
+              </h1>
+              <p className="text-gray-600">
+                {isLogin 
+                  ? "Windmill에 오신 것을 환영합니다!" 
+                  : "지금 계정을 생성하세요"}
+              </p>
+            </div>
+
+            <Form method="post" className="space-y-6">
+              {data?.errors && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                  <ul className="text-sm text-red-700">
+                    {Object.values(data.errors).map((err, index) => (
+                      <li key={index} className="flex items-center">
+                        <span className="mr-2">⚠️</span>
+                        {err}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {data?.message && (
+                <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                  <p className="text-yellow-700">{data.message}</p>
+                </div>
+              )}
+
+              {!isLogin && (
+                <div>
+                  <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                    사용자 이름
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    name="userName"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                    placeholder="사용자 이름을 입력하세요"
+                  />
+                </div>
+              )}
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  이메일
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                  placeholder="이메일을 입력하세요"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  비밀번호
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                  placeholder="비밀번호를 입력하세요"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full py-3 px-4 rounded-lg font-medium text-white ${
+                    isSubmitting 
+                      ? 'bg-blue-400 cursor-not-allowed' 
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  } transition duration-200 flex items-center justify-center`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      처리 중...
+                    </>
+                  ) : isLogin ? (
+                    '로그인'
+                  ) : (
+                    '회원가입'
+                  )}
+                </button>
+              </div>
+
+              <div className="text-center text-sm text-gray-600 pt-2">
+                {isLogin ? "계정이 없으신가요? " : "이미 계정이 있으신가요? "}
+                <Link
+                  to={`?mode=${isLogin ? "signup" : "login"}`}
+                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                >
+                  {isLogin ? "회원가입" : "로그인"} 하기
+                </Link>
+              </div>
+            </Form>
+          </div>
+          
+          <div className="bg-gray-50 px-8 py-6 text-center">
+            <p className="text-xs text-gray-500">
+              © {new Date().getFullYear()} Windmill. All rights reserved.
+            </p>
+          </div>
         </div>
-      </Form>
-    </>
+      </div>
+    </div>
   );
 }
 
