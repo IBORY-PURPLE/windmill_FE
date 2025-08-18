@@ -61,7 +61,7 @@ function RecommendPortfolioPage() {
   //   return <p>에러: {error.message}</p>;
   // }
 
-  // const { result, result2 } = data;
+  // const { result, result2, result3 } = data;
   // return (
   //   <div className="border border-black bg-white rounded mx-2 p-2 ">
   //     {isLoading ? (
@@ -82,7 +82,9 @@ function RecommendPortfolioPage() {
   //             {showDetails ? "-" : "+"}
   //           </button>
   //         </div>
-
+  //         <div>
+  //           <p>{result3}</p>
+  //         </div>
   //         {result2 && (
   //           <div
   //             style={{ position: "relative", height: 400 }}
