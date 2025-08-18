@@ -52,15 +52,16 @@ function HomePage() {
     ? stocksLoading || interestLoading
     : stocksLoading;
 
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 justify-center items-center h-screen">
-        <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-black border-solid"></div>
+    if (isLoading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-[#C20E2F] mx-auto"></div>
+            <p className="mt-4 text-lg text-gray-600">홈을 불러오는 중입니다...</p>
+          </div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -68,15 +69,15 @@ function HomePage() {
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
         {/* Breaking News Banner */}
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r">
+        <div className="bg-[#fcf3f4] border-l-4 border-[#C20E2F] p-4 rounded-r">
           <div className="flex items-center">
-            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">BREAKING</span>
+            <span className="bg-red-100 text-[#C20E2F] text-xs font-medium px-2.5 py-0.5 rounded">BREAKING</span>
             <p className="ml-3 text-sm font-medium text-gray-800">최신 시장 소식을 확인하세요</p>
           </div>
         </div>
 
         {/* Main News Section */}
-        <section className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <section className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
             <h2 className="text-xl font-semibold text-gray-800">📰 주요 시장 뉴스</h2>
           </div>
@@ -84,15 +85,15 @@ function HomePage() {
         </section>
 
         {/* Market Overview */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-medium text-gray-700">코스피</h3>
               <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full">KOREA</span>
             </div>
-            <div className="flex items-baseline">
-              <span className="text-2xl font-bold text-gray-900">2,710.56</span>
-              <span className="ml-2 text-sm font-medium text-green-500">+0.78%</span>
+            <div className="flex items-baseline md:-ml-2">
+              <span className="text-xl font-bold text-gray-900">2,710.56</span>
+              <span className="ml-2 text-sm font-medium text-red-500">+0.78%</span>
             </div>
             <p className="mt-1 text-xs text-gray-500">전일 대비 +21.45</p>
           </div>
@@ -102,9 +103,9 @@ function HomePage() {
               <h3 className="font-medium text-gray-700">나스닥</h3>
               <span className="text-xs px-2 py-1 bg-purple-50 text-purple-700 rounded-full">US</span>
             </div>
-            <div className="flex items-baseline">
-              <span className="text-2xl font-bold text-gray-900">15,823.34</span>
-              <span className="ml-2 text-sm font-medium text-red-500">-0.23%</span>
+            <div className="flex items-baseline md:-ml-2">
+              <span className="text-xl font-bold text-gray-900">15,823.34</span>
+              <span className="ml-2 text-sm font-medium text-blue-500">-0.23%</span>
             </div>
             <p className="mt-1 text-xs text-gray-500">전일 대비 -36.42</p>
           </div>
@@ -114,9 +115,9 @@ function HomePage() {
               <h3 className="font-medium text-gray-700">S&P 500</h3>
               <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-full">US</span>
             </div>
-            <div className="flex items-baseline">
-              <span className="text-2xl font-bold text-gray-900">5,456.12</span>
-              <span className="ml-2 text-sm font-medium text-green-500">+0.12%</span>
+            <div className="flex items-baseline md:-ml-2">
+              <span className="text-xl font-bold text-gray-900">5,456.12</span>
+              <span className="ml-2 text-sm font-medium text-red-500">+0.12%</span>
             </div>
             <p className="mt-1 text-xs text-gray-500">전일 대비 +6.54</p>
           </div>
@@ -125,19 +126,19 @@ function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-blue-600">Search</h1>
+              <h1 className="hidden md:block text-2xl font-bold text-[#C20E2F]">Search</h1>
             </div>
             <div className="flex-1 max-w-2xl mx-6">
-              <div className="relative">
+              <div className="relative mt-2">
                 <input
                   type="text"
                   placeholder="종목명 또는 티커 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-5 py-2.5 rounded-full border-0 bg-gray-100 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all duration-200"
+                  className="w-full px-5 py-2.5 rounded-full border-0 bg-gray-100 text-gray-800 focus:ring-2 focus:ring-[#C20E2F] focus:bg-white transition-all duration-200 placeholder:text-base"
                 />
                 <svg
-                  className="absolute right-4 top-3 h-5 w-5 text-gray-400"
+                  className="absolute right-4 top-3.5 h-5 w-5 text-gray-400 "
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
