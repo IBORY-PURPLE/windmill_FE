@@ -62,7 +62,7 @@ const router = createBrowserRouter([
           {
             path: "intereststock",
             children: [
-              { index: true, element: <InterestStockPage /> },
+              { index: true, element: <InterestStockPage/> },
               {
                 path: ":stockId",
                 element: <StockDetailPage context="interest" />,

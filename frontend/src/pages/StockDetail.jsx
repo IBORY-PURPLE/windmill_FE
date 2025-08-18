@@ -6,17 +6,16 @@ import { useMyStockLog } from "../hooks/useMyStockLog";
 import SimpleStockModal from "../components/SimpleStockModal";
 import ErrorBox from "../components/ErrorBox";
 import { toast } from "react-toastify";
-
 import { useParams, useNavigate } from "react-router-dom";
 import classes from "./StockDetail.module.css";
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Select from "react-select";
 import { useStocks } from "../hooks/useStocks";
 import { useNews } from "../hooks/useNews";
-
 import { useStockChart, usePrefetchStockCharts } from "../hooks/useStockChart";
 import StockPriceChart from "../components/stockPriceChart";
-
+import FavoriteButton from "../components/FavoriteButton";
+import { useInterestStocks } from "../hooks/useInterestStocks";
 import {
   LineChart,
   Line,
@@ -26,7 +25,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
 const MULTI_OPTIONS = [
   { value: "openingPrice", label: "시가" },
   { value: "highPrice", label: "고가" },
@@ -52,31 +50,26 @@ const PERIOD_OPTIONS = [
 
 function StockDetailPage({ context }) {
   const { data: stocks = [] } = useStocks();
+  const { data: interestList = [] } = useInterestStocks();
+
   const { stockId } = useParams();
   const navigate = useNavigate();
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([
+    { value: "closingPrice", label: "종가" },
+  ]);
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [predictedData, setPredictedData] = useState(null);
   const [isGraphLoading, setIsGraphLoading] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
   const [showLogs, setShowLogs] = useState(false);
   const [showNews, setShowNews] = useState(false);
-
-  // setDays 로직을 더 명확하게 수정
   const [days, setDays] = useState(7);
-
-  // usePrefetchStockCharts는 사용되지 않는 듯 하여 제거.
-  // 필요한 경우 days 상태를 반영하여 훅을 호출할 수 있습니다.
   const {
     data: chartData = [],
     isLoading: isChartLoading,
-    isError: isChartError,
+    error: chartError,
   } = useStockChart(stockId, days);
-
   const addMutation = useAddMyStock();
-
-  // stock이 없는 경우를 대비한 early return
   const stock = stocks.find((s) => String(s.id) === stockId);
   if (!stock) {
     return (
@@ -87,13 +80,14 @@ function StockDetailPage({ context }) {
       </div>
     );
   }
-
   const {
     data: newsList = [],
     isLoading: isNewsLoading,
     isError: isNewsError,
-  } = useNews(showNews ? stock.name : null);
-
+  } = useNews({
+    query: stock.name, // 쿼리할 종목명
+    enabled: showNews, // showNews가 true일 때만 쿼리 실행
+  });
   const {
     data: myStocks = [],
     isLoading: isMyStockLoading,
@@ -103,25 +97,21 @@ function StockDetailPage({ context }) {
     queryFn: fetchMyStocks,
     enabled: context === "mystock",
   });
-
   const {
     stockLogs,
     isLoading: isLogLoading,
     isError: isLogError,
     error,
     refetch: refetchLogs,
-  } = useMyStockLog(stockId, false);
-
+  } = useMyStockLog(stockId, showLogs);
   const mystock =
     context === "mystock"
       ? myStocks.find((s) => String(s.stock_id) === stockId)
       : null;
-
   const { mutate } = useMutation({
     mutationFn: ({ stockId, selectedKeys, period }) =>
       predictStock({ stockId, selectedKeys, period }),
   });
-
   const handlePredict = () => {
     const selectedKeys = selectedOptions.map((opt) => opt.value);
     setIsGraphLoading(true);
@@ -143,26 +133,28 @@ function StockDetailPage({ context }) {
       }
     );
   };
+  const isInterested = useMemo(() => {
+    // stock 객체나 interestList가 아직 로드되지 않았으면 false
+    if (!stock || !interestList) return false;
+    // interestList 배열에 현재 stock.id와 일치하는 항목이 있는지 확인
+    return interestList.includes(stock.id);
+  }, [stock, interestList]);
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
   };
-
   const handlePeriodChange = (selected) => {
     setSelectedPeriod(selected);
   };
-
   const handleTradeSubmit = (data) => {
     addMutation.mutate(data, {
       onSuccess: async (res) => {
         const remaining = res?.data?.all_stock_count || 0;
-
         if (remaining <= 0) {
           toast.info("모든 주식을 매도했습니다.");
           navigate("/personal/mystock");
           return;
         }
-
         toast.success("거래가 반영되었습니다.");
         await refetchLogs();
       },
@@ -171,74 +163,76 @@ function StockDetailPage({ context }) {
       },
     });
   };
-
   const handleToggleLogs = () => {
-    setShowLogs((prev) => {
-      const newShowLogs = !prev;
-      if (newShowLogs) {
-        refetchLogs();
-      }
-      return newShowLogs;
-    });
+    setShowLogs((prev) => !prev);
   };
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{stock.name}</h1>
-              <p className="mt-1 text-gray-500">
-                {stock.ticker} • {stock.exchange}
-              </p>
+              <h1 className="text-3xl font-bold text-gray-900 break-words">{stock.name}</h1>
+              <p className="mt-1 text-gray-500">{stock.ticker} • {stock.exchange}</p>
             </div>
-            <div className="mt-4 flex space-x-3 md:mt-0">
-              <button
-                onClick={() => setShowModal(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <span className="mr-2">💰</span> 매도/매수
-              </button>
-              <button
-                onClick={handleToggleLogs}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <span className="mr-2">📊</span> 거래 로그 보기
-              </button>
-            </div>
+            {['mystock', 'interest'].includes(context) && (
+              <div className="mt-4 flex space-x-3 md:mt-0 flex-shrink-0">
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#C20E2F] hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  <span className="mr-2">💰</span> 매도/매수
+                </button>
+                <button
+                  onClick={handleToggleLogs}
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  <span className="mr-2">📊</span> 거래 로그 보기
+                </button>
+              </div>
+            )}
+            {context === 'Home' && (
+              <div className="mt-4 flex space-x-3 md:mt-0 flex-shrink-0">
+              <FavoriteButton stockId={stockId} isInterested={isInterested} />
+              </div>
+            )}
+
           </div>
         </div>
       </header>
-
-      {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6">
-        {/* Stock Info Card */}
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">현재 가격</p>
                 <p className="mt-1 text-3xl font-semibold text-gray-900">
-                  {stock.currentPrice?.toLocaleString()}원
+                  {stock.price?.toLocaleString()}달러
                 </p>
-                <p className={`mt-2 text-sm ${
-                  stock.changePercent >= 0 ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {stock.changePercent >= 0 ? '▲' : '▼'} {Math.abs(stock.changePercent)}% (
-                  {stock.changePrice >= 0 ? '+' : ''}
-                  {stock.changePrice?.toLocaleString()}원)
+                <p className={`mt-2 text-sm ${stock.change_rate >= 0 ? 'text-red-500' : 'text-blue-500'}`}>
+                  {stock.change_rate >= 0 ? '▲' : '▼'} {Math.abs(stock.change_rate)}% (
+                  {stock.change_price >= 0 ? '+' : ''}{stock.change_price?.toLocaleString()}달러)
                 </p>
               </div>
-              <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-2xl">📈</span>
+              <div className="h-16 w-16 bg-[#fcf3f4] rounded-full flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-[#C20E2F]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Chart Section */}
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <div className="flex justify-between items-center mb-4">
@@ -248,30 +242,27 @@ function StockDetailPage({ context }) {
                   <button
                     key={period}
                     onClick={() => setDays(period)}
-                    className={`px-3 py-1 text-sm rounded-full ${
-                      days === period
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'text-gray-600 hover:bg-gray-100'
-                    }`}
+                    className={`px-3 py-1 text-sm rounded-full ${days === period
+                      ? 'bg-[#fcf3f4] text-[#C20E2F]'
+                      : 'text-gray-600 hover:bg-gray-100'
+                      }`}
                   >
                     {period}일
                   </button>
                 ))}
               </div>
             </div>
-            <div className="h-64">
+            <div className="h-100">
               {isChartLoading ? (
-                <div className="h-full flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
-                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-[#C20E2F] mx-auto"></div>
+                  <p className="mt-4 text-lg text-gray-600">그래프를 불러오는 중입니다...</p> </div>
               ) : (
                 <StockPriceChart data={chartData} />
               )}
             </div>
           </div>
         </div>
-
-        {/* Key Metrics */}
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">주요 지표</h3>
@@ -279,34 +270,19 @@ function StockDetailPage({ context }) {
               {[
                 { label: 'PER', value: stock.per },
                 { label: 'PBR', value: stock.pbr },
-                {
-                  label: '배당수익률',
-                  value: stock.dividendYield ? `${stock.dividendYield}%` : '-',
-                },
-                {
-                  label: '52주 최고가',
-                  value: stock.high52w?.toLocaleString(),
-                },
-                {
-                  label: '52주 최저가',
-                  value: stock.low52w?.toLocaleString(),
-                },
+                { label: '배당수익률', value: stock.dividendYield ? `${stock.dividendYield}%` : '-' },
+                { label: '52주 최고가', value: stock.high52w?.toLocaleString() },
+                { label: '52주 최저가', value: stock.low52w?.toLocaleString() },
               ].map((metric) => (
                 <div key={metric.label} className="flex justify-between">
-                  <dt className="text-sm font-medium text-gray-500">
-                    {metric.label}
-                  </dt>
-                  <dd className="text-sm font-medium text-gray-900">
-                    {metric.value || '-'}
-                  </dd>
+                  <dt className="text-sm font-medium text-gray-500">{metric.label}</dt>
+                  <dd className="text-sm font-medium text-gray-900">{metric.value || '-'}</dd>
                 </div>
               ))}
             </dl>
           </div>
         </div>
 
-        {/* News Toggle */}
-        
 
         {context === 'mystock' && (
           <div className="space-y-6">
@@ -321,10 +297,10 @@ function StockDetailPage({ context }) {
                 <p>보유 종목 데이터를 불러오는데 실패했습니다...</p>
               ) : (
                 <div className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="bg-[#fcf3f4] p-4 rounded-lg">
                     <p className="text-sm text-gray-600 mb-1">평단가</p>
-                    <p className="text-xl font-bold text-blue-600">
-                      {mystock.average_cost.toLocaleString()}원
+                    <p className="text-xl font-bold text-[#C20E2F]">
+                      {mystock.average_cost.toLocaleString()}달러
                     </p>
                   </div>
                   <div className="bg-green-50 p-4 rounded-lg">
@@ -347,6 +323,7 @@ function StockDetailPage({ context }) {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     분석 항목 선택
                   </label>
+
                   <Select
                     isMulti
                     options={MULTI_OPTIONS}
@@ -372,7 +349,6 @@ function StockDetailPage({ context }) {
                 </div>
               </div>
             </div>
-
             {/* 예측 버튼 및 그래프 */}
             <div className="space-y-4">
               <button
@@ -399,15 +375,23 @@ function StockDetailPage({ context }) {
                   style={{ position: 'relative', height: 450 }}
                 >
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={predictedData || []}>
+                    <LineChart data={predictedData || []} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                       <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
+                      <XAxis dataKey="date"
+                        tickFormatter={() => ''}
+                      />
+
+                      <YAxis
+                        dataKey="value"
+                        domain={['dataMin - 50', 'dataMax + 50']}
+                        tickFormatter={(value) => Math.round(value).toLocaleString()}
+                      />
+                      <Tooltip formatter={(value) => `${value.toFixed(0)} 달러`} />
                       <Line
                         type="monotone"
                         dataKey="value"
-                        stroke="#8884d8"
+                        stroke="#C20E2F"
+                        strokeWidth={2}
                         dot={false}
                         name="예측값"
                         isAnimationActive={false}
@@ -416,27 +400,28 @@ function StockDetailPage({ context }) {
                   </ResponsiveContainer>
 
                   {isGraphLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-[#e5ecea] bg-opacity-80 z-10 rounded-lg">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#fcf3f4] bg-opacity-80 z-10 rounded-lg">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#C20E2F] border-solid"></div>
                     </div>
                   )}
                 </div>
               )}
             </div>
             <button
-          onClick={() => setShowNews(!showNews)}
-          className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          <span className="text-sm font-medium text-gray-900">
-            {showNews ? '기사 숨기기' : '관련 뉴스 보기'}
-          </span>
-          <span className="text-gray-400">{showNews ? '▲' : '▼'}</span>
-        </button>
+              onClick={() => setShowNews(!showNews)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C20E2F]"
+            >
+              <span className="text-sm font-medium text-gray-900">
+                {showNews ? '기사 숨기기' : '관련 뉴스 보기'}
+              </span>
+              <span className="text-gray-400">{showNews ? '▲' : '▼'}</span>
+            </button>
           </div>
         )}
 
+
         {/* News Section */}
-        {showNews && (
+        {showNews && !isNewsLoading && (
           <div className="mt-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">최신 뉴스</h2>
             <div className="bg-white shadow overflow-hidden sm:rounded-md">
@@ -458,8 +443,8 @@ function StockDetailPage({ context }) {
                     {newsList.map((article, idx) => (
                       <li
                         key={idx}
-                        className="group border rounded shadow-sm border-black bg-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:z-10"
-                      >
+                        className="group border rounded shadow-sm border-black bg-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:z-10">
+
                         <a
                           href={article.link}
                           target="_blank"
@@ -488,62 +473,84 @@ function StockDetailPage({ context }) {
 
       {/* Transaction Logs Sidebar */}
       {showLogs && (
-        <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out">
-          <div className="h-full flex flex-col">
-            <div className="px-6 py-5 border-b border-gray-200">
+        // 1. 전체 화면을 덮는 컨테이너 (중앙 정렬 역할)
+        // 기존 오버레이와 모달을 하나로 묶고 중앙 정렬을 추가합니다.
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4"
+          onClick={() => setShowLogs(false)}
+        >
+          {/* 2. 실제 팝업(모달) 패널 */}
+          {/* e.stopPropagation()을 이용해 패널 내부 클릭 시 창이 닫히는 것을 방지 */}
+          <div
+            className="relative w-full max-w-md bg-white rounded-lg shadow-xl flex flex-col max-h-[80vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Sidebar Header -> Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-medium text-gray-900">거래 내역</h2>
                 <button
                   onClick={() => setShowLogs(false)}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                 >
                   <span className="sr-only">Close</span>
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
             </div>
+
+            {/* Sidebar Content -> Modal Content */}
+            {/* overflow-y-auto를 통해 내용이 길어지면 자동 스크롤 */}
             <div className="flex-1 overflow-y-auto p-6">
               {isLogLoading ? (
-                <div className="flex justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+                <div className="flex justify-center items-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#C20E2F]"></div>
                 </div>
-              ) : stockLogs.length > 0 ? (
-                <div className="space-y-4">
-                  {stockLogs.map((log) => (
-                    <div
-                      key={log.id}
-                      className="border-l-4 border-blue-500 pl-4 py-2"
-                    >
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">
-                          {log.type === "BUY" ? "매수" : "매도"} • {log.quantity}주
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {new Date(log.timestamp).toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {log.price.toLocaleString()}원 • 총{" "}
-                        {log.totalPrice.toLocaleString()}원
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
+              ) : isLogError ? (
+                <ErrorBox message={error?.message || "거래 로그 조회에 실패했습니다."} />
+              ) : stockLogs.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   거래 내역이 없습니다.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* 👇 이 부분이 핵심입니다. */}
+                  {stockLogs
+                    // 1. 원본 배열을 변경하지 않기 위해 .slice()로 복사본을 만듭니다.
+                    .slice()
+                    // 2. b.date와 a.date를 비교하여 최신 날짜가 위로 오도록 정렬합니다.
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    // 3. 정렬된 배열을 화면에 렌더링합니다.
+                    .map((log) => {
+                      const isBuy = log.buy_stock_count > 0;
+                      return (
+                        <div
+                          key={log.id}
+                          className={`p-4 rounded-lg border-l-4 ${isBuy ? "border-red-500 bg-red-50" : "border-blue-500 bg-blue-50"
+                            }`}
+                        >
+                          {/* ... (기존 로그 아이템 내용) ... */}
+                          <div className="flex justify-between items-center mb-1">
+                            <span className={`text-sm font-bold ${isBuy ? "text-red-700" : "text-blue-700"}`}>
+                              {isBuy ? "매수" : "매도"} • {Math.abs(log.buy_stock_count ?? 0)}주
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {new Date(log.date).toLocaleDateString('ko-KR')}
+                            </span>
+                          </div>
+                          <div className="text-sm text-gray-800">
+                            <span className="text-gray-600">
+                              {isBuy ? "총 매수 금액:" : "총 매도 금액:"}
+                            </span>
+                            <span className="font-medium ml-1">
+                              {Math.abs(log.buy_cost ?? 0).toLocaleString()}달러
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               )}
             </div>
@@ -561,7 +568,6 @@ function StockDetailPage({ context }) {
           />
         </div>
       )}
-
       {showLogs && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"

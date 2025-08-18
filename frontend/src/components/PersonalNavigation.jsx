@@ -8,40 +8,38 @@ function PersonalNavigation() {
   // const currentFilter = query.get("filter") || "all";
 
   return (
-    <header className="p-8 flex justify-center">
-      <nav>
-        <ul className="flex gap-4">
-          <li>
-            <NavLink
-              to="/personal/mystock"
-              className={({ isActive }) =>
-                `border border-black ${
-                  isActive
-                    ? "bg-[#C20E2F] text-white"
-                    : "bg-gray-200 text-gray-900"
-                } px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white`
-              }
-            >
-              Mystock
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/personal/intereststock"
-              className={({ isActive }) =>
-                `border border-black ${
-                  isActive
-                    ? "bg-[#C20E2F] text-white"
-                    : "bg-gray-200 text-gray-900"
-                } px-6 py-2 rounded no-underline transition-colors duration-200 hover:bg-[#C20E2F] hover:text-white`
-              }
-            >
-              Interest Stock
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <div className="bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="flex justify-center space-x-8">
+          <NavLink
+            to="/personal/mystock"
+            className={({ isActive }) => `
+              py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200
+              ${
+                isActive 
+                  ? 'border-[#C20E2F] text-[#C20E2F]' 
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              }`
+            }
+          >
+            내 주식
+          </NavLink>
+          <NavLink
+            to="/personal/intereststock"
+            className={({ isActive }) => `
+              py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200
+              ${
+                isActive 
+                  ? 'border-[#C20E2F] text-[#C20E2F]' 
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              }`
+            }
+          >
+            관심 주식
+          </NavLink>
+        </nav>
+      </div>
+    </div>
   );
 }
 

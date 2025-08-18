@@ -5,6 +5,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Styling for react-select component */
+.react-select__control {
+  @apply rounded-lg border-gray-300 shadow-sm !important;
+}
+
+.react-select__control--is-focused {
+  @apply border-red-500 ring-1 ring-red-500 !important;
+}
+
+.react-select__option {
+  @apply transition-colors duration-200;
+}
+
+.react-select__option--is-focused {
+  @apply bg-[#fcf3f4] !important;
+}
+
+.react-select__option--is-selected {
+  @apply bg-[#C20E2F] text-white !important;
+}
+
+.react-select__multi-value {
+    @apply bg-gray-200 text-gray-800 rounded-md !important;
+}
+
+.react-select__multi-value__remove {
+  @apply transition-colors duration-200;
+}
+
+.react-select__multi-value__remove:hover {
+  @apply text-[#C20E2F] bg-gray-200 rounded-md !important;
+}
 * {
   box-sizing: border-box;
 }
@@ -20,9 +52,9 @@
 }
 
 :root {
-  font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  font-family: 'Times New Roman', 'Nanum Myeongjo', serif;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 24px;
   font-weight: 400;
 
   color-scheme: light dark;

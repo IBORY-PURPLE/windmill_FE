@@ -1,6 +1,6 @@
 function MainLayout({ children }) {
   return (
-    <div className="bg-[#F6F6F6] font-customSerif text-xl">
+    <div className="bg-[#F6F6F6] font-windmill text-xl">
       <div
         className="w-full max-w-md sm:max-w-lg lg:max-w-xl mx-auto px-0
                       flex flex-col min-h-screen"

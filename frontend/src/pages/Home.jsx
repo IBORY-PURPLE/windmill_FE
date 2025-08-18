@@ -103,7 +103,7 @@ function HomePage() {
               <h3 className="font-medium text-gray-700">나스닥</h3>
               <span className="text-xs px-2 py-1 bg-purple-50 text-purple-700 rounded-full">US</span>
             </div>
-            <div className="flex items-baseline md:-ml-2">
+            <div className="flex items-baseline md:-ml-3">
               <span className="text-xl font-bold text-gray-900">15,823.34</span>
               <span className="ml-2 text-sm font-medium text-blue-500">-0.23%</span>
             </div>
