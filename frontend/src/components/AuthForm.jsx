@@ -23,7 +23,7 @@ function AuthForm() {
   }, [message]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="p-8">
@@ -68,7 +68,7 @@ function AuthForm() {
                     type="text"
                     name="userName"
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                     placeholder="사용자 이름을 입력하세요"
                   />
                 </div>
@@ -83,7 +83,7 @@ function AuthForm() {
                   type="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                   placeholder="이메일을 입력하세요"
                 />
               </div>
@@ -97,7 +97,7 @@ function AuthForm() {
                   type="password"
                   name="password"
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
                   placeholder="비밀번호를 입력하세요"
                 />
               </div>
@@ -108,8 +108,8 @@ function AuthForm() {
                   disabled={isSubmitting}
                   className={`w-full py-3 px-4 rounded-lg font-medium text-white ${
                     isSubmitting 
-                      ? 'bg-blue-400 cursor-not-allowed' 
-                      : 'bg-blue-600 hover:bg-blue-700'
+                      ? 'bg-red-400 cursor-not-allowed' 
+                      : 'bg-[#C20E2F] hover:bg-red-700'
                   } transition duration-200 flex items-center justify-center`}
                 >
                   {isSubmitting ? (
@@ -132,7 +132,7 @@ function AuthForm() {
                 {isLogin ? "계정이 없으신가요? " : "이미 계정이 있으신가요? "}
                 <Link
                   to={`?mode=${isLogin ? "signup" : "login"}`}
-                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                  className="font-medium text-[#C20E2F] hover:text-red-500 transition-colors"
                 >
                   {isLogin ? "회원가입" : "로그인"} 하기
                 </Link>
