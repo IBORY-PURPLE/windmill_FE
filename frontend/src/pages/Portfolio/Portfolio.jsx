@@ -66,8 +66,8 @@ function PortfolioPage() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#C20E2F]"></div>
-              <p className="mt-4 text-gray-600">아바타를 불러오는 중...</p>
+              <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-[#C20E2F] mx-auto"></div>
+              <p className="mt-4 text-lg text-gray-600">아바타를 불러오는 중입니다...</p>
             </div>
           ) : isError ? (
             <div className="p-8">
