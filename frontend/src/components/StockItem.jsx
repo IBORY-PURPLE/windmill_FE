@@ -10,29 +10,22 @@ function StockItem({ stock, isInterested }) {
   };
 
   return (
-    <div className="group relative rounded-xl bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 border border-gray-100 hover:border-blue-100">
+    <div className="flex flex-col justify-between h-full  rounded-xl bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 border border-gray-100 hover:border-red-100">
       {/* Stock Info */}
       <div className="flex items-start justify-between">
-        <div>
+          <div>
           <h3 className="text-lg font-semibold text-gray-900">{stock.name}</h3>
           <p className="text-sm text-gray-500">{stock.ticker}</p>
-          {stock.price && (
-            <p className="mt-1 text-2xl font-bold text-gray-900">
-              ₩{stock.price.toLocaleString()}
-              <span className={`ml-2 text-sm font-medium ${stock.change_rate >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                {stock.change_rate >= 0 ? '↑' : '↓'} {Math.abs(stock.change_rate)}%
-              </span>
-            </p>
-          )}
-        </div>
+          </div>
+          
         
         {/* Favorite Button */}
         <button
           onClick={handleClick}
           className={`p-2 rounded-full transition-colors ${
             isInterested 
-              ? 'text-blue-500 bg-blue-50 hover:bg-blue-100' 
-              : 'text-gray-300 hover:text-blue-400 hover:bg-gray-50'
+              ? 'text-red-500 bg-red-50 hover:bg-red-100' 
+              : 'text-gray-300 hover:text-red-400 hover:bg-gray-50'
           }`}
           aria-label={isInterested ? 'Remove from favorites' : 'Add to favorites'}
         >
@@ -55,7 +48,17 @@ function StockItem({ stock, isInterested }) {
           </svg>
         </button>
       </div>
-
+      <div>
+      <div>
+          {stock.price && (
+            <p className="mt-1 text-2xl font-bold text-gray-900">
+              ₩{stock.price.toLocaleString()}
+              <span className={`ml-2 text-sm font-medium ${stock.change_rate >= 0 ? 'text-red-500' : 'text-blue-500'}`}>
+                {stock.change_rate >= 0 ? '↑' : '↓'} {Math.abs(stock.change_rate)}%
+              </span>
+            </p>
+          )}
+          </div>
       {/* Additional Stock Info */}
       <div className="mt-4 pt-4 border-t border-gray-100">
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -73,6 +76,7 @@ function StockItem({ stock, isInterested }) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

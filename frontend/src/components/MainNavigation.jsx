@@ -8,7 +8,7 @@ function MainNavigation() {
 
   return (
     <>
-      <header className="hidden md:block bg-white shadow-md transition-transform duration-300 max-w-5xl mx-auto">
+      <header className="block bg-white shadow-md transition-transform duration-300 max-w-5xl mx-auto">
         <div className="border-b border-gray-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
@@ -18,18 +18,18 @@ function MainNavigation() {
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
                 <img 
-                  className="h-8 w-auto" 
+                  className="h-10 w-auto" 
                   src={logoImg} 
                   alt="WindMill" 
                 />
-                <span className="ml-2 text-xl font-bold text-gray-900">
+                <span className="ml-2 text-4xl font-bold text-[#324D60]">
                   WindMill
                 </span>
               </NavLink>
 
           {token? (<LogoutButton></LogoutButton>):(<NavLink
               to="/auth?mode=login"
-              className="ml-2 px-4 py-2 rounded-lg font-medium text-white bg-[#C20E2F] hover:bg-red-700 transition-colors duration-200 flex items-center"
+              className="ml-2 px-3 py-1.5 rounded-lg font-medium text-white bg-[#C20E2F] hover:bg-red-700 transition-colors duration-200 flex items-center"
             >
               <span className="mr-2">🔑</span>
               로그인
@@ -51,13 +51,13 @@ function MainNavigation() {
               }`}
             end
           >
-            <span className="mr-2">🏠</span>
+            <span className="hidden md:block mr-2">🏠</span>
             홈
           </NavLink>
           
           <div className="relative group">
             <button className="px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 flex items-center transition-colors duration-200">
-              <span className="mr-2">📰</span>
+              <span className="hidden md:block mr-2">📰</span>
               <span>뉴스</span>
             </button>
             <div className="absolute left-0 mt-1 w-48 rounded-lg shadow-xl bg-white border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform -translate-y-1 group-hover:translate-y-0">
@@ -105,7 +105,7 @@ function MainNavigation() {
                       : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                   }`}
               >
-                <span className="mr-2">👤</span>
+                <span className="hidden md:block mr-2">👤</span>
                 내 정보
               </NavLink>
               <div className="absolute left-0 mt-1 w-48 rounded-lg shadow-xl bg-white border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform -translate-y-1 group-hover:translate-y-0">
@@ -136,7 +136,7 @@ function MainNavigation() {
                     : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                 }`}
             >
-              <span className="mr-2">📊</span>
+              <span className="hidden md:block mr-2">📊</span>
               포트폴리오
               </NavLink></div>
             </>
