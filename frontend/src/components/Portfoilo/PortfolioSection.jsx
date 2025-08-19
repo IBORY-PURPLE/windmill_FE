@@ -12,7 +12,7 @@ import {
   Legend
 } from "recharts";
 
-function PortfolioSection({ result, result2, onRefresh }) {
+function PortfolioSection({ result, result2, result3, onRefresh }) {
   const [showDetails, setShowDetails] = useState(false);
   const [isPortfolioSaved, setIsPortfolioSaved] = useState(false);
   const formatDate = (dateString) => {
@@ -148,6 +148,7 @@ function PortfolioSection({ result, result2, onRefresh }) {
               </LineChart>
             </ResponsiveContainer>
           </div>
+          <div><p>{result3}</p></div>
         </div>
       )}
     </div>
