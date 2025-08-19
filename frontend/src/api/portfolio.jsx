@@ -1,12 +1,10 @@
 import { getAuthToken } from "../util/auth";
+import { API_BASE } from "../apiBase";
 
 export const fetchPortfolio = async (avatarId) => {
-  const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}`,
-    {
-      method: "POST",
-    }
-  );
+  const res = await fetch(`https://${API_BASE}/portfolio/${avatarId}`, {
+    method: "POST",
+  });
 
   if (!res.ok) throw new Error("포트폴리오 조회 실패했습니다.");
   const data = await res.json();
@@ -16,14 +14,11 @@ export const fetchPortfolio = async (avatarId) => {
 
 export const fetchSavedPortfolioList = async (avatarId) => {
   const token = getAuthToken();
-  const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}/save`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const res = await fetch(`https://${API_BASE}/portfolio/${avatarId}/save`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!res.ok) throw new Error("저장된 포트폴리오를 불러오는 데 실패했습니다.");
 
@@ -39,7 +34,7 @@ export const togglePortfolio = async (
   const token = getAuthToken();
   const method = isAlreadySaved ? "DELETE" : "POST";
   const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}/save/${portfolioId}`,
+    `https://${API_BASE}/portfolio/${avatarId}/save/${portfolioId}`,
     {
       method,
       headers: {

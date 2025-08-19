@@ -1,3 +1,5 @@
+import { API_BASE } from "../apiBase";
+
 export async function predictStock({ stockId, selectedKeys, period }) {
   const body = {
     stock_id: stockId,
@@ -18,14 +20,11 @@ export async function predictStock({ stockId, selectedKeys, period }) {
   };
   console.log(JSON.stringify(body));
 
-  const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/predict/${stockId}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }
-  );
+  const res = await fetch(`https://${API_BASE}/predict/${stockId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 
   if (!res.ok) {
     throw new Error("예측에 실패했습니다.");
