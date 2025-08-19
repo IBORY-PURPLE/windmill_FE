@@ -17,7 +17,7 @@ export const fetchMyStocks = async () => {
 
 export const addMyStock = async (stockData) => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/user/mystock/${stockData.id}`, {
+  const res = await fetch(`${API_BASE}/user/mystock/${stockData.id}`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,
@@ -37,7 +37,7 @@ export const addMyStock = async (stockData) => {
 
 export const fetchMyStockLogs = async (stockId) => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/user/mystock/${stockId}`, {
+  const res = await fetch(`${API_BASE}/user/mystock/${stockId}`, {
     headers: {
       Authorization: "Bearer " + token,
     },

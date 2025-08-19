@@ -4,7 +4,7 @@ import { API_BASE } from "../apiBase";
 
 export const fetchInterestStocks = async () => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/user/interest`, {
+  const res = await fetch(`${API_BASE}/user/interest`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -19,7 +19,7 @@ export const fetchInterestStocks = async () => {
 export const toggleInterestStock = async (stockId, isAlreadyInterested) => {
   const token = getAuthToken();
   const method = isAlreadyInterested ? "DELETE" : "POST";
-  const res = await fetch(`https://${API_BASE}/user/interest/${stockId}`, {
+  const res = await fetch(`${API_BASE}/user/interest/${stockId}`, {
     method,
     headers: {
       Authorization: "Bearer " + token,

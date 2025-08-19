@@ -29,7 +29,7 @@ export async function action({ request }) {
     username: data.get("userName"),
   };
 
-  const response = await fetch(`${API_BASE}/auth/` + mode, {
+  const response = await fetch(`https://${API_BASE}/auth/` + mode, {
     method: "POST",
     credentials: "include",
     headers: {

@@ -42,7 +42,7 @@ export const addAvatar = async (avatarData) => {
 
 export const singleDeleteAvatar = async (avatarId) => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/portfolio/${avatarId}`, {
+  const res = await fetch(`${API_BASE}/portfolio/${avatarId}`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,
@@ -54,7 +54,7 @@ export const singleDeleteAvatar = async (avatarId) => {
 
 export const allDeleteAvatar = async () => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/portfolio/delete_all`, {
+  const res = await fetch(`${API_BASE}/portfolio/delete_all`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,

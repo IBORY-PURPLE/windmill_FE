@@ -20,7 +20,7 @@ export async function predictStock({ stockId, selectedKeys, period }) {
   };
   console.log(JSON.stringify(body));
 
-  const res = await fetch(`https://${API_BASE}/predict/${stockId}`, {
+  const res = await fetch(`${API_BASE}/predict/${stockId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

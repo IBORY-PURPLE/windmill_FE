@@ -8,7 +8,7 @@ import { API_BASE } from "../apiBase";
 
 export const fetchNews = async (query) => {
   const res = await fetch(
-    `https://${API_BASE}/news?query=${encodeURIComponent(query)}&display=50`
+    `${API_BASE}/news?query=${encodeURIComponent(query)}&display=50`
   );
 
   if (!res.ok) {

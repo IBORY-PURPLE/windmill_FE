@@ -2,7 +2,7 @@ import { getAuthToken } from "../util/auth";
 import { API_BASE } from "../apiBase";
 
 export const fetchPortfolio = async (avatarId) => {
-  const res = await fetch(`https://${API_BASE}/portfolio/${avatarId}`, {
+  const res = await fetch(`${API_BASE}/portfolio/${avatarId}`, {
     method: "POST",
   });
 
@@ -14,7 +14,7 @@ export const fetchPortfolio = async (avatarId) => {
 
 export const fetchSavedPortfolioList = async (avatarId) => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/portfolio/${avatarId}/save`, {
+  const res = await fetch(`${API_BASE}/portfolio/${avatarId}/save`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -34,7 +34,7 @@ export const togglePortfolio = async (
   const token = getAuthToken();
   const method = isAlreadySaved ? "DELETE" : "POST";
   const res = await fetch(
-    `https://${API_BASE}/portfolio/${avatarId}/save/${portfolioId}`,
+    `${API_BASE}/portfolio/${avatarId}/save/${portfolioId}`,
     {
       method,
       headers: {
