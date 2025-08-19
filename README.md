@@ -5,7 +5,7 @@
 - 프런트는 Codespaces에서 실행되며, **/api 프록시**를 통해 CORS 없이 통신합니다.
 
 ### 1) Codespaces 열기
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=<IBORY-PURPLE>%2Fwindmill_FE)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=IBORY-PURPLE%2Fwindmill_FE)
 
 
 ### 2) 자동 구동
