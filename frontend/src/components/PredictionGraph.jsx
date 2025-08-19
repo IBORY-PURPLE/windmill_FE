@@ -31,31 +31,55 @@ const CustomTooltip = ({ active, payload }) => {
 
 const PredictionGraph = ({ predictedData, isLoading, realData }) => {
   // 👇 1. 실제 데이터와 예측 데이터를 하나의 배열로 합칩니다.
+  console.log("예측 데이터", predictedData)
   const combinedData = useMemo(() => {
-    // realData가 없거나 비어있으면 predictedData만 반환하도록 수정
-    if (!realData || realData.length === 0) {
-      if (!predictedData || predictedData.length === 0) return [];
-      // predictedData는 `value` 키를 사용하므로 그대로 둡니다.
-      return predictedData.map(d => ({ ...d, predictedValue: d.value }));
+    if (!realData && !predictedData) {
+      return [];
     }
-
-    if (!predictedData || predictedData.length === 0) {
-        // 👇 이 부분을 d.value에서 d.data로 수정했습니다.
-        return realData.map(d => ({ ...d, realValue: d.data }));
+  
+    const dataMap = new Map();
+  
+    // 1. realData를 먼저 Map에 추가합니다.
+    if (realData) {
+      realData.forEach(item => {
+        // realData는 'data' 키를 사용합니다.
+        dataMap.set(item.date, {
+          date: item.date,
+          realValue: item.data,
+        });
+      });
+    }
+  
+    // 2. predictedData를 순회하며 Map에 병합합니다.
+    if (predictedData) {
+      predictedData.forEach(item => {
+        const dateKey = item.date;
+        // Map에 이미 해당 날짜의 데이터가 있는지 확인합니다.
+        let existingEntry = dataMap.get(dateKey) || { date: dateKey };
+  
+        // predictedData는 'value' 키를 사용합니다.
+        // 예측 데이터의 값을 predictedValue에 할당합니다.
+        existingEntry.predictedValue = item.value;
+  
+        dataMap.set(dateKey, existingEntry);
+      });
     }
     
-    // 👇 realData는 'data' 키, predictedData는 'value' 키를 사용하도록 수정합니다.
-    const realPart = realData.map(d => ({ ...d, realValue: d.data }));
-    const predictedPart = predictedData.map(d => ({ ...d, predictedValue: d.value }));
-
-    const lastRealPoint = realPart[realPart.length - 1];
-    if (lastRealPoint) {
-      predictedPart.unshift({ ...lastRealPoint, predictedValue: lastRealPoint.realValue });
+    // 3. Map의 값을 배열로 변환하고 날짜순으로 정렬합니다.
+    const combined = Array.from(dataMap.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+    // 4. 과거 데이터의 마지막 지점과 예측 데이터의 시작점을 연결합니다.
+    const lastRealIndex = combined.findLastIndex(d => d.realValue != null);
+  
+    if (lastRealIndex !== -1 && combined[lastRealIndex]) {
+      combined[lastRealIndex].predictedValue = combined[lastRealIndex].realValue;
     }
-
-    return [...realPart, ...predictedPart];
+  
+    // 최종적으로 중복이 제거되고, 하나의 객체로 합쳐진 데이터를 반환합니다.
+    return combined;
   }, [realData, predictedData]);
   // 👇 2. Y축의 범위를 전체 데이터 기준으로 동적으로 계산합니다.
+  console.log(combinedData)
   const yDomain = useMemo(() => {
     if (combinedData.length === 0) return ['auto', 'auto'];
     

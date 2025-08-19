@@ -126,11 +126,19 @@ function StockDetailPage({ context }) {
       { stockId, selectedKeys, period: selectedPeriod.value },
       {
         onSuccess: (data) => {
-          const mapped = data.data.map((d) => ({
+          // 1. 백엔드에서 받은 전체 데이터 배열을 가져옵니다.
+          const allData = data.data;
+  
+          // 2. 이 데이터 중에서 type이 'predict'인 항목만 필터링합니다.
+          const predictedOnly = allData.filter(d => d.type === 'predict');
+  
+          // 3. 필터링된 예측 데이터만 predictedData 상태에 저장합니다.
+          const mapped = predictedOnly.map((d) => ({
             date: d.date,
-            value: d.data,
+            value: d.data, // 또는 d.value, 백엔드 응답에 따라
             type: d.type,
           }));
+  
           setPredictedData(mapped);
           setIsGraphLoading(false);
         },
@@ -270,25 +278,6 @@ function StockDetailPage({ context }) {
                 <StockPriceChart data={chartData} />
               )}
             </div>
-          </div>
-        </div>
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">주요 지표</h3>
-            <dl className="space-y-4">
-              {[
-                { label: 'PER', value: stock.per },
-                { label: 'PBR', value: stock.pbr },
-                { label: '배당수익률', value: stock.dividendYield ? `${stock.dividendYield}%` : '-' },
-                { label: '52주 최고가', value: stock.high52w?.toLocaleString() },
-                { label: '52주 최저가', value: stock.low52w?.toLocaleString() },
-              ].map((metric) => (
-                <div key={metric.label} className="flex justify-between">
-                  <dt className="text-sm font-medium text-gray-500">{metric.label}</dt>
-                  <dd className="text-sm font-medium text-gray-900">{metric.value || '-'}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
         </div>
 
