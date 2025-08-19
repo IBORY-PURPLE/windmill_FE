@@ -3,7 +3,7 @@ import { API_BASE } from "../apiBase";
 
 export const fetchAvatars = async () => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/portfolio/avatar`, {
+  const res = await fetch(`${API_BASE}/portfolio/avatar`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -22,7 +22,7 @@ export const fetchAvatars = async () => {
 
 export const addAvatar = async (avatarData) => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/portfolio/avatar`, {
+  const res = await fetch(`${API_BASE}/portfolio/avatar`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,
