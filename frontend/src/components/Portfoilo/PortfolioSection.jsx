@@ -15,7 +15,12 @@ import {
 function PortfolioSection({ result, result2, onRefresh }) {
   const [showDetails, setShowDetails] = useState(false);
   const [isPortfolioSaved, setIsPortfolioSaved] = useState(false);
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${month}-${day}`;
+  };
   useEffect(() => {
     const toggleHandler = () => setShowDetails((prev) => !prev);
     window.addEventListener("portfolio:toggleDetails", toggleHandler);
@@ -26,6 +31,7 @@ function PortfolioSection({ result, result2, onRefresh }) {
   const toggleSavePortfolio = () => {
     setIsPortfolioSaved(!isPortfolioSaved);
   };
+  
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mx-2 my-4">
@@ -39,14 +45,14 @@ function PortfolioSection({ result, result2, onRefresh }) {
           <div className="flex items-center space-x-2">
             <button
               onClick={toggleSavePortfolio}
-              className={`p-2 rounded-full transition-colors ${isPortfolioSaved 
-                ? 'text-yellow-500 hover:bg-yellow-50' 
+              className={`p-2 rounded-full transition-colors ${isPortfolioSaved
+                ? 'text-yellow-500 hover:bg-yellow-50'
                 : 'text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'}`}
               title={isPortfolioSaved ? "저장됨" : "포트폴리오 저장"}
             >
-              <Bookmark 
-                size={20} 
-                className={isPortfolioSaved ? 'fill-current' : ''} 
+              <Bookmark
+                size={20}
+                className={isPortfolioSaved ? 'fill-current' : ''}
               />
             </button>
             <button
@@ -85,9 +91,22 @@ function PortfolioSection({ result, result2, onRefresh }) {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={result2 || []} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 <CartesianGrid stroke="#f0f0f0" vertical={false} />
-              <XAxis dataKey="date" />
-              <YAxis />
-                <Tooltip 
+                <XAxis
+                  dataKey="date"
+                  interval="preserveStart"
+                  tickFormatter={formatDate}
+                  tick={{ fontSize: 15, fill: '#000000' }}
+                  axisLine={{ stroke: '#000000', strokeWidth: 1 }} 
+                  tickLine={{ stroke: '#000000' }}
+                  padding={{left: 10}}
+                />
+                <YAxis
+                  tick={{ fontSize: 15, fill: '#000000' }}
+                  tickLine={false}
+                  axisLine={{ stroke: '#000000', strokeWidth: 1 }} 
+                  padding={{bottom: 10}}
+                />
+                <Tooltip
                   contentStyle={{
                     backgroundColor: 'white',
                     border: '1px solid #e5e7eb',
@@ -102,7 +121,7 @@ function PortfolioSection({ result, result2, onRefresh }) {
                   }}
                   formatter={(value) => [`${value}%`, '수익률']}
                 />
-                <Legend 
+                <Legend
                   verticalAlign="top"
                   height={36}
                   iconType="star"

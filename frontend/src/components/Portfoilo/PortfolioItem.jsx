@@ -21,7 +21,12 @@ function PortfolioItem({ result, chartData, showDetails }) {
   const { stockId, ticker, ratio, returnRate, avgRoc } = result;
   const isPositive = parseFloat(returnRate) >= 0;
   const isRocPositive = parseFloat(avgRoc) >= 0;
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${month}-${day}`;
+  };
   // Recharts가 올바르게 렌더링할 수 있도록 데이터를 변환하는 로직을 개선합니다.
   const transformedData = useMemo(() => {
     if (!chartData || chartData.length === 0) return [];
@@ -102,13 +107,15 @@ function PortfolioItem({ result, chartData, showDetails }) {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis
                   dataKey="date"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 11, fill: '#6b7280' }}
-                  tickMargin={8}
+                  interval="preserveStart"
+                  tickFormatter={formatDate}
+                  tick={{ fontSize: 10, fill: '#6b7280' }}
+                  axisLine={{ stroke: '#000000', strokeWidth: 1 }} 
+                  tickLine={{ stroke: '#000000' }}
+                  padding={{left: 10}}
                 />
                 <YAxis
-                  axisLine={false}
+                  axisLine={{ stroke: '#000000', strokeWidth: 1 }}
                   tickLine={false}
                   tick={{ fontSize: 11, fill: '#6b7280' }}
                 />

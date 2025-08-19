@@ -12,7 +12,9 @@ import {
 } from "recharts";
 import dayjs from "dayjs";
 
+// 캔들 컴포넌트는 수정할 필요 없습니다.
 function Candle({ x, y, width, payload, yAxis }) {
+  // ... (기존 Candle 컴포넌트 코드)
   const { open, close, high, low } = payload;
   if (open == null || close == null || high == null || low == null) return null;
 
@@ -52,6 +54,7 @@ function Candle({ x, y, width, payload, yAxis }) {
   );
 }
 
+
 export default function StockPriceChart({
   data,
   showCandle = false,
@@ -59,23 +62,56 @@ export default function StockPriceChart({
 }) {
   const hasOHLC = data?.length && data[0].open != null && data[0].high != null;
 
+  // X축 날짜 포맷을 위한 함수
+  const formatDate = (dateStr) => dayjs(dateStr).format("MM-DD");
+
+  // Y축 숫자 포맷을 위한 함수 (예: 12000 -> 12k)
+  const formatYAxis = (tick) => (tick > 1000 ? `${(tick / 1000).toFixed(0)}k` : tick);
+
+
   if (showCandle && hasOHLC) {
     return (
       <ResponsiveContainer width="95%" height={360}>
         <ComposedChart
           data={data}
-          margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+          margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
         >
-          <CartesianGrid strokeDasharray="4 4" />
-          <XAxis dataKey="date" />
-          <YAxis yAxisId="price" domain={["auto", "auto"]} />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+
+          {/* 👇 캔들 차트의 XAxis 스타일 적용 */}
+          <XAxis
+            dataKey="date"
+            tickFormatter={formatDate}
+            interval="preserveStartEnd"
+            minTickGap={30}
+            tick={{ fontSize: 11, fill: '#6b7280' }}
+            axisLine={false}
+            tickLine={false}
+            padding={{ left: 20, right: 20 }}
+            tickMargin={10}
+          />
+
+          {/* 👇 캔들 차트의 YAxis 스타일 적용 */}
+          <YAxis
+            yAxisId="price"
+            domain={["auto", "auto"]}
+            tickFormatter={formatYAxis}
+            tick={{ fontSize: 11, fill: '#6b7280' }}
+            axisLine={false}
+            tickLine={false}
+          />
+
           {showVolume && <YAxis yAxisId="vol" orientation="right" hide />}
-          <Tooltip />
+          <Tooltip labelFormatter={(dateStr) => dayjs(dateStr).format("YYYY-MM-DD")} />
+
           {showVolume && (
             <Bar yAxisId="vol" dataKey="volume" barSize={6} opacity={0.3} />
           )}
+
+          {/* Customized 부분은 수정할 필요 없습니다. */}
           <Customized
             component={(props) => {
+              // ... (기존 Customized 코드)
               const { xAxisMap, yAxisMap, formattedGraphicalItems } = props;
               const xAxis = xAxisMap[Object.keys(xAxisMap)[0]];
               const yAxis = yAxisMap["price"];
@@ -106,14 +142,30 @@ export default function StockPriceChart({
         data={data}
         margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
       >
-        <CartesianGrid strokeDasharray="4 4" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+
+        {/* 👇 라인 차트의 XAxis 스타일 적용 */}
         <XAxis
           dataKey="date"
-          tickFormatter={(dateStr, index) => ''}
-          interval="preserveStartEnd"
+          tickFormatter={formatDate}
+          interval="preserveStart"
           minTickGap={30}
+          tick={{ fontSize: 15, fill: '#6b7280' }}
+          axisLine={{ stroke: '#000000', strokeWidth: 1 }}
+          tickLine={{ stroke: '#000000' }}
+          padding={{ left: 20, right: 20 }}
+          tickMargin={10}
         />
-        <YAxis domain={["auto", "auto"]} />
+
+        {/* 👇 라인 차트의 YAxis 스타일 적용 */}
+        <YAxis
+          domain={["auto", "auto"]}
+          tickFormatter={formatYAxis}
+          tick={{ fontSize: 15, fill: '#6b7280' }}
+          axisLine={{ stroke: '#000000', strokeWidth: 1 }}
+          tickLine={false}
+        />
+
         <Tooltip
           labelFormatter={(dateStr) => dayjs(dateStr).format("YYYY-MM-DD")}
         />
