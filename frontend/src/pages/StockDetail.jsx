@@ -13,11 +13,10 @@ import Select from "react-select";
 import { useStocks } from "../hooks/useStocks";
 import { useNews } from "../hooks/useNews";
 import { useStockChart, usePrefetchStockCharts } from "../hooks/useStockChart";
-import StockPriceChart from "../components/stockPriceChart";
+import StockPriceChart from "../components/StockPriceChart";
 import FavoriteButton from "../components/FavoriteButton";
 import { useInterestStocks } from "../hooks/useInterestStocks";
-import PredictionGraph from '../components/PredictionGraph';
-
+import PredictionGraph from "../components/PredictionGraph";
 
 import {
   LineChart,
@@ -67,15 +66,13 @@ function StockDetailPage({ context }) {
   const [showLogs, setShowLogs] = useState(false);
   const [showNews, setShowNews] = useState(false);
   const [days, setDays] = useState(7);
-  const realDataDays=selectedPeriod.value*2;
+  const realDataDays = selectedPeriod.value * 2;
   const {
     data: chartData = [],
     isLoading: isChartLoading,
     error: chartError,
   } = useStockChart(stockId, days);
-  const {
-    data: realData = [],
-  } = useStockChart(stockId, realDataDays);
+  const { data: realData = [] } = useStockChart(stockId, realDataDays);
   const addMutation = useAddMyStock();
   const stock = stocks.find((s) => String(s.id) === stockId);
   if (!stock) {
@@ -128,17 +125,17 @@ function StockDetailPage({ context }) {
         onSuccess: (data) => {
           // 1. 백엔드에서 받은 전체 데이터 배열을 가져옵니다.
           const allData = data.data;
-  
+
           // 2. 이 데이터 중에서 type이 'predict'인 항목만 필터링합니다.
-          const predictedOnly = allData.filter(d => d.type === 'predict');
-  
+          const predictedOnly = allData.filter((d) => d.type === "predict");
+
           // 3. 필터링된 예측 데이터만 predictedData 상태에 저장합니다.
           const mapped = predictedOnly.map((d) => ({
             date: d.date,
             value: d.data, // 또는 d.value, 백엔드 응답에 따라
             type: d.type,
           }));
-  
+
           setPredictedData(mapped);
           setIsGraphLoading(false);
         },
@@ -189,10 +186,14 @@ function StockDetailPage({ context }) {
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 break-words">{stock.name}</h1>
-              <p className="mt-1 text-gray-500">{stock.ticker} • {stock.exchange}</p>
+              <h1 className="text-3xl font-bold text-gray-900 break-words">
+                {stock.name}
+              </h1>
+              <p className="mt-1 text-gray-500">
+                {stock.ticker} • {stock.exchange}
+              </p>
             </div>
-            {['mystock', 'interest'].includes(context) && (
+            {["mystock", "interest"].includes(context) && (
               <div className="mt-4 flex space-x-3 md:mt-0 flex-shrink-0">
                 <button
                   onClick={() => setShowModal(true)}
@@ -208,12 +209,11 @@ function StockDetailPage({ context }) {
                 </button>
               </div>
             )}
-            {context === 'Home' && (
+            {context === "Home" && (
               <div className="mt-4 flex space-x-3 md:mt-0 flex-shrink-0">
-              <FavoriteButton stockId={stockId} isInterested={isInterested} />
+                <FavoriteButton stockId={stockId} isInterested={isInterested} />
               </div>
             )}
-
           </div>
         </div>
       </header>
@@ -226,9 +226,15 @@ function StockDetailPage({ context }) {
                 <p className="mt-1 text-3xl font-semibold text-gray-900">
                   {stock.price?.toLocaleString()}달러
                 </p>
-                <p className={`mt-2 text-sm ${stock.change_rate >= 0 ? 'text-red-500' : 'text-blue-500'}`}>
-                  {stock.change_rate >= 0 ? '▲' : '▼'} {Math.abs(stock.change_rate)}% (
-                  {stock.change_price >= 0 ? '+' : ''}{stock.change_price?.toLocaleString()}달러)
+                <p
+                  className={`mt-2 text-sm ${
+                    stock.change_rate >= 0 ? "text-red-500" : "text-blue-500"
+                  }`}
+                >
+                  {stock.change_rate >= 0 ? "▲" : "▼"}{" "}
+                  {Math.abs(stock.change_rate)}% (
+                  {stock.change_price >= 0 ? "+" : ""}
+                  {stock.change_price?.toLocaleString()}달러)
                 </p>
               </div>
               <div className="h-16 w-16 bg-[#fcf3f4] rounded-full flex items-center justify-center">
@@ -259,10 +265,11 @@ function StockDetailPage({ context }) {
                   <button
                     key={period}
                     onClick={() => setDays(period)}
-                    className={`px-3 py-1 text-sm rounded-full ${days === period
-                      ? 'bg-[#fcf3f4] text-[#C20E2F]'
-                      : 'text-gray-600 hover:bg-gray-100'
-                      }`}
+                    className={`px-3 py-1 text-sm rounded-full ${
+                      days === period
+                        ? "bg-[#fcf3f4] text-[#C20E2F]"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
                   >
                     {period}일
                   </button>
@@ -273,7 +280,10 @@ function StockDetailPage({ context }) {
               {isChartLoading ? (
                 <div className="text-center">
                   <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-[#C20E2F] mx-auto"></div>
-                  <p className="mt-4 text-lg text-gray-600">그래프를 불러오는 중입니다...</p> </div>
+                  <p className="mt-4 text-lg text-gray-600">
+                    그래프를 불러오는 중입니다...
+                  </p>{" "}
+                </div>
               ) : (
                 <StockPriceChart data={chartData} />
               )}
@@ -281,8 +291,7 @@ function StockDetailPage({ context }) {
           </div>
         </div>
 
-
-        {context === 'mystock' && (
+        {context === "mystock" && (
           <div className="space-y-6">
             {/* 보유 현황 카드 */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
@@ -368,9 +377,9 @@ function StockDetailPage({ context }) {
               </button>
 
               {(isGraphLoading || predictedData) && (
-                <PredictionGraph 
-                  predictedData={predictedData} 
-                  isLoading={isGraphLoading} 
+                <PredictionGraph
+                  predictedData={predictedData}
+                  isLoading={isGraphLoading}
                   realData={realData}
                 />
               )}
@@ -380,13 +389,12 @@ function StockDetailPage({ context }) {
               className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C20E2F]"
             >
               <span className="text-sm font-medium text-gray-900">
-                {showNews ? '기사 숨기기' : '관련 뉴스 보기'}
+                {showNews ? "기사 숨기기" : "관련 뉴스 보기"}
               </span>
-              <span className="text-gray-400">{showNews ? '▲' : '▼'}</span>
+              <span className="text-gray-400">{showNews ? "▲" : "▼"}</span>
             </button>
           </div>
         )}
-
 
         {/* News Section */}
         {showNews && !isNewsLoading && (
@@ -411,8 +419,8 @@ function StockDetailPage({ context }) {
                     {newsList.map((article, idx) => (
                       <li
                         key={idx}
-                        className="group border rounded shadow-sm border-black bg-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:z-10">
-
+                        className="group border rounded shadow-sm border-black bg-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:z-10"
+                      >
                         <a
                           href={article.link}
                           target="_blank"
@@ -462,8 +470,18 @@ function StockDetailPage({ context }) {
                   className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                 >
                   <span className="sr-only">Close</span>
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -477,7 +495,9 @@ function StockDetailPage({ context }) {
                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#C20E2F]"></div>
                 </div>
               ) : isLogError ? (
-                <ErrorBox message={error?.message || "거래 로그 조회에 실패했습니다."} />
+                <ErrorBox
+                  message={error?.message || "거래 로그 조회에 실패했습니다."}
+                />
               ) : stockLogs.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   거래 내역이 없습니다.
@@ -496,16 +516,24 @@ function StockDetailPage({ context }) {
                       return (
                         <div
                           key={log.id}
-                          className={`p-4 rounded-lg border-l-4 ${isBuy ? "border-red-500 bg-red-50" : "border-blue-500 bg-blue-50"
-                            }`}
+                          className={`p-4 rounded-lg border-l-4 ${
+                            isBuy
+                              ? "border-red-500 bg-red-50"
+                              : "border-blue-500 bg-blue-50"
+                          }`}
                         >
                           {/* ... (기존 로그 아이템 내용) ... */}
                           <div className="flex justify-between items-center mb-1">
-                            <span className={`text-sm font-bold ${isBuy ? "text-red-700" : "text-blue-700"}`}>
-                              {isBuy ? "매수" : "매도"} • {Math.abs(log.buy_stock_count ?? 0)}주
+                            <span
+                              className={`text-sm font-bold ${
+                                isBuy ? "text-red-700" : "text-blue-700"
+                              }`}
+                            >
+                              {isBuy ? "매수" : "매도"} •{" "}
+                              {Math.abs(log.buy_stock_count ?? 0)}주
                             </span>
                             <span className="text-xs text-gray-500">
-                              {new Date(log.date).toLocaleDateString('ko-KR')}
+                              {new Date(log.date).toLocaleDateString("ko-KR")}
                             </span>
                           </div>
                           <div className="text-sm text-gray-800">
