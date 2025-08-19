@@ -1,3 +1,5 @@
+import { API_BASE } from "../apiBase";
+
 // 더미 데이터를 생성하는 헬퍼 함수
 const generateDummyPrediction = (period) => {
   console.log(
@@ -24,8 +26,6 @@ const generateDummyPrediction = (period) => {
   return { data: predictionArray };
 };
 
-import { API_BASE } from "../apiBase";
-
 export async function predictStock({ stockId, selectedKeys, period }) {
   const body = {
     stock_id: stockId,
@@ -46,14 +46,6 @@ export async function predictStock({ stockId, selectedKeys, period }) {
   };
 
   try {
-    const res = await fetch(
-      `https://windmill-be-5qid.onrender.com/predict/${stockId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }
-    );
     const res = await fetch(`${API_BASE}/predict/${stockId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

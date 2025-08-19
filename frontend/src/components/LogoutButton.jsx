@@ -6,7 +6,7 @@ function LogoutButton() {
   const { setToken } = useAuth();
 
   const handleLogout = async () => {
-    const res = await fetch(`https://${API_BASE}/auth/logout`, {
+    const res = await fetch(`${API_BASE}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
