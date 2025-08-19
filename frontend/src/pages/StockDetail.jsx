@@ -16,6 +16,8 @@ import { useStockChart, usePrefetchStockCharts } from "../hooks/useStockChart";
 import StockPriceChart from "../components/stockPriceChart";
 import FavoriteButton from "../components/FavoriteButton";
 import { useInterestStocks } from "../hooks/useInterestStocks";
+import PredictionGraph from '../components/PredictionGraph';
+
 
 import {
   LineChart,
@@ -65,11 +67,15 @@ function StockDetailPage({ context }) {
   const [showLogs, setShowLogs] = useState(false);
   const [showNews, setShowNews] = useState(false);
   const [days, setDays] = useState(7);
+  const realDataDays=selectedPeriod.value*2;
   const {
     data: chartData = [],
     isLoading: isChartLoading,
     error: chartError,
   } = useStockChart(stockId, days);
+  const {
+    data: realData = [],
+  } = useStockChart(stockId, realDataDays);
   const addMutation = useAddMyStock();
   const stock = stocks.find((s) => String(s.id) === stockId);
   if (!stock) {
@@ -143,9 +149,11 @@ function StockDetailPage({ context }) {
 
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
+    setPredictedData(null);
   };
   const handlePeriodChange = (selected) => {
     setSelectedPeriod(selected);
+    setPredictedData(null);
   };
   const handleTradeSubmit = (data) => {
     addMutation.mutate(data, {
@@ -371,41 +379,11 @@ function StockDetailPage({ context }) {
               </button>
 
               {(isGraphLoading || predictedData) && (
-                <div
-                  className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
-                  style={{ position: 'relative', height: 450 }}
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={predictedData || []} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                      <XAxis dataKey="date"
-                        tickFormatter={() => ''}
-                      />
-
-                      <YAxis
-                        dataKey="value"
-                        domain={['dataMin - 50', 'dataMax + 50']}
-                        tickFormatter={(value) => Math.round(value).toLocaleString()}
-                      />
-                      <Tooltip formatter={(value) => `${value.toFixed(0)} 달러`} />
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#C20E2F"
-                        strokeWidth={2}
-                        dot={false}
-                        name="예측값"
-                        isAnimationActive={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-
-                  {isGraphLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-[#fcf3f4] bg-opacity-80 z-10 rounded-lg">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#C20E2F] border-solid"></div>
-                    </div>
-                  )}
-                </div>
+                <PredictionGraph 
+                  predictedData={predictedData} 
+                  isLoading={isGraphLoading} 
+                  realData={realData}
+                />
               )}
             </div>
             <button
