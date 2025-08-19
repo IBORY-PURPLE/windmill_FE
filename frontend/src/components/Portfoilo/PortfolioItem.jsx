@@ -31,19 +31,20 @@ function PortfolioItem({ result, chartData, showDetails }) {
   const transformedData = useMemo(() => {
     if (!chartData || chartData.length === 0) return [];
 
-    // 1. 데이터를 날짜별로 그룹화하여 병합합니다. (중복 날짜 처리)
     const dataMap = new Map();
     chartData.forEach(item => {
-      const entry = dataMap.get(item.date) || { date: item.date };
+      // 날짜 형식을 'YYYY-MM-DD'로 통일하여 키로 사용합니다.
+      const dateKey = item.date.split(' ')[0];
+      const entry = dataMap.get(dateKey) || { date: dateKey };
+      
       if (item.type === 'historical') {
         entry.historical = item.data;
       }
       if (item.type === 'predict') {
         entry.predicted = item.data;
       }
-      dataMap.set(item.date, entry);
+      dataMap.set(dateKey, entry);
     });
-
     // 2. Map을 배열로 변환하고 날짜순으로 정렬합니다. (가장 중요)
     const combined = Array.from(dataMap.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -58,7 +59,7 @@ function PortfolioItem({ result, chartData, showDetails }) {
     return combined;
   }, [chartData]);
 
-
+console.log(chartData)
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100">
       <NavLink to={`/stocks/${stockId}`} className="block group">

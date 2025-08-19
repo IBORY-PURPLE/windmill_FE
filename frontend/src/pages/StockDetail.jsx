@@ -126,11 +126,19 @@ function StockDetailPage({ context }) {
       { stockId, selectedKeys, period: selectedPeriod.value },
       {
         onSuccess: (data) => {
-          const mapped = data.data.map((d) => ({
+          // 1. 백엔드에서 받은 전체 데이터 배열을 가져옵니다.
+          const allData = data.data;
+  
+          // 2. 이 데이터 중에서 type이 'predict'인 항목만 필터링합니다.
+          const predictedOnly = allData.filter(d => d.type === 'predict');
+  
+          // 3. 필터링된 예측 데이터만 predictedData 상태에 저장합니다.
+          const mapped = predictedOnly.map((d) => ({
             date: d.date,
-            value: d.data,
+            value: d.data, // 또는 d.value, 백엔드 응답에 따라
             type: d.type,
           }));
+  
           setPredictedData(mapped);
           setIsGraphLoading(false);
         },
