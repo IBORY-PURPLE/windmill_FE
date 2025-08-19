@@ -49,9 +49,13 @@ function RecommendPortfolioPage() {
 
   if (isLoading) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
-      </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-[#C20E2F] mx-auto"></div>
+            <p className="mt-4 text-lg text-gray-600">포트폴리오를 불러오는 중입니다...</p>
+            <p className="mt-4 text-lg text-gray-600">포트폴리오 생성에는 3분정도 소요됩니다</p>
+          </div>
+        </div>
     );
   }
 

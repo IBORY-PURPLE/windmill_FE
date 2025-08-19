@@ -31,7 +31,7 @@ function PortfolioSection({ result, result2, result3, onRefresh }) {
   const toggleSavePortfolio = () => {
     setIsPortfolioSaved(!isPortfolioSaved);
   };
-
+  
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mx-2 my-4">
       {/* Header Section */}
@@ -158,11 +158,27 @@ function PortfolioSection({ result, result2, result3, onRefresh }) {
               </LineChart>
             </ResponsiveContainer>
           </div>
+          {result3 && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 h-6 w-6">
+                  <img 
+                    src="/src/assets/icons8-gemini-ai-48.png" 
+                    alt="Gemini AI" 
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-gray-900">포트폴리오 분석</h3>
+                  <div className="mt-2 text-sm text-gray-700 space-y-2">
+                    <p>{result3}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
-      <div>
-        <p>{result3}</p>
-      </div>
     </div>
   );
 }
