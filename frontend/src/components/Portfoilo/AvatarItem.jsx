@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, BarChart2, User, Percent } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { singleDeleteAvatar } from "../../api/avatar";
 import TiltedCard from "../../style/AvatarCard";
@@ -48,40 +48,61 @@ function AvatarItem({ avatar }) {
     }
   };
   return (
-    <div className="flex justify-center rounded">
-      <TiltedCard
-        imageSrc={character}
-        altText={`Age: ${avatar.age}, Loss: ${avatar.loss}`}
-        captionText={avatar.age}
-        containerHeight="250px"
-        containerWidth="200px"
-        imageHeight="200px"
-        imageWidth="200px"
-        rotateAmplitude={12}
-        scaleOnHover={1.2}
-        showMobileWarning={false}
-        showTooltip={true}
-        displayOverlayContent={true}
-        overlayContent={
-          <div className="relative w-full h-full p-2">
-            <div className="absolute top-2 left-2 right-2 flex items-center justify-between gap-2">
-              <p className="tilted-card-demo-text text-sm font-semibold line-clamp-1">
-                {avatar.name}
-              </p>
-              <button
-                type="button"
-                onClick={(e) => handleDelete(e, avatar.id)}
-                disabled={isPending}
-                aria-label="아바타 삭제"
-                title="삭제"
-                className="inline-flex items-center justify-center rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
+    <div className="w-full max-w-xs mx-auto transform transition-all duration-300 hover:scale-105">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+        {/* Avatar Image */}
+        <div className="relative h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+          <img
+            src={character}
+            alt={`${avatar.name} 아바타`}
+            className="h-32 w-32 object-contain"
+          />
+          
+          {/* Delete Button */}
+          <button
+            type="button"
+            onClick={(e) => handleDelete(e, avatar.id)}
+            disabled={isPending}
+            aria-label="아바타 삭제"
+            title="삭제"
+            className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:opacity-50"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+        
+        {/* Avatar Info */}
+        <div className="p-4">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 truncate">{avatar.name}</h3>
+              <p className="text-sm text-gray-500">나이: {avatar.age}세</p>
+            </div>
+            <div className="px-3 py-1 bg-red-50 rounded-full">
+              <span className="text-sm font-medium text-red-600">손실률 {avatar.loss}%</span>
             </div>
           </div>
-        }
-      />
+          
+          {/* Progress Bar */}
+          <div className="mt-4">
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div 
+                className="bg-gradient-to-r from-red-400 to-red-600 h-2.5 rounded-full" 
+                style={{ width: `${Math.min(100, Math.max(0, avatar.loss))}%` }}
+              ></div>
+            </div>
+            <div className="flex justify-between mt-1">
+              <span className="text-xs text-gray-500">0%</span>
+              <span className="text-xs text-gray-500">100%</span>
+            </div>
+          </div>
+          
+          {/* View Details Button */}
+          <button className="mt-4 w-full py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+            상세 보기
+          </button>
+        </div>
+      </div>
     </div>
 
     // <div className="relative rounded-xl shadow-md border p-4 bg-white border-black transition-all duration-300 hover:scale-105 hover-shadow-xl hover:z-10">
