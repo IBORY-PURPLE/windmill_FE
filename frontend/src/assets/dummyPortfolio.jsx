@@ -319,19 +319,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-06-24",
-          data: 200.3,
-          type: "historical",
-        },
-        {
           data: 224.18,
           date: "2025-06-24",
           type: "predict",
-        },
-        {
-          date: "2025-06-25",
-          data: 201.56,
-          type: "historical",
         },
         {
           data: 220.37,
@@ -339,19 +329,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-06-26",
-          data: 201.0,
-          type: "historical",
-        },
-        {
           data: 232.95,
           date: "2025-06-26",
           type: "predict",
-        },
-        {
-          date: "2025-06-27",
-          data: 201.08,
-          type: "historical",
         },
         {
           data: 226.34,
@@ -359,19 +339,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-06-30",
-          data: 205.17,
-          type: "historical",
-        },
-        {
           data: 223.86,
           date: "2025-06-30",
           type: "predict",
-        },
-        {
-          date: "2025-07-01",
-          data: 207.82,
-          type: "historical",
         },
         {
           data: 222.16,
@@ -379,19 +349,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-07-02",
-          data: 212.44,
-          type: "historical",
-        },
-        {
           data: 227.96,
           date: "2025-07-02",
           type: "predict",
-        },
-        {
-          date: "2025-07-03",
-          data: 213.55,
-          type: "historical",
         },
         {
           data: 234.19,
@@ -399,19 +359,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-07-07",
-          data: 209.95,
-          type: "historical",
-        },
-        {
           data: 238.03,
           date: "2025-07-07",
           type: "predict",
-        },
-        {
-          date: "2025-07-08",
-          data: 210.01,
-          type: "historical",
         },
         {
           data: 228.5,
@@ -419,19 +369,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-07-09",
-          data: 211.14,
-          type: "historical",
-        },
-        {
           data: 238.5,
           date: "2025-07-09",
           type: "predict",
-        },
-        {
-          date: "2025-07-10",
-          data: 212.41,
-          type: "historical",
         },
         {
           data: 239.0,
@@ -439,19 +379,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-07-11",
-          data: 211.16,
-          type: "historical",
-        },
-        {
           data: 235.03,
           date: "2025-07-11",
           type: "predict",
-        },
-        {
-          date: "2025-07-14",
-          data: 208.62,
-          type: "historical",
         },
         {
           data: 229.37,
@@ -459,19 +389,9 @@ export const dummyPortfoilo = {
           type: "predict",
         },
         {
-          date: "2025-07-15",
-          data: 209.11,
-          type: "historical",
-        },
-        {
           data: 236.19,
           date: "2025-07-15",
           type: "predict",
-        },
-        {
-          date: "2025-07-16",
-          data: 210.16,
-          type: "historical",
         },
         {
           data: 243.51,
