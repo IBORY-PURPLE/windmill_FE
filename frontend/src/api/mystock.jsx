@@ -4,7 +4,7 @@ import { API_BASE } from "../apiBase";
 
 export const fetchMyStocks = async () => {
   const token = getAuthToken();
-  const res = await fetch(`https://${API_BASE}/user/mystock`, {
+  const res = await fetch(`${API_BASE}/user/mystock`, {
     headers: {
       Authorization: "Bearer " + token,
     },
