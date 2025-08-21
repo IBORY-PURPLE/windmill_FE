@@ -1,5 +1,6 @@
 # WindMill — React Application
 
+본 문서는 실행 가이드 문서입니다.
 웹 기반 주가/포트폴리오 앱의 React 프론트엔드입니다. Vite로 빌드하고 Vercel에 배포하며, Render의 FastAPI 백엔드와 `/api/*` 프록시로 연동합니다.
 
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -9,7 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#-license)
 
 
-## 아래 START버튼을 눌러주세요. 
+## 아래 START버튼을 눌러주세요.
 
 [![START](https://img.shields.io/badge/START-50a0f0?style=for-the-badge)](https://windmill-fe-yn59.vercel.app/)
 
