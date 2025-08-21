@@ -8,8 +8,7 @@
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#-license)
 
-**Production:** https://windmill-fe-yn59.vercel.app/
-**[![Production](https://img.shields.io/badge/Production-50a0f0?style=for-the-badge)](https://windmill-fe-yn59.vercel.app/)**
+**[![Production](https://img.shields.io/badge/Production-50a0f0?style=for-the-badge)](https://windmill-fe-yn59.vercel.app/) : ** https://windmill-fe-yn59.vercel.app/
 
 ---
 
@@ -43,23 +42,6 @@
 - **npm** ≥ 9
 
 ---
-
-## 🚀 빠른 시작
-
-```bash
-# 1) 의존성 설치
-npm install
-
-# 2) 로컬 개발 서버 실행
-npm run dev
-# 기본: http://localhost:3000
-
-# 3) 프로덕션 빌드
-npm run build
-
-# 4) 빌드 확인(미리보기 서버)
-npm run preview
-```
 
 ## 🗂️폴더구조
 
