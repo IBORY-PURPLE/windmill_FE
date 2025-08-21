@@ -100,7 +100,7 @@ vercel.json에서 render백엔드로 프록시합니다.
 ```
 
 ## ☁️vercel 배포 가이드
-GitHub 레포를 Vercel에 연결
+1. GitHub 레포를 Vercel에 연결
 
 Framework Preset: Vite
 
