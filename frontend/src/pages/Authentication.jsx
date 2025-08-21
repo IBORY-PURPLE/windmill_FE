@@ -40,6 +40,13 @@ export async function action({ request }) {
 
   // authform에서 useActionData 훅으로 오류를 폼 안에서 생성.
   if (response.status === 422 || response.status === 401) {
+    const errorData = await response.json();
+    if (errorData.detail && errorData.detail.includes('at least 8 characters')) {
+      return json(
+        { errors: { password: '비밀번호는 8자리 이상이어야 합니다.' } },
+        { status: 422 }
+      );
+    }
     return response;
   }
 

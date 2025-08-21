@@ -17,6 +17,7 @@ function formatNumber(num) {
   return parseFloat(num).toFixed(2);
 }
 
+
 function PortfolioItem({ result, chartData, showDetails }) {
   const { stockId, ticker, ratio, returnRate, avgRoc } = result;
   const isPositive = parseFloat(returnRate) >= 0;
@@ -28,6 +29,7 @@ function PortfolioItem({ result, chartData, showDetails }) {
     return `${month}-${day}`;
   };
   // Recharts가 올바르게 렌더링할 수 있도록 데이터를 변환하는 로직을 개선합니다.
+  /*
   const transformedData = useMemo(() => {
     if (!chartData || chartData.length === 0) return [];
 
@@ -37,9 +39,9 @@ function PortfolioItem({ result, chartData, showDetails }) {
       const dateKey = item.date.split(' ')[0];
       const entry = dataMap.get(dateKey) || { date: dateKey };
       
-      if (item.type === 'historical') {
-        entry.historical = item.data;
-      }
+      //if (item.type === 'historical') {
+      //  entry.historical = item.data;
+      //}
       if (item.type === 'predict') {
         entry.predicted = item.data;
       }
@@ -58,6 +60,33 @@ function PortfolioItem({ result, chartData, showDetails }) {
 
     return combined;
   }, [chartData]);
+*/
+
+const transformedData = useMemo(() => {
+  if (!chartData || chartData.length === 0) return [];
+
+  const dataMap = new Map();
+  chartData.forEach(item => {
+    if (item.type !== 'predict') return; // ✅ predict만 사용
+
+    const dateKey = item.date.split(' ')[0]; // YYYY-MM-DD
+    const entry = dataMap.get(dateKey) || { date: dateKey };
+
+    entry.predicted = item.data;
+    dataMap.set(dateKey, entry);
+  });
+
+  // 날짜순 정렬
+  const combined = Array.from(dataMap.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // 과거 데이터의 마지막 지점을 찾아 예측 데이터와 연결
+  const lastHistoricalIndex = combined.findLastIndex(d => d.historical != null);
+  if (lastHistoricalIndex !== -1 && combined[lastHistoricalIndex]) {
+    combined[lastHistoricalIndex].predicted = combined[lastHistoricalIndex].historical;
+  }
+
+  return combined;
+}, [chartData]);
 
 console.log(chartData)
   return (
@@ -78,7 +107,7 @@ console.log(chartData)
               </div>
             </div>
             <div className="px-3 py-1 bg-gray-50 rounded-full text-sm font-medium text-gray-700">
-              {ratio}% 비중
+              {ratio*100}% 비중
             </div>
           </div>
           <div className="mt-6 grid grid-cols-2 gap-4">

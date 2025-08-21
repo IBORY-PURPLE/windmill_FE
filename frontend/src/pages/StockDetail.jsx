@@ -36,11 +36,11 @@ const MULTI_OPTIONS = [
   { value: "per", label: "PER" },
   { value: "pbr", label: "PBR" },
   { value: "psr", label: "PSR" },
-  { value: "snp", label: "S&P" },
+  { value: "snp", label: "S&P 지수" },
   { value: "roe", label: "ROE" },
   { value: "roa", label: "ROA" },
-  { value: "opm", label: "OPM" },
-  { value: "npm", label: "NPM" },
+  { value: "opm", label: "영업 이익률" },
+  { value: "npm", label: "순이익률" },
 ];
 
 const PERIOD_OPTIONS = [
@@ -280,12 +280,13 @@ function StockDetailPage({ context }) {
               {isChartLoading ? (
                 <div className="text-center">
                   <div className="w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-[#C20E2F] mx-auto"></div>
-                  <p className="mt-4 text-lg text-gray-600">
-                    그래프를 불러오는 중입니다...
-                  </p>{" "}
+                  <p className="mt-4 text-lg text-gray-600">그래프를 불러오는 중입니다...</p>
+
                 </div>
               ) : (
-                <StockPriceChart data={chartData} />
+                <>
+                  <StockPriceChart data={chartData} />
+                </>
               )}
             </div>
           </div>
@@ -377,11 +378,14 @@ function StockDetailPage({ context }) {
               </button>
 
               {(isGraphLoading || predictedData) && (
-                <PredictionGraph
-                  predictedData={predictedData}
-                  isLoading={isGraphLoading}
+                <>
+                <PredictionGraph 
+                  predictedData={predictedData} 
+                  isLoading={isGraphLoading} 
                   realData={realData}
                 />
+                <div className="mt-4 text-sm text-gray-500 text-center">*실제 가격과 차이가 있습니다. 투자의 성공과 실패는 개인의 책임에 달려 있습니다</div>
+                </>
               )}
             </div>
             <button
