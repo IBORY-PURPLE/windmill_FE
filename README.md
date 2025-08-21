@@ -102,18 +102,16 @@ vercel.json에서 render백엔드로 프록시합니다.
 ## ☁️vercel 배포 가이드
 1. GitHub 레포를 Vercel에 연결
 
-Framework Preset: Vite
+2. Framework Preset: Vite
 
-Build Command: vite build (기본값)
+3. Build Command: vite build (기본값)
 
-Output Directory: dist (기본값)
+4. Output Directory: dist (기본값)
 
-레포 루트에 vercel.json 포함
+5. 레포 루트에 vercel.json 포함
 
-GitHub 푸시 시:
-
+6. GitHub 푸시 시:
 main → Production 자동 배포
-
 기타 브랜치/PR → Preview 배포
 필요 시 Promote to Production으로 프리뷰를 프로덕션에 승격 가능
 
