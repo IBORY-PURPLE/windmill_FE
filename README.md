@@ -9,6 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#-license)
 
 **Production:** https://windmill-fe-yn59.vercel.app/
+**[![Production](https://img.shields.io/badge/Production-50a0f0?style=for-the-badge)](https://windmill-fe-yn59.vercel.app/)**
 
 ---
 
