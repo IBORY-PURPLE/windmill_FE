@@ -17,4 +17,4 @@
 - npm install @tanstack/react-query-devtools
 - npm i framer-motion
 - npm install dayjs
-- npm install react-icon
+- npm install react-icons
