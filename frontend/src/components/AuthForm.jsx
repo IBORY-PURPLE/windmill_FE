@@ -98,7 +98,7 @@ function AuthForm() {
                   name="password"
                   required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
-                  placeholder="비밀번호를 입력하세요"
+                  placeholder="비밀번호를 입력하세요 (8자리 이상)"
                 />
               </div>
 

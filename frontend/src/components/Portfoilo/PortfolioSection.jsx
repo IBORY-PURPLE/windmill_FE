@@ -105,7 +105,7 @@ function PortfolioSection({ result, result2, result3, onRefresh }) {
                   dataKey="date"
                   interval="preserveStart"
                   tickFormatter={formatDate}
-                  tick={{ fontSize: 15, fill: "#000000" }}
+                  tick={{ fontSize: 13, fill: "#000000" }}
                   axisLine={{ stroke: "#000000", strokeWidth: 1 }}
                   tickLine={{ stroke: "#000000" }}
                   padding={{ left: 10 }}
