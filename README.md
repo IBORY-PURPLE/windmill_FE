@@ -33,7 +33,6 @@
 - **번들/개발서버:** Vite
 - **배포:** Vercel (GitHub 연결)
 
-> CRA(`react-scripts`)는 사용하지 않습니다. 본 프로젝트는 **Vite**를 사용합니다.
 
 ---
 
@@ -52,10 +51,64 @@ npm install
 
 # 2) 로컬 개발 서버 실행
 npm run dev
-# 기본: http://localhost:5173
+# 기본: http://localhost:3000
 
 # 3) 프로덕션 빌드
 npm run build
 
 # 4) 빌드 확인(미리보기 서버)
 npm run preview
+
+## 🗂️폴더구조
+
+```bash
+frontend/
+├─ src/
+│  ├─ api/              # fetch 유틸/엔드포인트
+│  ├─ components/       # 재사용 UI 컴포넌트
+│  ├─ hooks/            # 커스텀 훅 (React Query 등)
+│  ├─ pages/            # 라우트 페이지
+│  ├─ util/             # 공용 유틸
+│  ├─ App.jsx
+│  └─ main.jsx
+├─ index.html
+├─ package.json
+├─ vercel.json          # 프록시/SPA 라우팅 설정
+└─ tailwind.config.js   # (사용 시)
+
+## API연동
+프론트엔드에서는 항상 상대 경로로 호출합니다.
+const res = await fetch('/api/stock');
+
+vercel.json에서 render백엔드로 프록시합니다.
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://windmill-be-5qid.onrender.com/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+
+## ☁️vercel 배포 가이드
+GitHub 레포를 Vercel에 연결
+
+Framework Preset: Vite
+
+Build Command: vite build (기본값)
+
+Output Directory: dist (기본값)
+
+레포 루트에 vercel.json 포함
+
+GitHub 푸시 시:
+
+main → Production 자동 배포
+
+기타 브랜치/PR → Preview 배포
+필요 시 Promote to Production으로 프리뷰를 프로덕션에 승격 가능
+
