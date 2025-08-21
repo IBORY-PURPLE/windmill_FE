@@ -12,9 +12,9 @@
 
 ## 아래 START버튼을 눌러주세요.
 
-[![START](https://img.shields.io/badge/START-50a0f0?style=for-the-badge)](https://windmill-fe-yn59.vercel.app/)
+
 <a href="https://windmill-fe-yn59.vercel.app/">
-  <img src="https://img.shields.io/badge/START-50a0f0?style=for-the-badge" height="40" width="120"/>
+  <img src="https://img.shields.io/badge/START-50a0f0?style=for-the-badge" height="60" width="120"/>
 </a>
 
 ---
