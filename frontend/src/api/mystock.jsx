@@ -1,16 +1,14 @@
 // src/api/mystock.js
 import { getAuthToken } from "../util/auth";
+import { API_BASE } from "../apiBase";
 
 export const fetchMyStocks = async () => {
   const token = getAuthToken();
-  const res = await fetch(
-    "https://windmill-be-5qid.onrender.com/user/mystock",
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE}/user/mystock`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!res.ok) throw new Error("보유 주식 정보를 불러오는데 실패했습니다.");
   const data = await res.json();
@@ -19,21 +17,18 @@ export const fetchMyStocks = async () => {
 
 export const addMyStock = async (stockData) => {
   const token = getAuthToken();
-  const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/user/mystock/${stockData.id}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        buy_cost: stockData.purchasePrice,
-        buy_stock_count: stockData.quantity,
-        date: stockData.date,
-      }),
-    }
-  );
+  const res = await fetch(`${API_BASE}/user/mystock/${stockData.id}`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      buy_cost: stockData.purchasePrice,
+      buy_stock_count: stockData.quantity,
+      date: stockData.date,
+    }),
+  });
 
   if (!res.ok) throw new Error("포지션 추가 실패");
   const data = await res.json();
@@ -42,14 +37,11 @@ export const addMyStock = async (stockData) => {
 
 export const fetchMyStockLogs = async (stockId) => {
   const token = getAuthToken();
-  const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/user/mystock/${stockId}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE}/user/mystock/${stockId}`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!res.ok) throw new Error("거래 로그 조회 실패했습니다.");
   const data = await res.json();

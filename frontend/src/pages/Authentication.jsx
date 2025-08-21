@@ -1,6 +1,7 @@
 import { redirect, json } from "react-router-dom";
 
 import AuthForm from "../components/AuthForm";
+import { API_BASE } from "../apiBase";
 
 function AuthenticationPage() {
   return <AuthForm />;
@@ -28,17 +29,14 @@ export async function action({ request }) {
     username: data.get("userName"),
   };
 
-  const response = await fetch(
-    "https://windmill-be-5qid.onrender.com/auth/" + mode,
-    {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(authData),
-    }
-  );
+  const response = await fetch(`${API_BASE}/auth/` + mode, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(authData),
+  });
 
   // authform에서 useActionData 훅으로 오류를 폼 안에서 생성.
   if (response.status === 422 || response.status === 401) {

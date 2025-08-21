@@ -1,6 +1,13 @@
 import { useState } from "react";
 import Stepper, { Step } from "../../style/AddAvatarStepper";
-import { X, User, Hash, BarChart2, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  X,
+  User,
+  Hash,
+  BarChart2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 function AddAvatarModalWithStepper({ onClose, onSubmit }) {
   const [name, setName] = useState("");
@@ -13,7 +20,7 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
 
   const handleComplete = () => {
     if (!isNameValid || !isAgeValid) return;
-    
+
     onSubmit({
       name: name.trim(),
       age: parseInt(age, 10),
@@ -52,7 +59,9 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
         </div>
         <span
           className={`text-sm ${
-            isActive || isCompleted ? "text-gray-900 font-medium" : "text-gray-500"
+            isActive || isCompleted
+              ? "text-gray-900 font-medium"
+              : "text-gray-500"
           }`}
         >
           {label}
@@ -128,7 +137,7 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
                 <BarChart2 className="w-4 h-4 mr-2 text-gray-500" />
                 감당 가능한 손실률
               </label>
-              
+
               <div className="bg-gray-50 p-6 rounded-xl">
                 <div className="text-center mb-8">
                   <span className="text-4xl font-bold text-[#C20E2F]">
@@ -138,7 +147,7 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
                     투자 시 감내할 수 있는 최대 손실률
                   </p>
                 </div>
-                
+
                 <input
                   type="range"
                   min="0"
@@ -148,7 +157,7 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
                   onChange={(e) => setLossTolerance(e.target.value)}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#C20E2F]"
                 />
-                
+
                 <div className="flex justify-between mt-6 px-2">
                   {[0, 25, 50, 75, 100].map((val) => (
                     <button
@@ -166,16 +175,19 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
                   ))}
                 </div>
               </div>
-              
+
               <div className="mt-4 text-sm text-gray-500">
                 <p className="mb-1">
-                  <span className="font-medium text-gray-700">낮은 위험:</span> 0-25% (안정적인 투자)
+                  <span className="font-medium text-gray-700">낮은 위험:</span>{" "}
+                  0-25% (안정적인 투자)
                 </p>
                 <p className="mb-1">
-                  <span className="font-medium text-gray-700">중간 위험:</span> 26-50% (균형 잡힌 투자)
+                  <span className="font-medium text-gray-700">중간 위험:</span>{" "}
+                  26-50% (균형 잡힌 투자)
                 </p>
                 <p>
-                  <span className="font-medium text-gray-700">높은 위험:</span> 51-100% (공격적인 투자)
+                  <span className="font-medium text-gray-700">높은 위험:</span>{" "}
+                  51-100% (공격적인 투자)
                 </p>
               </div>
             </div>
@@ -204,11 +216,11 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center p-4">
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
           onClick={onClose}
         />
-        
+
         <div className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
@@ -222,7 +234,7 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
               <X className="w-6 h-6" />
             </button>
           </div>
-          
+
           {/* Progress Steps */}
           <div className="flex justify-between mb-8 px-4">
             {renderStepIndicator(1, "기본 정보")}
@@ -235,12 +247,10 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
             </div>
             {renderStepIndicator(3, "위험 수준")}
           </div>
-          
+
           {/* Content */}
-          <div className="mb-8">
-            {renderStepContent()}
-          </div>
-          
+          <div className="mb-8">{renderStepContent()}</div>
+
           {/* Navigation Buttons */}
           <div className="flex justify-between mt-8">
             <button
@@ -255,7 +265,7 @@ function AddAvatarModalWithStepper({ onClose, onSubmit }) {
             >
               <ChevronLeft className="w-5 h-5 mr-1" /> 이전
             </button>
-            
+
             {currentStep < 3 ? (
               <button
                 type="button"

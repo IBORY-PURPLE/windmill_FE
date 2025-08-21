@@ -4,12 +4,11 @@
 // 4. /news페이지 생성 -> newsletter페이지를 삭제하고
 // 기본 newsroot를 만들어서 전체 뉴스 띄우는 창을 기본으로하고
 // 메인네비게이터에서 news메뉴 하위 드롭다운으로 경제, 금융, S&P500지수 페이지 만들어서 각각 전달할 수 있게 설정하기.
+import { API_BASE } from "../apiBase";
 
 export const fetchNews = async (query) => {
   const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/news?query=${encodeURIComponent(
-      query
-    )}&display=50`
+    `${API_BASE}/news?query=${encodeURIComponent(query)}&display=50`
   );
 
   if (!res.ok) {

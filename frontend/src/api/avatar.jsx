@@ -1,15 +1,13 @@
 import { getAuthToken } from "../util/auth";
+import { API_BASE } from "../apiBase";
 
 export const fetchAvatars = async () => {
   const token = getAuthToken();
-  const res = await fetch(
-    "https://windmill-be-5qid.onrender.com/portfolio/avatar",
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE}/portfolio/avatar`, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
   if (!res.ok) {
     // 실패한 경우에만 텍스트 출력
     const errorText = await res.text();
@@ -24,21 +22,18 @@ export const fetchAvatars = async () => {
 
 export const addAvatar = async (avatarData) => {
   const token = getAuthToken();
-  const res = await fetch(
-    "https://windmill-be-5qid.onrender.com/portfolio/avatar",
-    {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        age: avatarData.age,
-        loss: avatarData.loss,
-        name: avatarData.name,
-      }),
-    }
-  );
+  const res = await fetch(`${API_BASE}/portfolio/avatar`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      age: avatarData.age,
+      loss: avatarData.loss,
+      name: avatarData.name,
+    }),
+  });
 
   if (!res.ok) throw new Error("아바타 추가 실패");
   const data = await res.json();
@@ -47,30 +42,24 @@ export const addAvatar = async (avatarData) => {
 
 export const singleDeleteAvatar = async (avatarId) => {
   const token = getAuthToken();
-  const res = await fetch(
-    `https://windmill-be-5qid.onrender.com/portfolio/${avatarId}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE}/portfolio/${avatarId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!res.ok) throw new Error("아바타 삭제 실패");
 };
 
 export const allDeleteAvatar = async () => {
   const token = getAuthToken();
-  const res = await fetch(
-    "https://windmill-be-5qid.onrender.com/portfolio/delete_all",
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const res = await fetch(`${API_BASE}/portfolio/delete_all`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!res.ok) throw new Error("전체 삭제 실패");
 };
