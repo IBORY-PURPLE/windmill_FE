@@ -1,4 +1,4 @@
-# WindMill — React Frontend
+# WindMill — React Application
 
 웹 기반 주가/포트폴리오 앱의 React 프론트엔드입니다. Vite로 빌드하고 Vercel에 배포하며, Render의 FastAPI 백엔드와 `/api/*` 프록시로 연동합니다.
 
