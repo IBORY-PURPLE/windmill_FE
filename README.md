@@ -115,3 +115,18 @@ main → Production 자동 배포
 기타 브랜치/PR → Preview 배포
 필요 시 Promote to Production으로 프리뷰를 프로덕션에 승격 가능
 
+## 🛠️ 트러블슈팅
+
+502 Bad Gateway (API 호출)
+
+- 요청 경로 확인: fetch('/api/stock') 처럼 /api/* 경로인지 확인
+- vercel.json의 Render 호스트가 실제 동작하는 주소인지 확인
+- Render 무료 플랜은 슬립/웜업으로 첫 요청이 실패할 수 있어 잠시 후 재시도
+- Ren der 대시보드 Logs에서 에러/재시작/메모리 이슈 확인
+
+CORS 에러
+- 콘솔에 CORS 문구가 보이면 백엔드 CORS 허용 도메인 점검
+- 개발/프리뷰/프로덕션 도메인을 모두 허용
+
+새로고침 404
+- SPA 라우팅 rewrite 누락: /(.*) → /index.html 규칙 확인
