@@ -58,6 +58,7 @@ npm run build
 
 # 4) 빌드 확인(미리보기 서버)
 npm run preview
+```
 
 ## 🗂️폴더구조
 
@@ -75,8 +76,11 @@ frontend/
 ├─ package.json
 ├─ vercel.json          # 프록시/SPA 라우팅 설정
 └─ tailwind.config.js   # (사용 시)
+```
 
 ## API연동
+
+```bash
 프론트엔드에서는 항상 상대 경로로 호출합니다.
 const res = await fetch('/api/stock');
 
@@ -93,6 +97,7 @@ vercel.json에서 render백엔드로 프록시합니다.
     }
   ]
 }
+```
 
 ## ☁️vercel 배포 가이드
 GitHub 레포를 Vercel에 연결
