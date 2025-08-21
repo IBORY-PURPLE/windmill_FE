@@ -67,15 +67,22 @@ frontend/
 ├─ src/
 │  ├─ api/              # fetch 유틸/엔드포인트
 │  ├─ components/       # 재사용 UI 컴포넌트
+│  ├─ style/            # React Bits스타일 라이브러리
+│  ├─ assets/           # 로고, static파일
+│  ├─ context/          # 전역상태관리(토큰관리)
 │  ├─ hooks/            # 커스텀 훅 (React Query 등)
 │  ├─ pages/            # 라우트 페이지
 │  ├─ util/             # 공용 유틸
+│  ├─ apiBase.ts        # api프록시
 │  ├─ App.jsx
 │  └─ main.jsx
 ├─ index.html
 ├─ package.json
 ├─ vercel.json          # 프록시/SPA 라우팅 설정
-└─ tailwind.config.js   # (사용 시)
+├─ vite.config.js
+├─ postcss.config.js
+└─ tailwind.config.js   
+
 ```
 
 ## API연동
