@@ -1,17 +1,15 @@
 import { useAuth } from "../context/AuthContext";
 import { LogOut } from "lucide-react";
+import { API_BASE } from "../apiBase";
 
 function LogoutButton() {
   const { setToken } = useAuth();
 
   const handleLogout = async () => {
-    const res = await fetch(
-      "https://windmill-be-5qid.onrender.com/auth/logout",
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+    const res = await fetch(`${API_BASE}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
 
     if (res.ok) {
       localStorage.removeItem("token");
@@ -26,7 +24,8 @@ function LogoutButton() {
     <button
       onClick={handleLogout}
       className="ml-2 px-3 py-1.5 rounded-lg font-medium text-white bg-[#C20E2F] hover:bg-red-700 transition-colors duration-200 flex items-center"
-    ><span className="mr-2">🔑</span>
+    >
+      <span className="mr-2">🔑</span>
       로그아웃
     </button>
   );
