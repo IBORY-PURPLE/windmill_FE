@@ -2,6 +2,7 @@ import { getAuthToken } from "../util/auth";
 import { API_BASE } from "../apiBase";
 
 export const fetchPortfolio = async (avatarId) => {
+  const token = getAuthToken();
   const res = await fetch(`${API_BASE}/portfolio/${avatarId}`, {
     method: "POST",
     headers: {
