@@ -4,6 +4,9 @@ import { API_BASE } from "../apiBase";
 export const fetchPortfolio = async (avatarId) => {
   const res = await fetch(`${API_BASE}/portfolio/${avatarId}`, {
     method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   });
 
   if (!res.ok) throw new Error("포트폴리오 조회 실패했습니다.");
