@@ -31,7 +31,6 @@ const CustomTooltip = ({ active, payload }) => {
 
 const PredictionGraph = ({ predictedData, isLoading, realData }) => {
   // 👇 1. 실제 데이터와 예측 데이터를 하나의 배열로 합칩니다.
-  console.log("예측 데이터", predictedData)
   const combinedData = useMemo(() => {
     if (!realData && !predictedData) {
       return [];
@@ -79,7 +78,6 @@ const PredictionGraph = ({ predictedData, isLoading, realData }) => {
     return combined;
   }, [realData, predictedData]);
   // 👇 2. Y축의 범위를 전체 데이터 기준으로 동적으로 계산합니다.
-  console.log(combinedData)
   const yDomain = useMemo(() => {
     if (combinedData.length === 0) return ['auto', 'auto'];
     
