@@ -113,7 +113,7 @@ console.log(chartData)
           <div className="mt-6 grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <p className="text-xs font-medium text-gray-500 flex items-center">
-                시장가가
+                시장가
               </p>
               <p className={`text-lg font-semibold ${isPositive ? 'text-blue-600' : 'text-red-600'}`}>
                 {formatNumber(returnRate)}
