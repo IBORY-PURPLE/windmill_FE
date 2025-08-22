@@ -129,7 +129,7 @@ function PortfolioSection({ result, result2, result3, onRefresh }) {
                     fontSize: "0.75rem",
                     fontWeight: 500,
                   }}
-                  formatter={(value) => [`${value}`, "시장가"]}
+                  formatter={(value) => [`${value}%`, "수익률"]}
                 />
                 <Legend
                   verticalAlign="top"
